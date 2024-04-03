@@ -164,7 +164,7 @@ const Buscador = () => {
         `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
-          responseType: "blob", 
+          responseType: "blob",
         }
       );
 
@@ -175,7 +175,7 @@ const Buscador = () => {
       link.setAttribute(
         "download",
         `Boletin_Oficial_Municipal Nº ${boletin.nro_boletin}.pdf`
-      ); 
+      );
       link.click();
     } catch (error) {
       setOpen(true);

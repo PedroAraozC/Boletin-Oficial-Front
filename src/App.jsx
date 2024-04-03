@@ -12,7 +12,7 @@ const App = () => {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<Buscador />} />
+          <Route path="/*" element={<Buscador />} />
           <Route path="/altaBoletines" element={<AltaBoletines />} />
           <Route path="/tablaBoletines" element={<TablaBoletines />} />
           <Route path="/tablas" element={<TablasEdicion />} />
