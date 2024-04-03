@@ -1,0 +1,98 @@
+/* Estilos para el Dialog */
+
+.modal_content {
+  align-items: center;
+  width: 400px !important;
+  justify-content: center;
+  align-self: center;
+  padding-bottom: 10px !important;
+  border-radius: 15px;
+  border-top: solid 1px !important;
+  border-color: #0066ff !important;
+  background-color: #0066ff;
+
+}
+
+
+/* Estilos para el DialogTitle */
+.titulo {
+  color: #fff;
+  padding-bottom: 40px;
+  font-weight: 600;
+  text-align: center;
+
+}
+
+.inputNorma {
+  width: auto !important;
+}
+
+.contModal {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btnEditarNorma {
+  display: flex;
+  width: auto;
+  align-items: center;
+  justify-content: space-around !important;
+  margin-top: 10px;
+}
+
+.iconDelete {
+  cursor: pointer;
+  color: red;
+  margin-left: 15px;
+}
+
+.iconDelete :hover {
+  color: rgb(163, 15, 15);
+}
+
+.iconEdit :hover {
+  color: #0066ff;
+
+}
+.pagination{
+
+  display: flex !important;
+  justify-content: end !important;
+}
+.css-pdct74-MuiTablePagination-selectLabel,.css-levciy-MuiTablePagination-displayedRows{
+  align-items: center;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.tabla {
+  background-color: red;
+}
+
+.checkBoxNorma {
+  color: #fff;
+  align-items: center !important;
+}
+
+/* Media queri.es para responsividad */
+@media (max-width: 500px) {
+
+  .MuiDialog-paper,
+  .MuiTextField-root {
+    width: 100%;
+  }
+
+  .modal_content {
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+
+  }
+}
+
+@media (max-width: 370px) {
+  .contModal {
+    flex-direction: column;
+  }
+}

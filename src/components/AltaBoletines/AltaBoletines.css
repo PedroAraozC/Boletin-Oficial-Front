@@ -1,0 +1,147 @@
+.contBoxAltaBoletines {
+    display: flex;
+    padding: 20px;
+    border-radius: 25px;
+    margin-top: 20px;
+    align-items: center;
+    flex-direction: column;
+    background-color: #0066ff;
+    box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5)
+    
+}
+
+.contAltaBoletines {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+/* INPUTFILE*/
+.css-1x51dt5-MuiInputBase-input-MuiInput-input {
+    height: 365px !important;
+}
+
+.formGroup {
+    width: 50%;
+    display: flex;
+    flex: start;
+    margin-bottom: 30px;
+    flex-direction: column;
+
+}
+
+.nroBoletin {
+    width: 100;
+    display: flex;
+    color: #ffffff;
+    flex:start
+}
+
+.contRango {
+    width: 100%;
+    margin-top: 10px;
+    color: #ffffff;
+}
+
+.contRango div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+
+}
+
+label {
+    margin-top: 4px !important;
+}
+
+
+.contInputFileBoletin {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputAltaBoletin,
+.inputFileAltaBoletin {
+    width: 100% !important;
+    align-content: center !important;
+}
+
+.textAreaBoletines {
+    width: 80%;
+    resize: none;
+    height: 100vh;
+    padding-top: 7px;
+    padding-left: 10px;
+    border-radius: 25px;
+    margin-bottom: 30px;
+}
+
+
+::-webkit-file-upload-button {
+    cursor: pointer !important;
+}
+
+.inputFileAltaBoletin input {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer !important;
+}
+
+.fileNameDisplay {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    display: flex;
+    border-radius: 4px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    cursor: pointer !important;
+    background-color: rgba(255, 255, 255, 0.288);
+}
+
+.selectOrigen {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .contAltaBoletines {
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .formGroup {
+        width: 100%;
+        margin-bottom: auto;
+    }
+
+    .css-1x51dt5-MuiInputBase-input-MuiInput-input {
+        height: 25vh !important;
+        margin-bottom: 2px !important;
+    }
+
+    .contInputFileBoletin {
+        width: 80vw !important;
+        height: 40vh !important;
+    }
+}
+
+@media (min-width: 660px) and (max-width: 767px) {
+    .css-1x51dt5-MuiInputBase-input-MuiInput-input {
+        height: 25vh !important;
+        margin-bottom: 2px !important;
+    }
+
+    .fileNameDisplay {
+        width: 60vw;
+        align-self: center;
+    }
+
+}

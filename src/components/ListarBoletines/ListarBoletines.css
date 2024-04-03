@@ -1,0 +1,125 @@
+.contBoletines {
+    height: auto;
+}
+
+.calendarioBoletines {
+    display: flex;
+    padding-top: 20px;
+    justify-content: center;
+
+}
+
+.pindonga {
+    border: solid 3px;
+    border-color: #0066ff;
+}
+
+.css-1u5xo4f-MuiSkeleton-root {
+    background-color:transparent !important
+}
+
+.boletin {
+    display: flex;
+    height: 150px;
+    min-width: 0px;
+    overflow: hidden;
+    align-items: center;
+    border-radius: 10px;
+    background: #ffffff;
+    justify-content: space-around;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    border: 3px solid #0066ff;
+}
+
+.logoMuniColor {
+    width: auto;
+    height: 140px;
+    margin-left: -35px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.boletinText {
+    flex-direction: column;
+
+}
+
+.boletin h2 {
+    margin-left: -2px;
+    font-size: 160%;
+    font-weight: 400 !important;
+    color: #000000 !important
+}
+
+.contBtn {
+    display: flex;
+    align-items: center;
+    padding: 0px;
+}
+
+.btnPdf {
+    width: fit-content;
+    height: fit-content;
+    margin-right: 25px !important;
+    border-radius: 50px !important;
+    background-color: #2eb1ff !important;
+}
+
+.css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
+    background-color: rgb(43, 169, 241) !important;
+}
+
+
+
+@media (max-width: 546px) {
+    .boletin {
+        height: auto;
+        padding: 5px;
+    }
+
+    .boletin h2 {
+
+        font-size: 120% !important;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .btnPdf {
+        width: fit-content;
+        height: 30px;
+        margin-bottom: 15px !important;
+    }
+
+    .logoMuniColor {
+        width: 120px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 412px) {
+
+    .boletinText h6 {
+
+        font-size: 14px;
+
+    }
+}
+
+@media (max-width: 390px) {
+
+    .boletinText h6 {
+
+        font-size: 13px;
+
+    }
+}
+
+@media (max-width: 360px) {
+
+    .boletinText h6 {
+
+        font-size: 12px;
+
+    }
+}

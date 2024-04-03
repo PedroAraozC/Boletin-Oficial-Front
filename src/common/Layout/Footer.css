@@ -1,0 +1,88 @@
+.footerCont {
+  left: 0px;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: #1789f6;
+  /* background-color: #0066ff; */
+  border-top: solid 1px;
+  justify-content: center;
+  margin-top: 20px !important;
+  font-family: 13px;
+  color: #fff;
+}
+
+.iconosRedes {
+  display: flex;
+  font-size: 20px;
+  align-self: center;
+  justify-content: center;
+}
+
+.iconosRedes i {
+  color: #fff;
+}
+
+.logoFooter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoFooter img {
+
+  width: 65%;
+
+}
+
+.logoRedesFooter {
+  height: 20px;
+  margin-top: -5px !important;
+}
+
+.seguinos {
+  margin-left: 50px !important;
+  display: flex;
+  justify-content: end;
+  color: #fff;
+  align-items: center !important;
+
+
+}
+
+@media (max-width: 770px) {
+  .seguinos {
+    margin-right: 0 !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .seguinos h5 {
+    margin-right: 0 !important;
+    justify-content: center !important;
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .seguinos h5 {
+    margin-right: 0 !important;
+    justify-content: center !important;
+    font-size: 13px !important;
+  }
+
+  .logoFooter h4 {
+    font-size: 100% !important;
+  }
+
+  .logoFooter {
+    width: 100% !important;
+  }
+
+  .logoFooter h1 {
+    font-size: 30px !important;
+  }
+}

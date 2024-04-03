@@ -1,0 +1,197 @@
+.buscador {
+    padding: 0;
+    width: 100%;
+    height: auto;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    background-color: #1789f6;
+    padding-bottom: 20px !important;
+}
+
+.tituloBuscador {
+    color: #fff;
+    font-weight: 600;
+    font-size: 22px;
+    margin-left: 138px;
+    padding-top: 0px;
+    margin-bottom: 10px;
+}
+
+.inputCont {
+    display: flex;
+    align-items: center;
+    width: 100% !important;
+    flex-direction: row !important;
+}
+
+
+
+.inputsBuscadores {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 50% !important;
+    justify-content: center;
+}
+
+.inputBuscador {
+    width: 100%;
+    margin-left: 15px !important;
+}
+
+.botonesBuscadores {
+    display: flex;
+    flex-direction: row;
+    width: 50% !important;
+    align-items: center;
+    flex: end;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border-color: #ffffff !important;
+
+}
+
+.MuiInputLabel-root.Mui-focused {
+    color: #ffffff !important
+}
+
+.MuiInputLabel-root {
+    color: #ffffff !important
+}
+
+.MuiOutlinedInput-input {
+    color: #ffffff !important;
+}
+
+.btnBuscador,
+.btnBuscadorAvanzada {
+    height: 50px;
+    margin-left: 15px !important;
+    width: 50% !important;
+    background-color: #2eb1ff !important;
+}
+
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+    margin-left: -19px !important;
+    width: fit-content !important;
+
+}
+
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    width: 20% !important;
+    color: #fff !important;
+    background-color: #0066ff !important;
+}
+
+.css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
+    background-color: rgb(43, 169, 241) !important;
+}
+
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    width: fit-content !important;
+
+}
+
+
+@media (max-width: 775px) {
+    .inputCont {
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+
+    .inputsBuscadores,
+    .botonesBuscadores {
+        width: 100% !important;
+
+    }
+
+    .btnBuscador,
+    .btnBuscadorAvanzada {
+        width: 50% !important;
+
+    }
+
+}
+
+
+@media (min-width: 730px) and (max-width: 770px) {
+    .btnBuscador {
+        width: 50% !important;
+    }
+}
+
+@media (max-width: 730px) {
+    .textMuni {
+        flex-direction: column;
+    }
+
+    .textMuni h1 {
+        margin: 0 !important;
+
+    }
+
+    .navCont {
+        height: auto;
+        padding-bottom: 20px;
+
+    }
+
+    .buscador {
+        height: auto;
+        align-items: center !important;
+
+    }
+
+    .inputCont {
+        padding-bottom: 15px;
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+
+}
+
+@media (max-width: 1352px) {
+    .tituloBuscador {
+
+        margin-left: 134px !important;
+
+    }
+}
+
+@media (max-width: 1209px) {
+    .tituloBuscador {
+
+        margin-left: 60px !important;
+
+    }
+}
+
+@media (max-width: 500px) {
+    .tituloBuscador {
+
+        margin-left: 26px !important;
+
+    }
+}
+
+@media (max-width: 767px) {
+
+    .inputBuscador {
+
+        margin-bottom: 10px !important;
+
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .inputBuscador {
+
+        margin-bottom: 10px !important;
+
+    }
+
+}

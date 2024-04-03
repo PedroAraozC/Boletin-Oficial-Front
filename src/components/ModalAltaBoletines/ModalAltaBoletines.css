@@ -1,0 +1,153 @@
+.contBoxAltaBoletinesModal {
+    height: 70vh !important;
+    width: 80%;
+    border-radius: 25px;
+    align-items: center;
+    justify-content: center !important;
+    padding: 20px !important;
+    background-color: #0066ff !important;
+    box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5)
+}
+
+.contDivAltaBoletinesModal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.contAltaBoletinesModal {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.formGroupModal {
+    width: 50%;
+    display: flex;
+    /* align-items: start; */
+    flex: start;
+    flex-direction: column;
+
+}
+
+.contRangoModal {
+    width: 90% !important;
+    margin-top: 10px;
+    color: #ffffff;
+}
+
+.contRangoModal div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
+label {
+    margin-top: 4px !important;
+}
+
+.contInputFileBoletinModal {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputAltaBoletinModal,
+.inputFileAltaBoletinModal {
+    width: 100% !important;
+    align-content: center !important;
+}
+
+.inputFileAltaBoletinModal TextFiled {
+    opacity: 0;
+    position: absolute;
+}
+
+.fileNameDisplayModal {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    display: flex;
+    border-radius: 4px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    cursor: pointer !important;
+    background-color: rgba(255, 255, 255, 0.288);
+}
+
+.btnModal Button {
+    color: #ffffff;
+    background-color: #1976d2;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+
+
+}
+
+.btnModal Button:hover {
+    color: #0066ff;
+    background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .contAltaBoletinesModal {
+        align-items: center !important;
+        flex-direction: column !important;
+    }
+
+    .contDivAltaBoletinesModal {
+        flex-direction: column !important;
+    }
+
+    .formGroupModal {
+        width: 100% !important;
+        margin-bottom: auto;
+    }
+
+    .css-1x51dt5-MuiInputBase-input-MuiInput-input {
+        height: 25vh !important;
+        margin-bottom: 2px !important;
+    }
+
+    .contInputFileBoletinModal {
+        width: auto !important;
+        height: 40vh !important;
+    }
+}
+
+@media (min-width: 660px) and (max-width: 767px) {
+
+    .contBoxAltaBoletinesModal {
+        height: 80vh !important;
+        overflow-y: scroll !important;
+    }
+
+    .css-1x51dt5-MuiInputBase-input-MuiInput-input {
+        height: 25vh !important;
+        margin-bottom: 2px !important;
+    }
+    
+    ::-webkit-scrollbar {
+        width: 10px;
+        right: -5px !important;
+        background-color:  #0066ff !important;
+        height: 500px !important;
+        border-radius: 25px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: #2eb1ff;
+        /* Color del thumb */
+        border-radius: 5px;
+        /* Borde redondeado */
+    }
+
+    .fileNameDisplayModal {
+        width: 60vw !important;
+        align-self: center !important;
+    }
+
+}

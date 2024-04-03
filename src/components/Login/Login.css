@@ -1,0 +1,269 @@
+* {
+   font-family: 'Poppins', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.logoMuni {
+   height: 150px;
+   object-fit: contain;
+}
+
+
+.box {
+   top: 10%;
+   z-index: 1;
+   width: 350px;
+   height: 460px;
+   overflow: hidden;
+   position: sticky;
+   border-radius: 8px;
+   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+
+}
+
+.box::before {
+   top: -50%;
+   left: -50%;
+   content: '';
+   z-index: -1;
+   width: 300px;
+   height: 420px;
+   position: absolute;
+   transform-origin: bottom right;
+   animation: animate 6s linear infinite;
+   background: linear-gradient(0deg, transparent, #0066ff, #0066ff, #0066ff);
+}
+
+.box::after {
+   top: -50%;
+   left: -50%;
+   content: '';
+   z-index: -1;
+   width: 300px;
+   height: 420px;
+   position: absolute;
+   transform-origin: bottom right;
+   animation: animate 6s linear infinite;
+   animation-delay: -3s;
+   background: linear-gradient(0deg, transparent, #0066ff, #0066ff, #0066ff);
+}
+
+.borderLine {
+   top: 0;
+   inset: 0;
+   position: absolute;
+}
+
+.borderLine::before {
+   top: -50%;
+   left: -50%;
+   z-index: -1;
+   content: '';
+   width: 300px;
+   height: 420px;
+   position: absolute;
+   animation-delay: -1.5s;
+   transform-origin: bottom right;
+   animation: animate 6s linear infinite;
+   background: linear-gradient(0deg, transparent, #333333, #333333, #333333);
+}
+
+.borderLine::after {
+   top: -50%;
+   left: -50%;
+   z-index: -1;
+   content: '';
+   width: 300px;
+   height: 420px;
+   position: absolute;
+   animation-delay: -4.5s;
+   transform-origin: bottom right;
+   animation: animate 6s linear infinite;
+   background: linear-gradient(0deg, transparent, #333333, #333333, #333333);
+}
+
+.buttonLoginColor {
+   background-color: #0066ff !important;
+}
+
+@keyframes animate {
+   0% {
+      transform: rotate(0deg);
+   }
+
+   100% {
+      transform: rotate(360deg);
+   }
+}
+
+.box form {
+   z-index: 2;
+   inset: 4px;
+   display: flex;
+   position: absolute;
+   border-radius: 8px;
+   padding: 50px 40px;
+   background: #ffffff;
+   flex-direction: column;
+}
+
+.box form h2 {
+   color: #000;
+   font-weight: 500;
+   text-align: center;
+   letter-spacing: 0.1em;
+}
+
+.box form .inputBox {
+   width: 260px;
+   margin-top: 35px;
+   position: relative;
+}
+
+.box form .inputBox input {
+   width: 100%;
+   z-index: 10;
+   border: none;
+   outline: none;
+   color: #000;
+   font-size: 1em;
+   transition: 0.5s;
+   box-shadow: none;
+   position: relative;
+   letter-spacing: 0.05em;
+   background: transparent;
+   padding: 10px 10px 10px;
+}
+
+.box form .inputBox span {
+   left: 0;
+   color: #000;
+   font-size: 1em;
+   transition: 0.5s;
+   position: absolute;
+   pointer-events: none;
+   letter-spacing: 0.05em;
+   padding: 10px 0px 10px;
+}
+
+.box form .inputBox input:valid~span,
+.box form .inputBox input:focus~span {
+   z-index: 0;
+   color: #000;
+   font-size: 0.75em;
+   transform: translateY(-34px);
+
+}
+
+.box form .inputBox i {
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   height: 2px;
+   overflow: hidden;
+   transition: 0.5s;
+   border-radius: 4px;
+   position: absolute;
+   pointer-events: none;
+   background: #c9c8c8;
+}
+
+.box form .inputBox input:valid~i,
+.box form .inputBox input:focus~i {
+   height: 44px;
+}
+
+.box form .inputBox input:valid~.icono-password-login,
+.box form .inputBox input:focus~.icono-password-login {
+   color: gray;
+}
+
+.box form .links {
+   display: flex;
+   justify-content: space-between;
+}
+
+.box form .links a {
+   color: #000;
+   margin: 10px 0;
+   font-size: 0.75em;
+   text-decoration: none;
+}
+
+.box form .links a:hover,
+.box form .links a:nth-child(2) {
+   color: #000;
+}
+
+.box form input[type="submit"] {
+   z-index: 0;
+   border: none;
+   width: 100px;
+   outline: none;
+   cursor: pointer;
+   margin-top: 10px;
+   font-weight: 600;
+   font-size: 0.9em;
+   padding: 9px 25px;
+   background: #000;
+   border-radius: 4px;
+}
+
+.box form input[type="submit"]:active {
+   opacity: 0.8;
+}
+
+.icono-password-login {
+   left: 270px;
+   z-index: 30;
+   bottom: 14px;
+   cursor: pointer;
+   color: #23242a;
+   position: absolute;
+}
+
+@media (max-height: 768px) {
+
+   .box form .inputBox span {
+      left: 0;
+      top: -2px;
+      color: #000;
+      font-size: 1em;
+      transition: 0.5s;
+      position: absolute;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+      padding: 10px 0px 10px;
+   }
+
+   .box form .inputBox input:valid~span,
+   .box form .inputBox input:focus~span {
+      z-index: 0;
+      color: #000;
+      font-size: 0.75em;
+      transform: translateY(-32px);
+   }
+
+   .box form input[type="submit"] {
+      z-index: 0;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      margin-top: 25px;
+      font-size: 0.9em;
+      font-weight: 600;
+      padding: 9px 25px;
+      border-radius: 4px;
+      background: #000;
+      width: 100px !important;
+   }
+
+}
+
+.icono-password-login {
+   left: 230px;
+   z-index: 30;
+   bottom: 14px;
+   cursor: pointer;
+   color: #000000;
+   position: absolute;
+}

@@ -1,0 +1,17 @@
+.tablaNormas {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 25px
+}
+
+.btnAddNorma {
+    height: 40px !important;
+    width: 40px !important;
+    margin-right: 25px;
+}
+.btnAddNorma :hover{
+    color: #0066ff;
+    cursor: pointer;
+}

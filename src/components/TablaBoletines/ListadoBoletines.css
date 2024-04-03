@@ -1,0 +1,92 @@
+.deshabilitado {
+  display: flex;
+  text-align: center;
+  color: red;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.habilitado {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.blur {
+  pointer-events: none;
+}
+
+.modalEditar {
+  z-index: 9999;
+}
+
+.MuiDialog-paper {
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  overflow-y: none;
+  max-width: 100vw !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: transparent !important;
+  border-radius: 15px !important;
+}
+
+
+.contRangoEditar {
+  margin-top: 10px;
+  color: #ffffff;
+}
+
+.contRangoEditar div {
+  margin-top: 5px;
+
+}
+
+.contBoxAltaBoletinesEditar {
+  display: flex;
+  padding: 10px !important;
+  border-radius: 15px;
+  align-items: center;
+  flex-direction: column;
+  background-color: #0066ff;
+}
+
+.MuiDialogContent-root {
+  padding: 0 !important;
+  border-radius: 15px !important;
+  background-color: #0066ff !important;
+}
+
+
+.listadoNormasEditar {
+  display: ruby;
+  height: 300px;
+  overflow-y: scroll !important;
+  margin-right: -30px !important;
+  margin-bottom: 10px;
+  margin-top: 10px !important;
+  justify-self: left !important;
+  overflow-x: hidden !important;
+
+}
+
+.MuiButton-root {
+  color: #fff;
+
+}
+
+.iconEdit {
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  .MuiDialog-paper {
+    width: 100%;
+  }
+
+  .MuiTextField-root {
+    width: 100%;
+  }
+}
