@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import "./ListadoBoletines.css";
 import useGet from "../../hook/useGet";
 import axios from "../../config/axios";
@@ -265,31 +266,60 @@ const TablaBoletines = () => {
       });
   };
 
-  const handleSave = () => {
-    try {
-      const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
-        editingBoletin;
-      axios
-        .put(`/boletin/editar`, {
-          id_boletin,
-          nro_boletin,
-          fecha_publicacion,
-          habilita,
-          normasAgregadasEditar,
-        })
-        .then((response) => {
-          cargarBoletines();
-          setEditingBoletin(null);
-          setOpenDialog(false);
-          setNormasAgregadasEditar([]);
-        })
-        .catch((error) => {
-          console.error("Error al guardar cambios:", error);
+  const handleSave = (updatedBoletin) => {
+    if (editingBoletin) {
+      try {
+        const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
+          editingBoletin;
+        axios
+          .put(`/boletin/editar`, {
+            id_boletin,
+            nro_boletin,
+            fecha_publicacion,
+            habilita,
+            normasAgregadasEditar,
+          })
+          .then((response) => {
+            cargarBoletines();
+            setEditingBoletin(null);
+            setOpenDialog(false);
+            setNormasAgregadasEditar([]);
+          });
+      } catch (error) {
+        console.error("Error al guardar cambios:", error);
+      }
+    } else {
+      try {
+        updatedBoletin.forEach((boletin) => {
+          const { id_boletin, nro_boletin, habilita, fecha_publicacion } =
+            boletin;
+          axios
+            .put(`/boletin/editar`, {
+              id_boletin,
+              nro_boletin,
+              fecha_publicacion,
+              habilita,
+            })
+            .then((response) => {
+              cargarBoletines();
+            });
         });
-    } catch (error) {
-      setNormasAgregadasEditar([]);
-      console.error("Error al guardar cambios:", error);
+      } catch (error) {
+        console.error("Error al guardar cambios:", error);
+      }
     }
+  };
+
+  const handleDelete = (boletin) => {
+    const updatedBoletin = boletines.map((item) =>
+      item.id_boletin === boletin.id_boletin ? { ...item, habilita: 0 } : item
+    );
+    setBoletines(updatedBoletin);
+    handleSave(updatedBoletin);
+    setOpen(true);
+    console.log(updatedBoletin)
+    setMensaje(`Boletin nº ${boletin.nro_boletin} deshabilitado`);
+    setError(error)
   };
   useEffect(() => {
     getTiposOrigen();
@@ -393,6 +423,14 @@ const TablaBoletines = () => {
                         className="iconEdit"
                         color="primary"
                       />
+                      {boletin.habilita === 1 ? (
+                        <DeleteIcon
+                          className="iconDelete"
+                          onClick={() => handleDelete(boletin)}
+                        />
+                      ) : (
+                        <DeleteIcon className="iconDelete" />
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -606,8 +644,7 @@ const TablaBoletines = () => {
                                               norma.id_contenido_boletin
                                             )
                                           }
-                                        />
-                                        {" "}
+                                        />{" "}
                                       </div>
                                     ))}
                                 </div>
@@ -697,4 +734,5 @@ const TablaBoletines = () => {
     </Paper>
   );
 };
+
 export default TablaBoletines;
