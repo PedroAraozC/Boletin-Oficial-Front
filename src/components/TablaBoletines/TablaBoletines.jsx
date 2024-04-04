@@ -607,7 +607,7 @@ const TablaBoletines = () => {
                                             )
                                           }
                                         />
-                                        s{" "}
+                                        {" "}
                                       </div>
                                     ))}
                                 </div>

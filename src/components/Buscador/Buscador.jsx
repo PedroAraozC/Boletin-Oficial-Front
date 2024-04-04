@@ -7,7 +7,6 @@ import logoMuniColor from "../../assets/logo-SMT.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import ListarBoletines from "../ListarBoletines/ListarBoletines.jsx";
-
 const Buscador = () => {
   const [values, setValues] = useState([]);
   const [open, setOpen] = useState(false);
@@ -19,7 +18,6 @@ const Buscador = () => {
   const [boletinEncontrado, setBoletinEncontrado] = useState(true);
   // eslint-disable-next-line
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
-
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
     setBusquedaRealizada(false);
@@ -187,6 +185,7 @@ const Buscador = () => {
   return (
     <>
       <div className="d-flex flex-column align-items-center">
+
         <Box className="buscador ">
           <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
           <Box
