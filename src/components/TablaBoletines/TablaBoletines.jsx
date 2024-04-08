@@ -11,6 +11,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import "./ListadoBoletines.css";
 import useGet from "../../hook/useGet";
 import axios from "../../config/axios";
+import File from "@mui/icons-material/UploadFileRounded";
+import FileUp from "@mui/icons-material/FileUpload";
 import {
   Alert,
   Box,
@@ -28,10 +30,12 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import File from "@mui/icons-material/UploadFileRounded";
 import "../AltaBoletines/AltaBoletinesNuevo.css";
 import "./ListadoBoletines.css";
-import { ALTA_CONTENIDO_BOLETIN_VALUES } from "../../helpers/constantes";
+import {
+  ALTA_CABECERA_BOLETIN_VALUES,
+  ALTA_CONTENIDO_BOLETIN_VALUES,
+} from "../../helpers/constantes";
 import CloseIcon from "@mui/icons-material/Close";
 
 const TablaBoletines = () => {
@@ -49,6 +53,9 @@ const TablaBoletines = () => {
     "/norma/listar",
     axios
   );
+  const [valuesCabecera, setValuesCabecera] = useState(
+    ALTA_CABECERA_BOLETIN_VALUES
+  );
   const [valuesContenido, setValuesContenido] = useState(
     ALTA_CONTENIDO_BOLETIN_VALUES
   );
@@ -62,6 +69,11 @@ const TablaBoletines = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [selectedFileName, setSelectedFileName] = useState(
+    "Seleccione un Archivo"
+  );
+  const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
+  const [formData, setFormData] = useState(new FormData());
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -77,6 +89,20 @@ const TablaBoletines = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleChangeFile = (e) => {
+    const fileName = e.target.files[0]?.name || "";
+    setSelectedFileName(fileName);
+    if (!fileName.toLowerCase().endsWith(".pdf")) {
+      setOpen(true);
+      setMensaje("El archivo solo puede ser PDF");
+      setError("warning");
+    } else {
+      setOpen(false);
+    }
+    const aux = e.target.files[0];
+    setArchivoSeleccionado(aux);
   };
 
   const handleEdit = (boletin) => {
@@ -213,7 +239,9 @@ const TablaBoletines = () => {
   };
 
   const handleCancel = () => {
+    setSelectedFileName("Seleccione un Archivo");
     setNormasAgregadasEditar([]);
+    setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
     setOpenDialog(false);
   };
 
@@ -265,28 +293,37 @@ const TablaBoletines = () => {
       });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
+      console.log(archivoSeleccionado);
       const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
         editingBoletin;
-      axios
-        .put(`/boletin/editar`, {
-          id_boletin,
-          nro_boletin,
-          fecha_publicacion,
-          habilita,
-          normasAgregadasEditar,
-        })
-        .then((response) => {
+      const requestData = {
+        id_boletin,
+        nro_boletin,
+        fecha_publicacion,
+        habilita,
+        normasAgregadasEditar
+      };
+      formData.append("requestData", JSON.stringify(requestData));
+      formData.append("archivoBoletin",archivoSeleccionado);
+      setFormData(formData)
+      console.log([...formData])
+      const response = await axios.put(`/boletin/editar`,...formData, {  headers: {
+        "Content-Type": "multipart/form-data",
+      },});
+        
           cargarBoletines();
           setEditingBoletin(null);
           setOpenDialog(false);
-          setNormasAgregadasEditar([]);
-        })
-        .catch((error) => {
-          console.error("Error al guardar cambios:", error);
-        });
+          setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
+          setSelectedFileName("Seleccione un Archivo");
+          setOpen(true);
+          setMensaje(`Boletin Nº${nro_boletin} editado con éxito!`);
+          setError("success");
+          setNormasAgregadasEditar([]); setFormData(new FormData());
     } catch (error) {
+      setValuesCabecera("");
       setNormasAgregadasEditar([]);
       console.error("Error al guardar cambios:", error);
     }
@@ -606,8 +643,7 @@ const TablaBoletines = () => {
                                               norma.id_contenido_boletin
                                             )
                                           }
-                                        />
-                                        {" "}
+                                        />{" "}
                                       </div>
                                     ))}
                                 </div>
@@ -618,16 +654,22 @@ const TablaBoletines = () => {
 
                           <Box className="contInputFileBoletin">
                             <label className="fileNameDisplay flex-column">
+                              {selectedFileName}
                               <Input
                                 className="inputFileAltaBoletin"
                                 type="file"
                                 id="fileBoletin"
                                 name="archivoBoletin"
+                                value={valuesCabecera.archivoBoletin}
+                                onChange={handleChangeFile}
                                 accept="application/pdf"
                                 required
                               />
-
-                              <File />
+                              {selectedFileName === "Seleccione un Archivo" ? (
+                                <FileUp />
+                              ) : (
+                                <File />
+                              )}
                             </label>
                           </Box>
                         </div>
