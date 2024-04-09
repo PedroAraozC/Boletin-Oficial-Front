@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import "./ListadoBoletines.css";
 import useGet from "../../hook/useGet";
 import axios from "../../config/axios";
@@ -293,41 +294,80 @@ const TablaBoletines = () => {
       });
   };
 
-  const handleSave = async () => {
-    try {
-      console.log(archivoSeleccionado);
-      const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
-        editingBoletin;
-      const requestData = {
-        id_boletin,
-        nro_boletin,
-        fecha_publicacion,
-        habilita,
-        normasAgregadasEditar
-      };
-      formData.append("requestData", JSON.stringify(requestData));
-      formData.append("archivoBoletin",archivoSeleccionado);
-      setFormData(formData)
-      console.log([...formData])
-      const response = await axios.put(`/boletin/editar`,...formData, {  headers: {
-        "Content-Type": "multipart/form-data",
-      },});
-        
-          cargarBoletines();
-          setEditingBoletin(null);
-          setOpenDialog(false);
-          setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
-          setSelectedFileName("Seleccione un Archivo");
-          setOpen(true);
-          setMensaje(`Boletin Nº${nro_boletin} editado con éxito!`);
-          setError("success");
-          setNormasAgregadasEditar([]); setFormData(new FormData());
-    } catch (error) {
-      setValuesCabecera("");
-      setNormasAgregadasEditar([]);
-      console.error("Error al guardar cambios:", error);
+  const handleSave = async (updatedBoletin) => {
+    if (editingBoletin) {
+      try {
+        console.log(archivoSeleccionado, "archivo seleccionado");
+        const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
+          editingBoletin;
+        const requestData = {
+          id_boletin,
+          nro_boletin,
+          fecha_publicacion,
+          habilita,
+          normasAgregadasEditar,
+        };
+        formData.append("requestData", JSON.stringify(requestData));
+        formData.append("archivoBoletin", archivoSeleccionado);
+        setFormData(formData);
+        console.log([...formData], "fomrData");
+        const respuesta = await axios.put(`/boletin/editar`, ...formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(respuesta, "respuesta");
+        cargarBoletines();
+        setEditingBoletin(null);
+        setOpenDialog(false);
+        setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
+        setSelectedFileName("Seleccione un Archivo");
+        setOpen(true);
+        setMensaje(
+          `Boletin Nº${editingBoletin.nro_boletin} editado con éxito!`
+        );
+        setError("success");
+        setNormasAgregadasEditar([]);
+        setFormData(new FormData());
+      } catch (error) {
+        setValuesCabecera("");
+        setNormasAgregadasEditar([]);
+        console.error("Error al guardar cambios:", error);
+      }
+    } else {
+      try {
+        updatedBoletin.forEach((boletin) => {
+          const { id_boletin, nro_boletin,fecha_publicacion, habilita,  } =
+            boletin;
+          axios
+            .put(`/boletin/editar`, {
+              id_boletin,
+              nro_boletin,
+              fecha_publicacion,
+              habilita,
+            })
+            .then((response) => {
+              cargarBoletines();
+            });
+        });
+      } catch (error) {
+        console.error("Error al guardar cambios:", error);
+      }
     }
   };
+
+  const handleDelete = (boletin) => {
+    const updatedBoletin = boletines.map((item) =>
+      item.id_boletin === boletin.id_boletin ? { ...item, habilita: 0 } : item
+    );
+    setBoletines(updatedBoletin);
+    handleSave(updatedBoletin);
+    setOpen(true);
+    console.log(updatedBoletin);
+    setMensaje(`Boletin nº ${boletin.nro_boletin} deshabilitado`);
+    setError("error");
+  };
+
   useEffect(() => {
     getTiposOrigen();
     setLoading(false);
@@ -430,6 +470,14 @@ const TablaBoletines = () => {
                         className="iconEdit"
                         color="primary"
                       />
+                      {boletin.habilita === 1 ? (
+                        <DeleteIcon
+                          className="iconDelete"
+                          onClick={() => handleDelete(boletin)}
+                        />
+                      ) : (
+                        <DeleteIcon className="iconDelete" />
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
