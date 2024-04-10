@@ -1,18 +1,22 @@
 .deshabilitado {
-  display: flex;
   text-align: center;
   color: red;
-  justify-content: center;
   margin-bottom: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .habilitado {
-  display: flex;
   text-align: center;
-  justify-content: center;
   margin-bottom: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-
+.celdaAcciones{
+  overflow: visible !important;
+  margin: 0 !important;
+  padding: 0 !important
+}
 .blur {
   pointer-events: none;
 }

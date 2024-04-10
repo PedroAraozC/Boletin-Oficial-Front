@@ -7,6 +7,8 @@ import logoMuniColor from "../../assets/logo-SMT.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import ListarBoletines from "../ListarBoletines/ListarBoletines.jsx";
+import "../ListarBoletines/ListarBoletines.css";
+
 const Buscador = () => {
   const [values, setValues] = useState([]);
   const [open, setOpen] = useState(false);
@@ -159,8 +161,8 @@ const Buscador = () => {
     try {
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
-        // `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
-        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob",
         }
@@ -260,7 +262,7 @@ const Buscador = () => {
       </div>
       <div className="d-flex flex-row mt-4">
         <Grid container spacing={2} className="d-flex contGrid">
-          <Grid className="contBoletines ps-5  pe-4 " item xs={12} md={12}>
+          <Grid className="contBoletines ps-5  pe-4 " item >
             {resultados.length > 0 ? (
               <>
                 {Array.isArray(values) && resultados.length > 0 ? (

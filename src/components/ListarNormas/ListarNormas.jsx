@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import "./ListarNormas.css";
+import "../ListarNormas/ListarNormas.css";
+import "../TablaBoletines/ListadoBoletines.css";
+import "../TablasEdicion/TablasEdicion.css";
 import useGet from "../../hook/useGet";
 import axios from "../../config/axios";
 import EditIcon from "@mui/icons-material/Edit";
@@ -17,9 +19,13 @@ import {
 import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ModalGenerica from "../ModalGenerico/ModalGenerico";
+import TableLoader from "../TableLoader/TableLoader";
 
 const TablaNormas = () => {
-  const [normas, getNorma, setNormas] = useGet("/norma/listado", axios);
+  const [normas, getNorma, loadingNorma, setNormas] = useGet(
+    "/norma/listado",
+    axios
+  );
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -153,159 +159,184 @@ const TablaNormas = () => {
     {
       id: "id_norma",
       label: "ID de Norma",
-      minWidth: "auto ",
       align: "center",
     },
     {
       id: "tipo_norma",
       label: "Tipo de Norma",
-      minWidth: "auto",
       align: "center",
     },
-    { id: "habilita", label: "Habilita", minWidth: "auto", align: "center" },
+    { id: "habilita", label: "Habilita", align: "center" },
   ];
 
   return (
     <div className="tablaNormas">
       <Paper
-        className="container mt-4 mb-4"
+        className="container mt-5 mb-4"
         sx={{
+          padding: 0,
+          margin: 0,
           width: "100%",
           boxShadow:
             "0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
         }}
       >
-        <div className="pt-1">
-          <TableContainer sx={{ maxHeight: 300 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map(
-                    (column) =>
-                      column.id !== "acciones" && (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          className="tableCellHeader"
-                        >
-                          {column.label}
-                        </TableCell>
-                      )
-                  )}
-                  <TableCell align="center" colSpan={4}>
-                    Acciones
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {normas
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((norma, rowIndex) => (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={rowIndex}
-                      className={
-                        rowIndex % 2 === 0 ? "tableRowEven" : "tableRowOdd"
-                      }
-                    >
-                      {columns.map((column) => (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          width={column.minWidth}
-                        >
-                          {column.id === "habilita" ? (
-                            norma[column.id] ? (
-                              <p className="habilitado">Habilitado</p>
-                            ) : (
-                              <p className="deshabilitado">Deshabilitado</p>
-                            )
-                          ) : (
-                            norma[column.id] !== "acciones" && norma[column.id]
-                          )}
-                        </TableCell>
-                      ))}
-
-                      <TableCell className="d-flex justify-content-center">
-                        <EditIcon
-                          onClick={() => handleEdit(norma)}
-                          className="iconEdit"
-                          color="primary"
-                        />
-                        {norma.habilita === 1 ? (
-                          <DeleteIcon
-                            className="iconDelete"
-                            onClick={() => handleDelete(norma.id_norma)}
-                          />
-                        ) : (
-                          <DeleteIcon className="iconDelete" />
-                        )}
-                      </TableCell>
+        {loadingNorma ? (
+          <>
+            <div className="pt-1">
+              <TableContainer sx={{ maxHeight: 300 }}>
+                <Table
+                  stickyHeader
+                  aria-label="sticky table"
+                  className="tablaEdicion"
+                >
+                  <TableHead>
+                    <TableRow>
+                      {columns.map(
+                        (column) =>
+                          column.id !== "acciones" && (
+                            <TableCell
+                              key={column.id}
+                              align={column.align}
+                              className="tableCellHeader"
+                            >
+                              {column.label}
+                            </TableCell>
+                          )
+                      )}
+                      <TableCell align="center">Acciones</TableCell>
                     </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {normas.length / rowsPerPage < 1 && rowsPerPage === 10 ? (
-            <TablePagination
-              className="pagination"
-              rowsPerPageOptions={[]}
-              component="div"
-              count={1}
-              rowsPerPage={1}
-              page={0}
-            />
-          ) : (
-            <TablePagination
-              className="pagination"
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={normas.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              labelDisplayedRows={({ from, to, count }) => {
-                const currentPage = Math.ceil(from / rowsPerPage);
-                const totalPages = Math.ceil(count / rowsPerPage);
-                return `${currentPage} de ${totalPages} páginas`;
-              }}
-              labelRowsPerPage="Filas por página:"
-            />
-          )}
+                  </TableHead>
+                  <TableBody>
+                    {normas
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((norma, rowIndex) => (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={rowIndex}
+                          className={
+                            rowIndex % 2 === 0 ? "tableRowEven" : "tableRowOdd"
+                          }
+                        >
+                          {columns.map((column) => (
+                            <TableCell
+                              key={column.id}
+                              align={column.align}
+                              width={column.minWidth}
+                            >
+                              {column.id === "habilita" ? (
+                                norma[column.id] ? (
+                                  <p className="habilitado">Habilitado</p>
+                                ) : (
+                                  <p className="deshabilitado">Deshabilitado</p>
+                                )
+                              ) : (
+                                norma[column.id] !== "acciones" &&
+                                norma[column.id]
+                              )}
+                            </TableCell>
+                          ))}
 
-          <EditarNormaDialog
-            open={openDialog}
-            onClose={() => setOpenDialog(false)}
-            editingNorma={editingNorma}
-            handleCheckboxChange={handleCheckboxChange}
-            handleInputChange={handleInputChange}
-            handleSave={handleSave}
-            handleCancel={handleCancel}
-            nombreCampo={nombreCampoEditado}
-          />
-          <ModalGenerica
-            open={openModal}
-            onClose={handleCloseModal}
-            onAccept={() => handleAcceptModal(normaInput, checkboxValue)}
-            title="AGREGAR NORMA"
-            inputLabel="Nombre de la Norma"
-            inputValue={normaInput}
-            onInputChange={(e) => setNormaInput(e.target.value)}
-            checkboxLabel="Habilitada"
-            checked={checkboxValue}
-            onCheckboxChange={(e) => setCheckboxValue(e.target.checked)}
-          />
-        </div>
+                          <TableCell className="d-flex justify-content-center">
+                            <EditIcon
+                              onClick={() => handleEdit(norma)}
+                              className="iconEdit"
+                              color="primary"
+                            />
+                            {norma.habilita === 1 ? (
+                              <DeleteIcon
+                                className="iconDelete"
+                                onClick={() => handleDelete(norma.id_norma)}
+                              />
+                            ) : (
+                              <DeleteIcon className="iconDelete" />
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {normas.length / rowsPerPage < 1 && rowsPerPage === 10 ? (
+                <TablePagination
+                  className="pagination"
+                  rowsPerPageOptions={[]}
+                  component="div"
+                  count={1}
+                  rowsPerPage={1}
+                  page={0}
+                  labelDisplayedRows={({ from, to, count }) => {
+                    const currentPage = Math.ceil(from / rowsPerPage);
+                    const totalPages = Math.ceil(count / rowsPerPage);
+                    return `${currentPage} de ${totalPages}`;
+                  }}
+                />
+              ) : (
+                <TablePagination
+                  className="pagination "
+                  rowsPerPageOptions={[10, 25, 100]}
+                  component="div"
+                  count={normas.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  labelDisplayedRows={({ from, to, count }) => {
+                    const currentPage = Math.ceil(from / rowsPerPage);
+                    const totalPages = Math.ceil(count / rowsPerPage);
+                    return `${currentPage} de ${totalPages}`;
+                  }}
+                  labelRowsPerPage="Filas:"
+                />
+              )}
+
+              <EditarNormaDialog
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+                editingNorma={editingNorma}
+                handleCheckboxChange={handleCheckboxChange}
+                handleInputChange={handleInputChange}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+                nombreCampo={nombreCampoEditado}
+              />
+              <ModalGenerica
+                open={openModal}
+                onClose={handleCloseModal}
+                onAccept={() => handleAcceptModal(normaInput, checkboxValue)}
+                title="AGREGAR NORMA"
+                inputLabel="Nombre de la Norma"
+                inputValue={normaInput}
+                onInputChange={(e) => setNormaInput(e.target.value)}
+                checkboxLabel="Habilitada"
+                checked={checkboxValue}
+                onCheckboxChange={(e) => setCheckboxValue(e.target.checked)}
+              />
+            </div>
+          </>
+        ) : (
+          <TableLoader filas={4} />
+        )}
       </Paper>
-      <AddCircleIcon
-        className="btnAddNorma"
-        color="primary"
-        variant="contained"
-        onClick={handleOpenModal}
-      />
+      {loadingNorma ? (
+        <>
+          <div className="btn">
+            <AddCircleIcon
+              className="btnAddNorma"
+              color="primary"
+              variant="contained"
+              onClick={handleOpenModal}
+            />
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

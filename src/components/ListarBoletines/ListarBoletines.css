@@ -1,24 +1,22 @@
+.contGrid{
+    align-items: center;
+}
 .contBoletines {
-    height: auto;
-}
-
-.calendarioBoletines {
+    min-height: 40vh !important;
+    width: 100vw !important;
     display: flex;
-    padding-top: 20px;
-    justify-content: center;
-
-}
-
-.pindonga {
-    border: solid 3px;
-    border-color: #0066ff;
+    flex-direction: column !important;
+    justify-items: center !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .css-1u5xo4f-MuiSkeleton-root {
-    background-color:transparent !important
+    background-color: transparent !important
 }
 
 .boletin {
+    width: 90% !important;
     display: flex;
     height: 150px;
     min-width: 0px;
@@ -120,6 +118,27 @@
     .boletinText h6 {
 
         font-size: 12px;
+
+    }
+}
+
+@media (min-width: 1500px) {
+
+    .contGrid {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-self: center !important;
+
+    }
+
+    .boletin {
+        width: 1000px;
+    }
+
+    .boletinText {
+        max-width: 100% !important;
+        margin-left: 0;
+        margin-right: 0;
 
     }
 }

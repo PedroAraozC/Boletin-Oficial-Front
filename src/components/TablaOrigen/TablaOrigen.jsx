@@ -17,12 +17,17 @@ import axios from "../../config/axios";
 import ModalGenerica from "../ModalGenerico/ModalGenerico";
 import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import "../ListarNormas/ListarNormas.css";
+import "../TablasEdicion/TablasEdicion.css";
+import TableLoader from "../TableLoader/TableLoader";
 
 const TablaOrigen = () => {
-  const [origen, getOrigen, setOrigen] = useGet("/origen/listado", axios);
+  const [origen, getOrigen, loading, setOrigen] = useGet(
+    "/origen/listado",
+    axios
+  );
   const [editOrigen, setEditOrigen] = useState("");
 
-  const [loading, setLoading] = useState(true);
+  const [loadingg, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openModal, setOpenModal] = useState(false);
@@ -56,7 +61,6 @@ const TablaOrigen = () => {
   }
   const handleEdit = (Origen) => {
     setEditOrigen((prevOrigen) => ({ ...prevOrigen, ...Origen }));
-    setOpenModal(true);
     setOpenDialog(true);
     const nombreCampo = obtenerNombreCampoPorPosicion(Origen, 1);
     setNombreCampoEditado(nombreCampo);
@@ -151,9 +155,9 @@ const TablaOrigen = () => {
   };
 
   const columns = [
-    { id: "id_origen", label: "ID Origen", minWidth: "auto", align: "center" },
-    { id: "nombre_origen", label: "Nombre", minWidth: "auto", align: "center" },
-    { id: "habilita", label: "Habilita", minWidth: "auto", align: "center" },
+    { id: "id_origen", label: "ID Origen", align: "center" },
+    { id: "nombre_origen", label: "Nombre", align: "center" },
+    { id: "habilita", label: "Habilita", align: "center" },
   ];
 
   useEffect(() => {}, [editOrigen]);
@@ -163,146 +167,168 @@ const TablaOrigen = () => {
       <Paper
         className="container mt-4 mb-4"
         sx={{
+          padding: 0,
+          margin: 0,
           width: "100%",
           boxShadow:
             "0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
         }}
       >
-        <div className="pt-1">
-          <TableContainer sx={{ maxHeight: 300 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map(
-                    (column) =>
-                      column.id !== "acciones" && (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={{ minWidth: column.minWidth }}
-                          className="tableCellHeader"
-                        >
-                          {column.label}
-                        </TableCell>
-                      )
-                  )}
-                  <TableCell align="center" colSpan={4}>
-                    Acciones
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {!getOrigen ? (
-                  origen
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((origen, rowIndex) => (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={rowIndex}
-                        className={
-                          rowIndex % 2 === 0 ? "tableRowEven" : "tableRowOdd"
-                        }
-                      >
-                        {columns.map((column) => (
-                          <TableCell
-                            key={column.id}
-                            align={column.align}
-                            width={column.minWidth}
+        {loading ? (
+          <>
+            <div className="pt-1">
+              <TableContainer sx={{ maxHeight: 300 }}>
+                <Table
+                  stickyHeader
+                  aria-label="sticky table"
+                  className="tablaEdicion"
+                >
+                  <TableHead>
+                    <TableRow>
+                      {columns.map(
+                        (column) =>
+                          column.id !== "acciones" && (
+                            <TableCell
+                              key={column.id}
+                              align={column.align}
+                              style={{ minWidth: column.minWidth }}
+                              className="tableCellHeader"
+                            >
+                              {column.label}
+                            </TableCell>
+                          )
+                      )}
+                      <TableCell align="center">Acciones</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {!getOrigen ? (
+                      origen
+                        .slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                        .map((origen, rowIndex) => (
+                          <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={rowIndex}
+                            className={
+                              rowIndex % 2 === 0
+                                ? "tableRowEven"
+                                : "tableRowOdd"
+                            }
                           >
-                            {column.id === "habilita" ? (
-                              origen[column.id] ? (
-                                <p className="habilitado">Habilitado</p>
+                            {columns.map((column) => (
+                              <TableCell
+                                key={column.id}
+                                align={column.align}
+                                width={column.minWidth}
+                              >
+                                {column.id === "habilita" ? (
+                                  origen[column.id] ? (
+                                    <p className="habilitado">Habilitado</p>
+                                  ) : (
+                                    <p className="deshabilitado">
+                                      Deshabilitado
+                                    </p>
+                                  )
+                                ) : (
+                                  origen[column.id] !== "acciones" &&
+                                  origen[column.id]
+                                )}
+                              </TableCell>
+                            ))}
+                            <TableCell className="d-flex justify-content-center">
+                              <EditIcon
+                                onClick={() => handleEdit(origen)}
+                                className="iconEdit"
+                                color="primary"
+                              />
+                              {origen.habilita === 1 ? (
+                                <DeleteIcon
+                                  className="iconDelete"
+                                  onClick={() => handleDelete(origen.id_origen)}
+                                />
                               ) : (
-                                <p className="deshabilitado">Deshabilitado</p>
-                              )
-                            ) : (
-                              origen[column.id] !== "acciones" &&
-                              origen[column.id]
-                            )}
-                          </TableCell>
-                        ))}
-                        <TableCell className="d-flex justify-content-center">
-                          <EditIcon
-                            onClick={() => handleEdit(origen)}
-                            className="iconEdit"
-                            color="primary"
-                          />
-                          {origen.habilita === 1 ? (
-                            <DeleteIcon
-                              className="iconDelete"
-                              onClick={() => handleDelete(origen.id_origen)}
-                            />
-                          ) : (
-                            <DeleteIcon className="iconDelete" />
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                ) : (
-                  <></>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {origen.length / rowsPerPage < 1 && rowsPerPage === 10 ? (
-            <TablePagination
-              className="pagination"
-              rowsPerPageOptions={[]}
-              component="div"
-              count={1}
-              rowsPerPage={1}
-              page={0}
-            />
-          ) : (
-            <TablePagination
-              className="pagination"
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={origen.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              labelDisplayedRows={({ from, to, count }) => {
-                const currentPage = Math.ceil(from / rowsPerPage);
-                const totalPages = Math.ceil(count / rowsPerPage);
-                return `${currentPage} de ${totalPages} páginas`;
-              }}
-              labelRowsPerPage="Filas por página:"
-            />
-          )}
-          <EditarNormaDialog
-            open={openDialog}
-            onClose={() => setOpenDialog(false)}
-            editingNorma={editOrigen}
-            handleCheckboxChange={handleCheckboxChange}
-            handleInputChange={handleInputChange}
-            handleSave={handleSave}
-            handleCancel={handleCancel}
-            nombreCampo={nombreCampoEditado}
-          />
-          <ModalGenerica
-            open={openModal}
-            onClose={handleCloseModal}
-            onAccept={() => handleAcceptModal(origenInput, checkboxValue)}
-            title="AGREGAR ORIGEN"
-            inputLabel="Nombre del Origen"
-            inputValue={origenInput}
-            onInputChange={(e) => setOrigenInput(e.target.value)}
-            checkboxLabel="Habilitada"
-            checked={checkboxValue}
-            onCheckboxChange={(e) => setCheckboxValue(e.target.checked)}
+                                <DeleteIcon className="iconDelete" />
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                    ) : (
+                      <></>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {origen.length / rowsPerPage < 1 && rowsPerPage === 10 ? (
+                <TablePagination
+                  className="pagination"
+                  rowsPerPageOptions={[]}
+                  component="div"
+                  count={1}
+                  rowsPerPage={1}
+                  page={0}
+                />
+              ) : (
+                <TablePagination
+                  className="pagination"
+                  rowsPerPageOptions={[10, 25, 100]}
+                  component="div"
+                  count={origen.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  labelDisplayedRows={({ from, to, count }) => {
+                    const currentPage = Math.ceil(from / rowsPerPage);
+                    const totalPages = Math.ceil(count / rowsPerPage);
+                    return `${currentPage} de ${totalPages}`;
+                  }}
+                  labelRowsPerPage="Filas:"
+                />
+              )}
+              <EditarNormaDialog
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+                editingNorma={editOrigen}
+                handleCheckboxChange={handleCheckboxChange}
+                handleInputChange={handleInputChange}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+                nombreCampo={nombreCampoEditado}
+              />
+              <ModalGenerica
+                open={openModal}
+                onClose={handleCloseModal}
+                onAccept={() => handleAcceptModal(origenInput, checkboxValue)}
+                title="AGREGAR ORIGEN"
+                inputLabel="Nombre del Origen"
+                inputValue={origenInput}
+                onInputChange={(e) => setOrigenInput(e.target.value)}
+                checkboxLabel="Habilitada"
+                checked={checkboxValue}
+                onCheckboxChange={(e) => setCheckboxValue(e.target.checked)}
+              />
+            </div>
+          </>
+        ) : (
+          <TableLoader filas={4} />
+        )}
+      </Paper>
+      {loading ?
+      (
+        <div className="btn">
+          <AddCircleIcon
+            className="btnAddNorma"
+            color="primary"
+            variant="contained"
+            onClick={handleOpenModal}
           />
         </div>
-      </Paper>
-      <AddCircleIcon
-        className="btnAddNorma"
-        color="primary"
-        variant="contained"
-        onClick={handleOpenModal}
-      />
+      ):(<></>)}
     </div>
   );
 };

@@ -23,8 +23,14 @@
 
 }
 
+.tablaEdicion {
+  table-layout: fixed !important;
+
+}
+
 .inputNorma {
   width: auto !important;
+  width: mi;
 }
 
 .contModal {
@@ -56,20 +62,30 @@
   color: #0066ff;
 
 }
-.pagination{
 
-  display: flex !important;
+.pagination {
   justify-content: end !important;
 }
-.css-pdct74-MuiTablePagination-selectLabel,.css-levciy-MuiTablePagination-displayedRows{
-  align-items: center;
+
+.css-pdct74-MuiTablePagination-selectLabel,
+.css-levciy-MuiTablePagination-displayedRows {
   padding: 0 !important;
   margin: 0 !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+}
+.css-16c50h-MuiInputBase-root-MuiTablePagination-select{
+  margin-right: 5px !important;
+}
+.MuiTablePagination-actions {
+  margin-left: 0px !important;
 }
 .tabla {
   background-color: red;
 }
-
+.css-1chpzqh{
+  margin-bottom: 0;
+}
 .checkBoxNorma {
   color: #fff;
   align-items: center !important;

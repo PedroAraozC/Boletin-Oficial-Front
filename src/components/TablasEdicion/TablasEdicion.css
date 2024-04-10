@@ -2,16 +2,29 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-evenly;
+    }
+.tablaNormas th, td, tbody, thead,tr{
+    table-layout: fixed;
+    /* background-color: red !important; */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.btn {
+    width: auto;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    margin: 25px
 }
 
 .btnAddNorma {
-    height: 40px !important;
-    width: 40px !important;
-    margin-right: 25px;
+    height: 50px !important;
+    width: 50px !important;
 }
-.btnAddNorma :hover{
+
+.btnAddNorma :hover {
     color: #0066ff;
     cursor: pointer;
 }

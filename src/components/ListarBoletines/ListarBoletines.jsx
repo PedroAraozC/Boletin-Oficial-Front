@@ -27,8 +27,8 @@ const ListarBoletines = () => {
     try {
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
-        // `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
-        `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        `http://172.16.8.209:4000/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `http://localhost:4000/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob",
         }
@@ -56,21 +56,21 @@ const ListarBoletines = () => {
     <>
       <div className="d-flex flex-row">
         <Grid container spacing={2} className="d-flex contGrid">
-          <Grid className="contBoletines " item xs={12} md={12}>
+          <Grid className="contBoletines" item>
             {loading ? (
               <>
                 <Skeleton
-                  height={110}
+                  height={145}
                   variant="rounded"
                   className="boletin mb-2"
                 />
                 <Skeleton
-                  height={110}
+                  height={145}
                   variant="rounded"
                   className=" boletin mb-2 "
                 />
                 <Skeleton
-                  height={110}
+                  height={145}
                   variant="rounded"
                   className="boletin mb-2"
                 />

@@ -30,9 +30,11 @@ import {
   MenuItem,
   Select,
   TextField,
+  Skeleton,
 } from "@mui/material";
 import "../AltaBoletines/AltaBoletinesNuevo.css";
-import "./ListadoBoletines.css";
+import "../ListarNormas/ListarNormas.css";
+import TableLoader from "../TableLoader/TableLoader";
 import {
   ALTA_CABECERA_BOLETIN_VALUES,
   ALTA_CONTENIDO_BOLETIN_VALUES,
@@ -40,7 +42,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 const TablaBoletines = () => {
-  const [boletines, getboletin, setBoletines] = useGet(
+  const [boletines, getboletin, loading, setBoletines] = useGet(
     "/boletin/listado",
     axios
   );
@@ -60,7 +62,7 @@ const TablaBoletines = () => {
   const [valuesContenido, setValuesContenido] = useState(
     ALTA_CONTENIDO_BOLETIN_VALUES
   );
-  const [loading, setLoading] = useState(true);
+  const [loadingg, setLoading] = useState(true);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [editingBoletin, setEditingBoletin] = useState(null);
@@ -310,13 +312,13 @@ const TablaBoletines = () => {
         formData.append("requestData", JSON.stringify(requestData));
         formData.append("archivoBoletin", archivoSeleccionado);
         setFormData(formData);
-        console.log([...formData], "fomrData");
+        // console.log([...formData], "fomrData");
         const respuesta = await axios.put(`/boletin/editar`, ...formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(respuesta, "respuesta");
+        // console.log(respuesta, "respuesta");
         cargarBoletines();
         setEditingBoletin(null);
         setOpenDialog(false);
@@ -337,7 +339,7 @@ const TablaBoletines = () => {
     } else {
       try {
         updatedBoletin.forEach((boletin) => {
-          const { id_boletin, nro_boletin,fecha_publicacion, habilita,  } =
+          const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
             boletin;
           axios
             .put(`/boletin/editar`, {
@@ -372,6 +374,7 @@ const TablaBoletines = () => {
     getTiposOrigen();
     setLoading(false);
     cargarBoletines();
+    setLoading();
   }, []);
 
   useEffect(() => {
@@ -384,392 +387,416 @@ const TablaBoletines = () => {
     {
       id: "id_boletin",
       label: "ID de Boletin",
-      width: "auto",
       align: "center",
     },
     {
       id: "nro_boletin",
       label: "Nro de Boletin",
-      width: "auto",
       align: "center",
     },
     {
       id: "fecha_publicacion",
       label: "Fecha de Publicacion",
-      minWidth: 100,
       align: "center",
     },
-    { id: "habilita", label: "Habilita", width: "auto", align: "center" },
-    { id: "acciones", label: "Acciones", width: "auto", align: "center" },
+    { id: "habilita", label: "Habilita", align: "center" },
   ];
 
   return (
     <Paper
-      className="container mt-4"
+      className="container mt-4 mb-4"
       sx={{
+        padding: 0,
         width: "100%",
         boxShadow:
           "0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
       }}
     >
-      <div className="pt-1">
-        <TableContainer sx={{ maxHeight: 452 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map(
-                  (column) =>
-                    column.id !== "acciones" && (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        className="tableCellHeader"
-                      >
-                        {column.label}
-                      </TableCell>
-                    )
-                )}
-                <TableCell align="center" colSpan={6}>
-                  Acciones
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {boletines
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((boletin, rowIndex) => (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={rowIndex}
-                    className={
-                      rowIndex % 2 === 0 ? "tableRowEven" : "tableRowOdd"
-                    }
-                  >
-                    {columns.map((column) => (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.id === "habilita" ? (
-                          boletin[column.id] ? (
-                            <p className="habilitado">Habilitado</p>
-                          ) : (
-                            <p className="deshabilitado ">Deshabilitado</p>
-                          )
-                        ) : column.id === "fecha_publicacion" ? (
-                          <span>{boletin[column.id].slice(0, 10)}</span>
-                        ) : column.id === "id_boletin" ? (
-                          boletin[column.id]
-                        ) : (
-                          boletin[column.id]
-                        )}
-                      </TableCell>
-                    ))}
-                    <TableCell>
-                      <EditIcon
-                        onClick={() => handleEdit(boletin)}
-                        className="iconEdit"
-                        color="primary"
-                      />
-                      {boletin.habilita === 1 ? (
-                        <DeleteIcon
-                          className="iconDelete"
-                          onClick={() => handleDelete(boletin)}
-                        />
-                      ) : (
-                        <DeleteIcon className="iconDelete" />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={boletines.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Dialog
-        className="modalEditar"
-        disableBackdropClick={true}
-        open={openDialog}
-      >
-        <DialogContent disableBackdropClick={true}>
-          {editingBoletin && contenidoEditado && (
-            <>
-              <Box
-                component="form"
-                id="form"
-                noValidate
-                encType="multipart/form-data"
-                autoComplete="on"
-                className="contBoxAltaBoletinesEditar pt-0 container"
+      {loading ? (
+        <>
+          <div className="pt-1">
+            <TableContainer sx={{ maxHeight: 452 }}>
+              <Table
+                stickyHeader
+                aria-label="sticky table"
+                className="tablaEdicion"
               >
-                <div className="contAltaBoletines mt-0">
-                  <Box className="formGroup flex-col pb-1 pt-3 ">
-                    <div className="contRangoEditar d-flex align-items-center mt-0">
-                      <div>
-                        <div className="d-flex flex-column mt-0 ">
-                          <div className="encabezadoBoletin mt-0">
-                            <div className="d-flex justify-content-between text-align-start mt-0">
-                              <h5 className="mt-2">Boletin:</h5>
-                              <FormControlLabel
-                                control={
-                                  <Checkbox
-                                    defaultChecked
-                                    sx={{
-                                      color: "white",
-                                      "&.Mui-checked": {
-                                        color: "white",
-                                      },
-                                    }}
-                                    checked={editingBoletin.habilita}
-                                    onChange={handleCheckboxChange}
+                <TableHead>
+                  <TableRow>
+                    {columns.map(
+                      (column) =>
+                        column.id !== "acciones" && (
+                          <TableCell
+                            key={column.id}
+                            align="center"
+                            className="tableCellHeader"
+                          >
+                            {column.label}
+                          </TableCell>
+                        )
+                    )}
+                    <TableCell align="center">Acciones</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {boletines
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((boletin, rowIndex) => (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={rowIndex}
+                        className={
+                          rowIndex % 2 === 0 ? "tableRowEven" : "tableRowOdd"
+                        }
+                      >
+                        {columns.map((column) => (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.id === "habilita" ? (
+                              boletin[column.id] ? (
+                                <p className="habilitado">Habilitado</p>
+                              ) : (
+                                <p className="deshabilitado ">Deshabilitado</p>
+                              )
+                            ) : column.id === "fecha_publicacion" ? (
+                              <span>{boletin[column.id].slice(0, 10)}</span>
+                            ) : column.id === "id_boletin" ? (
+                              boletin[column.id]
+                            ) : (
+                              boletin[column.id]
+                            )}
+                          </TableCell>
+                        ))}
+                        <TableCell align="center" className="celdaAcciones">
+                          <EditIcon
+                            onClick={() => handleEdit(boletin)}
+                            className="iconEdit"
+                            color="primary"
+                          />
+                          {boletin.habilita === 1 ? (
+                            <DeleteIcon
+                              className="iconDelete"
+                              onClick={() => handleDelete(boletin)}
+                            />
+                          ) : (
+                            <DeleteIcon className="iconDelete" />
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          {boletines.length / rowsPerPage < 1 && rowsPerPage === 10 ? (
+            <TablePagination
+              className="pagination"
+              rowsPerPageOptions={[]}
+              component="div"
+              count={1}
+              rowsPerPage={1}
+              page={0}
+            />
+          ) : (
+            <TablePagination
+              className="pagination"
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={boletines.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              labelDisplayedRows={({ from, to, count }) => {
+                const currentPage = Math.ceil(from / rowsPerPage);
+                const totalPages = Math.ceil(count / rowsPerPage);
+                return `${currentPage} de ${totalPages} páginas`;
+              }}
+              labelRowsPerPage="Filas por página:"
+            />
+          )}
+          <Dialog
+            className="modalEditar"
+            disableBackdropClick={true}
+            open={openDialog}
+          >
+            <DialogContent disableBackdropClick={true}>
+              {editingBoletin && contenidoEditado && (
+                <>
+                  <Box
+                    component="form"
+                    id="form"
+                    noValidate
+                    encType="multipart/form-data"
+                    autoComplete="on"
+                    className="contBoxAltaBoletinesEditar pt-0 container"
+                  >
+                    <div className="contAltaBoletines mt-0">
+                      <Box className="formGroup flex-col pb-1 pt-3 ">
+                        <div className="contRangoEditar d-flex align-items-center mt-0">
+                          <div>
+                            <div className="d-flex flex-column mt-0 ">
+                              <div className="encabezadoBoletin mt-0">
+                                <div className="d-flex justify-content-between text-align-start mt-0">
+                                  <h5 className="mt-2">Boletin:</h5>
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        defaultChecked
+                                        sx={{
+                                          color: "white",
+                                          "&.Mui-checked": {
+                                            color: "white",
+                                          },
+                                        }}
+                                        checked={editingBoletin.habilita}
+                                        onChange={handleCheckboxChange}
+                                      />
+                                    }
+                                    label="Habilitado"
+                                    labelPlacement="start"
                                   />
-                                }
-                                label="Habilitado"
-                                labelPlacement="start"
-                              />
-                            </div>
-                            <div className="d-flex flex-row pe-2 mt-0 ">
-                              <TextField
-                                name="nro_boletin"
-                                label="Nro de Boletín"
-                                variant="outlined"
-                                className="inputAltaBoletin pt-0"
-                                type="number"
-                                value={editingBoletin.nro_boletin}
-                                onChange={handleInputChange}
-                                inputProps={{ min: "0" }}
-                              />
-
-                              <TextField
-                                label="Fecha Publicación"
-                                variant="outlined"
-                                name="fecha_publicacion"
-                                type="date"
-                                className="inputAltaBoletin ms-3 pt-0"
-                                value={editingBoletin.fecha_publicacion}
-                                onChange={handleInputChange}
-                                InputLabelProps={{ shrink: true }}
-                              />
-                            </div>
-                            <hr className="mt-3 mb-1" />
-                          </div>
-
-                          <div className="cuerpoBoletin mt-0">
-                            <div className="d-flex flex-row mt-0">
-                              <div className=" cuerpoBoletinForm ">
-                                <FormControl
-                                  sx={{ minWidth: 80 }}
-                                  className="mb-3 "
-                                >
-                                  <InputLabel id="demo-simple-select-autowidth-label">
-                                    Norma
-                                  </InputLabel>
-                                  <Select
-                                    labeld="demo-simple-select-autowidth-label"
-                                    id="demo-simple-select-autowidth"
-                                    value={valuesContenido.norma}
+                                </div>
+                                <div className="d-flex flex-row pe-2 mt-0 ">
+                                  <TextField
+                                    name="nro_boletin"
+                                    label="Nro de Boletín"
+                                    variant="outlined"
+                                    className="inputAltaBoletin pt-0"
+                                    type="number"
+                                    value={editingBoletin.nro_boletin}
                                     onChange={handleInputChange}
-                                    autoWidth
-                                    label="Norma"
-                                    name="norma"
-                                  >
-                                    <MenuItem value="">
-                                      <em>--Seleccione--</em>
-                                    </MenuItem>
-                                    {tiposNorma.map((norma) => (
-                                      <MenuItem
-                                        key={norma.id_norma}
-                                        value={norma}
-                                      >
-                                        {norma.tipo_norma}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </FormControl>
-                                <FormControl
-                                  sx={{ minWidth: 80 }}
-                                  className="mb-3"
-                                >
-                                  <InputLabel id="demo-simple-select-autowidth-label">
-                                    Secretaría de Origen
-                                  </InputLabel>
-                                  <Select
-                                    labeld="demo-simple-select-autowidth-label"
-                                    id="demo-simple-select-autowidth"
-                                    value={valuesContenido.origen}
+                                    inputProps={{ min: "0" }}
+                                  />
+
+                                  <TextField
+                                    label="Fecha Publicación"
+                                    variant="outlined"
+                                    name="fecha_publicacion"
+                                    type="date"
+                                    className="inputAltaBoletin ms-3 pt-0"
+                                    value={editingBoletin.fecha_publicacion}
                                     onChange={handleInputChange}
-                                    autoWidth
-                                    label="Secretaría de Origen"
-                                    name="origen"
-                                  >
-                                    <MenuItem value="">
-                                      <em>--Seleccione--</em>
-                                    </MenuItem>
-                                    {tiposOrigen.map((origen) => (
-                                      <MenuItem
-                                        key={origen.id_origen}
-                                        value={origen}
-                                      >
-                                        {origen.nombre_origen}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </FormControl>
-                                <TextField
-                                  label="Fecha Norma"
-                                  variant="outlined"
-                                  name="fechaNormaBoletin"
-                                  type="date"
-                                  className="inputAltaBoletin mb-3"
-                                  value={valuesContenido.fechaNormaBoletin}
-                                  onChange={handleInputChange}
-                                  InputLabelProps={{ shrink: true }}
-                                />
-                                <TextField
-                                  label="Nº de Norma"
-                                  className="inputAltaBoletin mb-3"
-                                  type="number"
-                                  value={valuesContenido.nroNorma}
-                                  onChange={handleInputChange}
-                                  name="nroNorma"
-                                />
-                                {valuesContenido.nroNorma !== "" &&
-                                valuesContenido.origen !== "" &&
-                                valuesContenido.fechaNormaBoletin !== "" &&
-                                valuesContenido.norma !== "" ? (
-                                  <Button
-                                    type="button"
-                                    className="btnAgregar"
-                                    variant="contained"
-                                    onClick={handleAgregarNormaEditar}
-                                  >
-                                    Agregar Norma
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    type="button"
-                                    className="btnAgregar"
-                                    variant="contained"
-                                    onClick={handleMensajeContenidoEditar}
-                                  >
-                                    Agregar Norma
-                                  </Button>
-                                )}
+                                    InputLabelProps={{ shrink: true }}
+                                  />
+                                </div>
+                                <hr className="mt-3 mb-1" />
                               </div>
-                              <div className="listadoPrueba container">
-                                <div className="listadoNormas">
-                                  {normasAgregadasEditar
-                                    .filter((norma) => norma.habilita === 1)
-                                    .map((norma, index) => (
-                                      <div
-                                        key={norma.id_contenido_boletin}
-                                        className={`norma ${
-                                          validarNormasAgregadas().some(
-                                            (n) => n === norma
-                                          )
-                                            ? "normaRepetida mt-2"
-                                            : "norma mt-2"
-                                        }`}
+
+                              <div className="cuerpoBoletin mt-0">
+                                <div className="d-flex flex-row mt-0">
+                                  <div className=" cuerpoBoletinForm ">
+                                    <FormControl
+                                      sx={{ minWidth: 80 }}
+                                      className="mb-3 "
+                                    >
+                                      <InputLabel id="demo-simple-select-autowidth-label">
+                                        Norma
+                                      </InputLabel>
+                                      <Select
+                                        labeld="demo-simple-select-autowidth-label"
+                                        id="demo-simple-select-autowidth"
+                                        value={valuesContenido.norma}
+                                        onChange={handleInputChange}
+                                        autoWidth
+                                        label="Norma"
+                                        name="norma"
                                       >
-                                        {norma.tipo_norma} Nº {norma.numero}/
-                                        {norma.nombre_origen}/
-                                        {norma.año.slice(0, 4)}{" "}
-                                        <CloseIcon
-                                          className="X"
-                                          fontSize="small"
-                                          onClick={() =>
-                                            handleEliminarNorma(
-                                              norma.id_contenido_boletin
-                                            )
-                                          }
-                                        />{" "}
-                                      </div>
-                                    ))}
+                                        <MenuItem value="">
+                                          <em>--Seleccione--</em>
+                                        </MenuItem>
+                                        {tiposNorma.map((norma) => (
+                                          <MenuItem
+                                            key={norma.id_norma}
+                                            value={norma}
+                                          >
+                                            {norma.tipo_norma}
+                                          </MenuItem>
+                                        ))}
+                                      </Select>
+                                    </FormControl>
+                                    <FormControl
+                                      sx={{ minWidth: 80 }}
+                                      className="mb-3"
+                                    >
+                                      <InputLabel id="demo-simple-select-autowidth-label">
+                                        Secretaría de Origen
+                                      </InputLabel>
+                                      <Select
+                                        labeld="demo-simple-select-autowidth-label"
+                                        id="demo-simple-select-autowidth"
+                                        value={valuesContenido.origen}
+                                        onChange={handleInputChange}
+                                        autoWidth
+                                        label="Secretaría de Origen"
+                                        name="origen"
+                                      >
+                                        <MenuItem value="">
+                                          <em>--Seleccione--</em>
+                                        </MenuItem>
+                                        {tiposOrigen.map((origen) => (
+                                          <MenuItem
+                                            key={origen.id_origen}
+                                            value={origen}
+                                          >
+                                            {origen.nombre_origen}
+                                          </MenuItem>
+                                        ))}
+                                      </Select>
+                                    </FormControl>
+                                    <TextField
+                                      label="Fecha Norma"
+                                      variant="outlined"
+                                      name="fechaNormaBoletin"
+                                      type="date"
+                                      className="inputAltaBoletin mb-3"
+                                      value={valuesContenido.fechaNormaBoletin}
+                                      onChange={handleInputChange}
+                                      InputLabelProps={{ shrink: true }}
+                                    />
+                                    <TextField
+                                      label="Nº de Norma"
+                                      className="inputAltaBoletin mb-3"
+                                      type="number"
+                                      value={valuesContenido.nroNorma}
+                                      onChange={handleInputChange}
+                                      name="nroNorma"
+                                    />
+                                    {valuesContenido.nroNorma !== "" &&
+                                    valuesContenido.origen !== "" &&
+                                    valuesContenido.fechaNormaBoletin !== "" &&
+                                    valuesContenido.norma !== "" ? (
+                                      <Button
+                                        type="button"
+                                        className="btnAgregar"
+                                        variant="contained"
+                                        onClick={handleAgregarNormaEditar}
+                                      >
+                                        Agregar Norma
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        type="button"
+                                        className="btnAgregar"
+                                        variant="contained"
+                                        onClick={handleMensajeContenidoEditar}
+                                      >
+                                        Agregar Norma
+                                      </Button>
+                                    )}
+                                  </div>
+                                  <div className="listadoPrueba container">
+                                    <div className="listadoNormas">
+                                      {normasAgregadasEditar
+                                        .filter((norma) => norma.habilita === 1)
+                                        .map((norma, index) => (
+                                          <div
+                                            key={norma.id_contenido_boletin}
+                                            className={`norma ${
+                                              validarNormasAgregadas().some(
+                                                (n) => n === norma
+                                              )
+                                                ? "normaRepetida mt-2"
+                                                : "norma mt-2"
+                                            }`}
+                                          >
+                                            {norma.tipo_norma} Nº {norma.numero}
+                                            /{norma.nombre_origen}/
+                                            {norma.año.slice(0, 4)}{" "}
+                                            <CloseIcon
+                                              className="X"
+                                              fontSize="small"
+                                              onClick={() =>
+                                                handleEliminarNorma(
+                                                  norma.id_contenido_boletin
+                                                )
+                                              }
+                                            />{" "}
+                                          </div>
+                                        ))}
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
+                              <hr className="mt-4 mb-3" />
+
+                              <Box className="contInputFileBoletin">
+                                <label className="fileNameDisplay flex-column">
+                                  {selectedFileName}
+                                  <Input
+                                    className="inputFileAltaBoletin"
+                                    type="file"
+                                    id="fileBoletin"
+                                    name="archivoBoletin"
+                                    value={valuesCabecera.archivoBoletin}
+                                    onChange={handleChangeFile}
+                                    accept="application/pdf"
+                                    required
+                                  />
+                                  {selectedFileName ===
+                                  "Seleccione un Archivo" ? (
+                                    <FileUp />
+                                  ) : (
+                                    <File />
+                                  )}
+                                </label>
+                              </Box>
                             </div>
                           </div>
-                          <hr className="mt-4 mb-3" />
-
-                          <Box className="contInputFileBoletin">
-                            <label className="fileNameDisplay flex-column">
-                              {selectedFileName}
-                              <Input
-                                className="inputFileAltaBoletin"
-                                type="file"
-                                id="fileBoletin"
-                                name="archivoBoletin"
-                                value={valuesCabecera.archivoBoletin}
-                                onChange={handleChangeFile}
-                                accept="application/pdf"
-                                required
-                              />
-                              {selectedFileName === "Seleccione un Archivo" ? (
-                                <FileUp />
-                              ) : (
-                                <File />
-                              )}
-                            </label>
-                          </Box>
                         </div>
-                      </div>
+                      </Box>
                     </div>
+                    <DialogActions>
+                      {editingBoletin.nro_boletin !== "" &&
+                      editingBoletin.fecha_publicacion !== "" &&
+                      editingBoletin.nro_boletin !== "undefined" &&
+                      editingBoletin.fecha_publicacion !== "undefined" &&
+                      numeroBoletinDisponible(
+                        editingBoletin.nro_boletin,
+                        editingBoletin.id_boletin
+                      ) === false ? (
+                        <>
+                          <Button
+                            onClick={handleGuardar}
+                            color="primary"
+                            variant="contained"
+                          >
+                            Guardar
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            onClick={handleMensajeEditar}
+                            color="primary"
+                            variant="contained"
+                          >
+                            Guardar
+                          </Button>
+                        </>
+                      )}
+                      <Button
+                        onClick={handleCancel}
+                        color="primary"
+                        variant="contained"
+                      >
+                        Cancelar
+                      </Button>
+                    </DialogActions>
+                    <Snackbar autoHideDuration={6000}>
+                      <Alert variant="filled" sx={{ width: "100%" }}></Alert>
+                    </Snackbar>
                   </Box>
-                </div>
-                <DialogActions>
-                  {editingBoletin.nro_boletin !== "" &&
-                  editingBoletin.fecha_publicacion !== "" &&
-                  editingBoletin.nro_boletin !== "undefined" &&
-                  editingBoletin.fecha_publicacion !== "undefined" &&
-                  numeroBoletinDisponible(
-                    editingBoletin.nro_boletin,
-                    editingBoletin.id_boletin
-                  ) === false ? (
-                    <>
-                      <Button
-                        onClick={handleGuardar}
-                        color="primary"
-                        variant="contained"
-                      >
-                        Guardar
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        onClick={handleMensajeEditar}
-                        color="primary"
-                        variant="contained"
-                      >
-                        Guardar
-                      </Button>
-                    </>
-                  )}
-                  <Button
-                    onClick={handleCancel}
-                    color="primary"
-                    variant="contained"
-                  >
-                    Cancelar
-                  </Button>
-                </DialogActions>
-                <Snackbar autoHideDuration={6000}>
-                  <Alert variant="filled" sx={{ width: "100%" }}></Alert>
-                </Snackbar>
-              </Box>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
+        </>
+      ) : (
+        <TableLoader filas={8} />
+      )}
+
       <Snackbar
         open={open}
         autoHideDuration={6000}
