@@ -57,6 +57,11 @@ const TableLoader = ({ filas }) => {
         count={rowCount}
         rowsPerPage={filas}
         page={0}
+        labelDisplayedRows={({ from, to, count }) => {
+          const currentPage = Math.ceil(from / filas);
+          const totalPages = Math.ceil(count / filas);
+          return `${currentPage} de ${totalPages}`;
+        }}
       />
     </div>
   );

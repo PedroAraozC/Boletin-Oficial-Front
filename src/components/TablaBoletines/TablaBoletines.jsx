@@ -42,7 +42,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 const TablaBoletines = () => {
-  const [boletines, getboletin, loading, setBoletines] = useGet(
+  const [boletines, loading, setBoletines] = useGet(
     "/boletin/listado",
     axios
   );
@@ -62,7 +62,6 @@ const TablaBoletines = () => {
   const [valuesContenido, setValuesContenido] = useState(
     ALTA_CONTENIDO_BOLETIN_VALUES
   );
-  const [loadingg, setLoading] = useState(true);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [editingBoletin, setEditingBoletin] = useState(null);
@@ -278,21 +277,17 @@ const TablaBoletines = () => {
       .get("/boletin/listado")
       .then((response) => {
         setBoletines(response.data);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Error al obtener boletines:", error);
-        setLoading(false);
       });
     axios
       .get("/boletin/listadoContenido")
       .then((response) => {
         setContenidoBoletines(response.data);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Error al obtener contenido de boletines:", error);
-        setLoading(false);
       });
   };
 
@@ -372,9 +367,7 @@ const TablaBoletines = () => {
 
   useEffect(() => {
     getTiposOrigen();
-    setLoading(false);
     cargarBoletines();
-    setLoading();
   }, []);
 
   useEffect(() => {
@@ -412,7 +405,7 @@ const TablaBoletines = () => {
           "0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
       }}
     >
-      {loading ? (
+      {!loading ? (
         <>
           <div className="pt-1">
             <TableContainer sx={{ maxHeight: 452 }}>

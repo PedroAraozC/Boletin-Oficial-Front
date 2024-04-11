@@ -21,13 +21,9 @@ import "../TablasEdicion/TablasEdicion.css";
 import TableLoader from "../TableLoader/TableLoader";
 
 const TablaOrigen = () => {
-  const [origen, getOrigen, loading, setOrigen] = useGet(
-    "/origen/listado",
-    axios
-  );
+  const [origen, loading, setOrigen] = useGet("/origen/listado", axios);
   const [editOrigen, setEditOrigen] = useState("");
 
-  const [loadingg, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openModal, setOpenModal] = useState(false);
@@ -116,10 +112,9 @@ const TablaOrigen = () => {
       .get("/origen/listado")
       .then((response) => {
         setOrigen(response.data);
-        setLoading(false);
       })
       .catch((error) => {
-        setLoading(false);
+        console.error("Error al obtener Origenes:", error);
       });
   };
 
@@ -174,7 +169,7 @@ const TablaOrigen = () => {
             "0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
         }}
       >
-        {loading ? (
+        {!loading ? (
           <>
             <div className="pt-1">
               <TableContainer sx={{ maxHeight: 300 }}>
@@ -202,7 +197,7 @@ const TablaOrigen = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {!getOrigen ? (
+                    {!loading ? (
                       origen
                         .slice(
                           page * rowsPerPage,
@@ -318,8 +313,7 @@ const TablaOrigen = () => {
           <TableLoader filas={4} />
         )}
       </Paper>
-      {loading ?
-      (
+      {!loading ? (
         <div className="btn">
           <AddCircleIcon
             className="btnAddNorma"
@@ -328,7 +322,9 @@ const TablaOrigen = () => {
             onClick={handleOpenModal}
           />
         </div>
-      ):(<></>)}
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

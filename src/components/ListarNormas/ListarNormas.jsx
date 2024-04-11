@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../ListarNormas/ListarNormas.css";
 import "../TablaBoletines/ListadoBoletines.css";
 import "../TablasEdicion/TablasEdicion.css";
@@ -22,11 +22,7 @@ import ModalGenerica from "../ModalGenerico/ModalGenerico";
 import TableLoader from "../TableLoader/TableLoader";
 
 const TablaNormas = () => {
-  const [normas, getNorma, loadingNorma, setNormas] = useGet(
-    "/norma/listado",
-    axios
-  );
-  const [loading, setLoading] = useState(true);
+  const [normas, loading, setNormas] = useGet("/norma/listado", axios);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editingNorma, setEditingNorma] = useState(null);
@@ -116,11 +112,12 @@ const TablaNormas = () => {
       .get("/norma/listado")
       .then((response) => {
         setNormas(response.data);
-        setLoading(false);
+
+        console.log(loading);
       })
       .catch((error) => {
+        console.log(loading);
         console.error("Error al obtener normas:", error);
-        setLoading(false);
       });
   };
 
@@ -169,6 +166,8 @@ const TablaNormas = () => {
     { id: "habilita", label: "Habilita", align: "center" },
   ];
 
+  useEffect(() => {}, [editingNorma]);
+
   return (
     <div className="tablaNormas">
       <Paper
@@ -181,7 +180,7 @@ const TablaNormas = () => {
             "0px 2px 4px -1px rgba(165, 53, 53, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
         }}
       >
-        {loadingNorma ? (
+        {!loading ? (
           <>
             <div className="pt-1">
               <TableContainer sx={{ maxHeight: 300 }}>
@@ -323,7 +322,7 @@ const TablaNormas = () => {
           <TableLoader filas={4} />
         )}
       </Paper>
-      {loadingNorma ? (
+      {!loading ? (
         <>
           <div className="btn">
             <AddCircleIcon
