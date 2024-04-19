@@ -5,7 +5,7 @@
     margin-top: 20px;
     align-items: center;
     flex-direction: column;
-    background-color: #0066ff;
+    /* background-color: #1F89F6; */
     box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5)
     
 }
@@ -35,14 +35,16 @@
 .nroBoletin {
     width: 100;
     display: flex;
-    color: #ffffff;
+    color: #333333 !important;
+
     flex:start
 }
 
 .contRango {
     width: 100%;
     margin-top: 10px;
-    color: #ffffff;
+    color: #333333 !important;
+
 }
 
 .contRango div {
@@ -99,7 +101,8 @@ label {
     text-align: center;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ccc;
+    border: 1px solid #333333 !important;
+    ;
     cursor: pointer !important;
     background-color: rgba(255, 255, 255, 0.288);
 }

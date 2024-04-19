@@ -282,9 +282,9 @@ const AltaBoletines = () => {
                         <Checkbox
                           defaultChecked
                           sx={{
-                            color: "white",
+                            color: "black",
                             "&.Mui-checked": {
-                              color: "white",
+                              color: "black",
                             },
                           }}
                           checked={valuesCabecera.habilita}
@@ -470,6 +470,7 @@ const AltaBoletines = () => {
           <>
             <Button
               type="button"
+              className="btn"
               variant="contained"
               onClick={handleGuardarBoletin}
             >
@@ -478,14 +479,14 @@ const AltaBoletines = () => {
           </>
         ) : (
           <>
-            <Button type="button" variant="contained" onClick={handleMensaje}>
+            <Button type="button" variant="contained"className="btn" onClick={handleMensaje}>
               Guardar Boletín
             </Button>
           </>
         )
       ) : (
         <>
-          <Button type="button" variant="contained" onClick={handleMensaje}>
+          <Button type="button" variant="contained" className="btn" onClick={handleMensaje}>
             Guardar Boletín
           </Button>
         </>

@@ -42,10 +42,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 const TablaBoletines = () => {
-  const [boletines, loading, setBoletines] = useGet(
-    "/boletin/listado",
-    axios
-  );
+  const [boletines, loading, setBoletines] = useGet("/boletin/listado", axios);
   const [contenidoBoletines, getContenidoBoletin, setContenidoBoletines] =
     useGet("/boletin/listadoContenido", axios);
   const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet(
@@ -538,9 +535,9 @@ const TablaBoletines = () => {
                                       <Checkbox
                                         defaultChecked
                                         sx={{
-                                          color: "white",
+                                          color: "BLACK",
                                           "&.Mui-checked": {
-                                            color: "white",
+                                            color: "BLACK",
                                           },
                                         }}
                                         checked={editingBoletin.habilita}
@@ -671,7 +668,7 @@ const TablaBoletines = () => {
                                     ) : (
                                       <Button
                                         type="button"
-                                        className="btnAgregar"
+                                        className="btnAgregar btnBoletin"
                                         variant="contained"
                                         onClick={handleMensajeContenidoEditar}
                                       >
@@ -753,6 +750,7 @@ const TablaBoletines = () => {
                           <Button
                             onClick={handleGuardar}
                             color="primary"
+                            className="btnBoletin"
                             variant="contained"
                           >
                             Guardar
@@ -762,6 +760,7 @@ const TablaBoletines = () => {
                         <>
                           <Button
                             onClick={handleMensajeEditar}
+                            className="btnBoletin"
                             color="primary"
                             variant="contained"
                           >
@@ -771,6 +770,7 @@ const TablaBoletines = () => {
                       )}
                       <Button
                         onClick={handleCancel}
+                        className="btnBoletin"
                         color="primary"
                         variant="contained"
                       >

@@ -5,16 +5,17 @@
     align-self: center;
     align-items: center;
     justify-content: center;
-    background-color: #1789f6;
+    /* background-color: #1F89F6; */
     padding-bottom: 20px !important;
 }
 
 .tituloBuscador {
-    color: #fff;
-    font-weight: 600;
+    /* color: #fff; */
+    color: #333333 !important;
+    font-weight: 400;
     font-size: 22px;
     margin-left: 138px;
-    padding-top: 0px;
+    padding-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -49,20 +50,24 @@
 }
 
 .MuiOutlinedInput-notchedOutline {
-    border-color: #ffffff !important;
+    /* border-color: #ffffff !important; */
+    color: #333333 !important;
 
 }
 
 .MuiInputLabel-root.Mui-focused {
-    color: #ffffff !important
+    color: #333333 !important;
+    /* color: #ffffff !important */
 }
 
 .MuiInputLabel-root {
-    color: #ffffff !important
+    color: #333333 !important;
+    /* color: #ffffff !important */
 }
 
 .MuiOutlinedInput-input {
-    color: #ffffff !important;
+    color: #333333 !important;
+    /* color: #ffffff !important; */
 }
 
 .btnBuscador,
@@ -81,12 +86,12 @@
 
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
     width: 20% !important;
-    color: #fff !important;
-    background-color: #0066ff !important;
+    /* color: #fff !important; */
+    /* background-color: #0066ff !important; */
 }
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root:hover {
-    background-color: rgb(43, 169, 241) !important;
+    /* background-color: rgb(43, 169, 241) !important; */
 }
 
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {

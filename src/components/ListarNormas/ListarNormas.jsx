@@ -324,7 +324,7 @@ const TablaNormas = () => {
       </Paper>
       {!loading ? (
         <>
-          <div className="btn">
+          <div className="btnTablas">
             <AddCircleIcon
               className="btnAddNorma"
               color="primary"

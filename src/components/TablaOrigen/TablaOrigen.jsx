@@ -19,7 +19,6 @@ import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import "../ListarNormas/ListarNormas.css";
 import "../TablasEdicion/TablasEdicion.css";
 import TableLoader from "../TableLoader/TableLoader";
-
 const TablaOrigen = () => {
   const [origen, loading, setOrigen] = useGet("/origen/listado", axios);
   const [editOrigen, setEditOrigen] = useState("");
@@ -314,7 +313,7 @@ const TablaOrigen = () => {
         )}
       </Paper>
       {!loading ? (
-        <div className="btn">
+        <div className="btnTablas">
           <AddCircleIcon
             className="btnAddNorma"
             color="primary"

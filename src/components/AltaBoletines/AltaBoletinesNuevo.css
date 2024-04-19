@@ -6,10 +6,13 @@
     /* width: 70% !important; */
     align-items: center;
     flex-direction: column;
-    background-color: #0066ff;
-    box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5)
+    /* background-color: #1F89F6; */
+    box-Shadow: 0 5px 8px rgba(0, 0, 0, 0.5);
+    color: #333333 !important;
 }
-
+.btn{
+    background-color: #2eb1ff !important;
+}
 .contAltaBoletines {
     width: 100%;
     display: flex;
@@ -17,10 +20,14 @@
     justify-content: space-around;
 
 }
+.MuiOutlinedInput-input{
+    color: #333333 !important;
+}
 
 /* INPUTFILE*/
 .css-1x51dt5-MuiInputBase-input-MuiInput-input {
     height: 60px !important;
+    
 }
 
 .formGroup {
@@ -48,6 +55,8 @@
 .btnAgregar {
     min-width: 64px;
     max-width: 230px;
+    background-color: #2eb1ff !important;
+
 }
 
 .cuerpoBoletinForm {
@@ -66,12 +75,13 @@
     margin-top: 10px !important;
     display: ruby-base-container;
     justify-self: left !important;
+    
 }
 
 .norma {
     border: solid 1px;
     border-radius: 5px;
-    border-color: rgb(255, 255, 255);
+    border-color: #333333;
     margin-left: 5px;
     width: max-content !important;
     padding: 5px;
@@ -127,13 +137,15 @@
 .nroBoletin {
     width: 100%;
     display: flex;
-    color: #ffffff;
+    /* color: #ffffff; */
+    color: #333333;
     flex: start
 }
 
 .contRango {
     margin-top: 10px;
-    color: #ffffff;
+    /* color: #ffffff; */
+    color: #333333;
 }
 
 
@@ -181,7 +193,8 @@ label {
     text-align: center;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
+    border: 1px solid #333333;
     cursor: pointer !important;
     background-color: rgba(255, 255, 255, 0.288);
 }

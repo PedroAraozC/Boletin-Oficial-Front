@@ -56,9 +56,9 @@ const EditarNormaDialog = ({
                     <Checkbox
                       defaultChecked
                       sx={{
-                        color: "white",
+                        color: "black",
                         "&.Mui-checked": {
-                          color: "white",
+                          color: "black",
                         },
                       }}
                       checked={editingNorma.habilita}

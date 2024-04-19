@@ -24,7 +24,9 @@
 .modalEditar {
   z-index: 9999;
 }
-
+.btnBoletin{
+  background-color: #2eb1ff !important;
+}
 .MuiDialog-paper {
   align-items: center;
   justify-content: center;
@@ -40,7 +42,7 @@
 
 .contRangoEditar {
   margin-top: 10px;
-  color: #ffffff;
+  /* color: #ffffff; */
 }
 
 .contRangoEditar div {
@@ -54,13 +56,14 @@
   border-radius: 15px;
   align-items: center;
   flex-direction: column;
-  background-color: #0066ff;
+  /* background-color: #0066ff; */
 }
 
 .MuiDialogContent-root {
   padding: 0 !important;
   border-radius: 15px !important;
-  background-color: #0066ff !important;
+  /* background-color: #0066ff !important; */
+  background-color: #ffffff !important;
 }
 
 

@@ -8,15 +8,16 @@
   padding-bottom: 10px !important;
   border-radius: 15px;
   border-top: solid 1px !important;
-  border-color: #0066ff !important;
-  background-color: #0066ff;
+  /* border-color: #0066ff !important; */
+  /* background-color: #0066ff; */
+  
 
 }
 
 
 /* Estilos para el DialogTitle */
 .titulo {
-  color: #fff;
+  /* color: #fff; */
   padding-bottom: 40px;
   font-weight: 600;
   text-align: center;
@@ -30,7 +31,7 @@
 
 .inputNorma {
   width: auto !important;
-  width: mi;
+  /* width: mi; */
 }
 
 .contModal {
@@ -87,7 +88,7 @@
   margin-bottom: 0;
 }
 .checkBoxNorma {
-  color: #fff;
+  /* color: #fff; */
   align-items: center !important;
 }
 

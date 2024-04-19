@@ -7,7 +7,7 @@
     padding-bottom: 20px !important;
     padding: 0;
     border-radius: 20px;
-    background-color: #0066ff;
+    background-color: #FFFFFF;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
@@ -20,14 +20,14 @@
 }
 
 .tituloBusquedaAvanzada {
-    color: #fff;
+    /* color: #fff; */
     padding-top: 40px;
     margin-bottom: 30px;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .modal-busqueda-avanzada {
-    background-color: #0066ff !important;
+    background-color: #FFFFFF !important;
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -54,13 +54,13 @@
     padding: 0;
     border-radius: 20px;
     border-top: solid 1px !important;
-    border-color: #0066ff !important;
-    background-color: #0066ff;
+    border-color: #FFFFFF !important;
+    /* background-color: #0066ff; */
 
 }
 
 .btnAvanzada {
-    background-color: #2197db !important;
+    /* background-color: #2197db !important; */
     width: fit-content !important;
     margin-bottom: 10px;
     flex-direction: column;

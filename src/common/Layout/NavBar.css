@@ -8,7 +8,7 @@
     padding-bottom: 25px;
     flex-direction: column;
     border-bottom: solid 1px;
-    background-color: #1789f6;
+    background-color: #1F89F6;
     /* background-color: #0066ff; */
     max-width: 100% !important;
     border-color: transparent !important;
@@ -17,7 +17,7 @@
 
 .fondo {
 
-    background-color: #1789f6;
+    background-color: #1F89F6;
     /* background-color: #0066ff; */
 }
 
@@ -70,9 +70,9 @@
 @media (max-width: 430px) {
 
     .logoNav {
-
+        /* 
         width: 200px;
-        height: 30px !important;
+        height: 30px !important; */
 
     }
 }
