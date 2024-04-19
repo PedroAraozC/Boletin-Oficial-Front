@@ -307,8 +307,8 @@ const TablaBoletines = () => {
         formData.append("requestData", JSON.stringify(requestData));
         formData.append("archivoBoletin", archivoSeleccionado);
         setFormData(formData);
-        // console.log([...formData], "fomrData");
-        const respuesta = await axios.put(`/boletin/editar`, ...formData, {
+        // console.log([formData], "fomrData");
+        const respuesta = await axios.put(`/boletin/editar`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
