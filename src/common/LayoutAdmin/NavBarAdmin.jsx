@@ -1,17 +1,17 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import SideBar from "./SideBar2";
+import SideBar from "./SideBarAdmin";
 import { useEffect, useState } from "react";
 // import useStore from "../Zustand/Zustand";
 // import NavBarEsqueleto from "../components/Esqueletos/NavBarEsqueleto";
-import "./Navbar2.css";
+import "./NavbarAdmin.css";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import logoMuni from "../../assets/Logo-completo-muni.png";
 
-export default function NavBar2() {
+export default function NavBarAdmin() {
   // const { getAuth, authenticated, logout, user } =
   //   useStore();
   const [anchorEl, setAnchorEl] = useState(null);

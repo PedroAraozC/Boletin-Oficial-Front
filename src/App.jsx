@@ -7,62 +7,90 @@ import Buscador from "./components/Buscador/Buscador";
 import TablaBoletines from "./components/TablaBoletines/TablaBoletines";
 import TablasEdicion from "./components/TablasEdicion/TablasEdicion";
 import AdministracionBoletin from "./components/AdministracionBoletin/AdministracionBoletin";
-import Layout2 from "./common/Layout2/Layout2";
+import LayoutAdmin from "./common/LayoutAdmin/LayoutAdmin";
+import ProviderBol from "./context/BolContext";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
+  const url = new URL(window.location.href);
+  const token = url.searchParams.get("boletin");
+
+  url.searchParams.delete("boletin");
+  history.replaceState(null, "", url.toString());
+  // Verificar si el token está presente en la URL y si aún no se ha guardado en el localStorage
+  if (token && !localStorage.getItem("tokenSet")) {
+    localStorage.setItem("token", token);
+    localStorage.setItem("tokenSet", "true"); // Establecer la bandera
+  }
+  if (localStorage.getItem("token") == null) {
+    localStorage.removeItem("tokenSet");
+    const url = new URL(`http://localhost:5174/`);
+    window.location.href = url.toString();
+  }
+
   return (
     <>
       <HashRouter>
         {/* <Router> */}
-        <Routes>
-          <Route
-            exact
-            path="/*"
-            element={
-              <Layout>
-                {" "}
-                <Buscador />
-              </Layout>
-            }
-          />
-          <Route
-            exact
-            path="/altaBoletines"
-            element={
-              <Layout2>
-                <AltaBoletines />
-              </Layout2>
-            }
-          />
-          <Route
-            exact
-            path="/tablaBoletines"
-            element={
-              <Layout2>
-                <TablaBoletines />
-              </Layout2>
-            }
-          />
-          <Route
-            exact
-            path="/tablas"
-            element={
-              <Layout2>
-                <TablasEdicion />
-              </Layout2>
-            }
-          />
-          <Route
-            exact
-            path="/adminBoletin"
-            element={
-              <Layout2>
-                <AdministracionBoletin />
-              </Layout2>
-            }
-          />
-        </Routes>
-        {/* </Layout> */}
+        <ProviderBol>
+          <Routes>
+            <Route
+              exact
+              path="/*"
+              element={
+                <Layout>
+                  <Buscador />
+                </Layout>
+              }
+            />
+            <Route
+              exact
+              path="/altaBoletines"
+              element={
+                <PrivateRoute>
+                  <LayoutAdmin>
+                    <AltaBoletines />
+                  </LayoutAdmin>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              exact
+              path="/tablaBoletines"
+              element={
+                <PrivateRoute>
+                  <LayoutAdmin>
+                    <TablaBoletines />
+                  </LayoutAdmin>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              exact
+              path="/tablas"
+              element={
+                <PrivateRoute>
+                  <LayoutAdmin>
+                    <TablasEdicion />
+                  </LayoutAdmin>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              exact
+              path="/adminBoletin"
+              element={
+                <PrivateRoute>
+                  <LayoutAdmin>
+                    <AdministracionBoletin />
+                  </LayoutAdmin>
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+          {/* </Layout> */}
+        </ProviderBol>
+
         {/* </Router> */}
       </HashRouter>
     </>

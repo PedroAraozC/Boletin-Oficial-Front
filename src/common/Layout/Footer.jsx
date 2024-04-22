@@ -55,7 +55,7 @@ export const Footer = () => {
                 Tel: (0381)- 4516500
               </p>
               <p className="text-center text-md-end my-2 me-0 me-md-5">
-                Desarrollado por DITec
+                Desarrollado por DITEC© 2024
               </p>
             </div>
           </div>
