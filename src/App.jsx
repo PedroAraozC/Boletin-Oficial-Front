@@ -14,7 +14,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 const App = () => {
   const url = new URL(window.location.href);
   const token = url.searchParams.get("boletin");
-
+  
   url.searchParams.delete("boletin");
   history.replaceState(null, "", url.toString());
   // Verificar si el token está presente en la URL y si aún no se ha guardado en el localStorage
@@ -24,6 +24,7 @@ const App = () => {
   }
   if (localStorage.getItem("token") == null) {
     localStorage.removeItem("tokenSet");
+    console.log(token)
     const url = new URL(`http://localhost:5174/`);
     window.location.href = url.toString();
   }

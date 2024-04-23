@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { BolContext } from "../context/BolContext";
 
 const PrivateRoute = ({ children }) => {
-  const { getAuth, authenticated, loading } = useContext(BolContext);
+  const { getAuth, authenticated, loading, logout} = useContext(BolContext);
 
   useEffect(() => {
     getAuth();
@@ -17,7 +17,8 @@ const PrivateRoute = ({ children }) => {
   ) : authenticated ? (
     children
   ) : (
-    <Navigate to="/" />
+    // <Navigate to="/" />
+    logout()
   );
 };
 
