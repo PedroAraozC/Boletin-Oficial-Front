@@ -42,7 +42,7 @@ export default function SideBarAdmin() {
   const permisosHabilitados = user.id_tusuario;
   // const permisosHabilitados = 1;
 
-  console.log(permisosHabilitados);
+  // console.log(permisosHabilitados);
 
   const list = () => (
     <Box

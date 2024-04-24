@@ -45,6 +45,7 @@ const TablaBoletines = () => {
   const [boletines, loading, setBoletines] = useGet("/boletin/listado", axios);
   const [contenidoBoletines, getContenidoBoletin, setContenidoBoletines] =
     useGet("/boletin/listadoContenido", axios);
+  const boletinesInvertidos = boletines.slice().reverse().slice();
   const [tiposOrigen, loadingOrigen, getTiposOrigen] = useGet(
     "/origen/listar",
     axios
@@ -430,7 +431,7 @@ const TablaBoletines = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {boletines
+                    {boletinesInvertidos
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
