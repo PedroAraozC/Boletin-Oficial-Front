@@ -45,7 +45,7 @@ const EditarNormaDialog = ({
 
   return nombreCampo !== "" ? (
     <>
-      <Dialog open={open} onClose={onClose} disableBackdropClick={true}>
+      <Dialog open={open} disableBackdropClick={true}>
         <DialogContent className="modal_content">
           <DialogTitle className="titulo">Editar Norma</DialogTitle>
           {editingNorma && (
