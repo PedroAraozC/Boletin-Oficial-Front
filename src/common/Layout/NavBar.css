@@ -59,8 +59,40 @@
 
 }
 
+@media (max-width: 1230px) {
+    .boletinNavCont {
+        padding-right: 0;
+    }
+
+    .boletinNavCont h1 {
+        margin-bottom: 0;
+    }
+
+    .navCont {
+        height: 80px;
+
+    }
+}
+
+@media (max-width: 650px) {
+    .contLogo {
+
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .navCont {
+        height: 150px !important;
+
+    }
+}
 
 @media (max-width: 500px) {
+
+    .boletinNavCont {
+        padding-right: 0;
+
+    }
 
     .textMuni {
         margin-left: -10px;

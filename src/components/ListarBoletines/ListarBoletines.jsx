@@ -1,5 +1,3 @@
-// import { Calendario } from "../Calendario/Calendario";
-// import Buscador from "../Buscador/Buscador";
 import React, { useState } from "react";
 import "./ListarBoletines.css";
 import axios from "../../config/axios";
