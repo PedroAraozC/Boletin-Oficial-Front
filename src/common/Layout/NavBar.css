@@ -72,6 +72,9 @@
         height: 80px;
 
     }
+    .logoNav{
+     margin-left: 0 !important;
+    }
 }
 
 @media (max-width: 650px) {

@@ -48,7 +48,7 @@ const ProviderBol = ({ children }) => {
     setAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("tokenSet");
-    const url = new URL(`http://localhost:5174/`);
+    const url = new URL(`http://localhost:5174/`); // IP DERIVADOR
     url.searchParams.append("logout", true);
     window.open(url.toString(), "_self");
   };

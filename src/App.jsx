@@ -25,7 +25,7 @@ const App = () => {
   if (localStorage.getItem("token") == null) {
     localStorage.removeItem("tokenSet");
     console.log(token)
-    const url = new URL(`http://localhost:5174/`);
+    const url = new URL(`http://localhost:5174/`);   // IP DERIVADOR
     window.location.href = url.toString();
   }
 
