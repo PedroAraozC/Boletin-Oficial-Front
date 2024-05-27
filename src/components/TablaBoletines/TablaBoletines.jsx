@@ -395,6 +395,8 @@ const TablaBoletines = () => {
 
   return (
     <div className="pt-5">
+            <h3 className="text-center">LISTADO BOLETINES</h3>
+
       <Paper
         className="container mt-4 mb-4"
         sx={{

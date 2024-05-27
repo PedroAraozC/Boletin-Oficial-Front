@@ -171,7 +171,7 @@ const TablaNormas = () => {
   return (
     <div className="tablaNormas">
       <Paper
-        className="container mt-5 mb-4"
+        className="container mt-2 mb-4"
         sx={{
           padding: 0,
           margin: 0,

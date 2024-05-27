@@ -33,7 +33,7 @@ const App = () => {
     <>
       <HashRouter>
         {/* <Router> */}
-        <ProviderBol>
+        {/* <ProviderBol> */}
           <Routes>
             <Route
               exact
@@ -48,49 +48,49 @@ const App = () => {
               exact
               path="/altaBoletines"
               element={
-                <PrivateRoute>
+                // <PrivateRoute>
                   <LayoutAdmin>
                     <AltaBoletines />
                   </LayoutAdmin>
-                </PrivateRoute>
+                // </PrivateRoute>
               }
             />
             <Route
               exact
               path="/tablaBoletines"
               element={
-                <PrivateRoute>
+                // <PrivateRoute>
                   <LayoutAdmin>
                     <TablaBoletines />
                   </LayoutAdmin>
-                </PrivateRoute>
+                // </PrivateRoute>
               }
             />
             <Route
               exact
               path="/tablas"
               element={
-                <PrivateRoute>
+                // <PrivateRoute>
                   <LayoutAdmin>
                     <TablasEdicion />
                   </LayoutAdmin>
-                </PrivateRoute>
+                // </PrivateRoute>
               }
             />
             <Route
               exact
               path="/adminBoletin"
               element={
-                <PrivateRoute>
+                // <PrivateRoute>
                   <LayoutAdmin>
                     <AdministracionBoletin />
                   </LayoutAdmin>
-                </PrivateRoute>
+                // </PrivateRoute>
               }
             />
           </Routes>
           {/* </Layout> */}
-        </ProviderBol>
+        {/* </ProviderBol> */}
 
         {/* </Router> */}
       </HashRouter>

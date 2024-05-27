@@ -159,7 +159,7 @@ const TablaOrigen = () => {
   return (
     <div className="tablaNormas">
       <Paper
-        className="container mt-4 mb-4"
+        className="container mt-2 mb-4"
         sx={{
           padding: 0,
           margin: 0,
