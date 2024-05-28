@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import axios from "../config/axios";
+import axiosCiudadDigital from "../config/axios";
 
 export const BolContext = createContext();
 
@@ -29,7 +29,7 @@ const ProviderBol = ({ children }) => {
         return setAuthenticated(false);
       }
       axios.defaults.headers.common["Authorization"] = token;
-      const { data } = await axios.get("/usuarios/authStatus");
+      const { data } = await axiosCiudadDigital.get("/usuarios/authStatus");
       setUser(data.usuarioSinContraseña);
     //   console.log(data.usuarioSinContraseña);
       setAuthenticated(true);
@@ -48,7 +48,7 @@ const ProviderBol = ({ children }) => {
     setAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("tokenSet");
-    const url = new URL(`http://localhost:5174/`); // IP DERIVADOR
+    const url = new URL(`https://ciudaddigital.smt.gob.ar`); // IP DERIVADOR
     url.searchParams.append("logout", true);
     window.open(url.toString(), "_self");
   };

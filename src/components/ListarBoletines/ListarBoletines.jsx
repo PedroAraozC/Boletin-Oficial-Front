@@ -20,12 +20,13 @@ const ListarBoletines = () => {
     }
     setOpen(false);
   };
+  // console.log(boletines);
 
   const funcionDescarga = async (boletin) => {
     try {
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
-        `http://181.105.6.205:89/boletin/listarDescarga/${boletin.id_boletin}`,
+        `https://boletinoficial.smt.gob.ar:3500/boletin/listarDescarga/${boletin.id_boletin}`,
         // `http://localhost:3001/boletin/listarDescarga/${boletin.id_boletin}`,
         {
           responseType: "blob",

@@ -290,6 +290,7 @@ const TablaBoletines = () => {
   };
 
   const handleSave = async (updatedBoletin) => {
+    console.log(updatedBoletin)
     if (editingBoletin) {
       try {
         console.log(archivoSeleccionado, "archivo seleccionado");

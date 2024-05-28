@@ -24,7 +24,7 @@ export default function SideBarAdmin() {
     setState(false);
   };
 
-  // // const { user } = React.useContext(BolContext);
+  const { user } = React.useContext(BolContext);
 
   const [state, setState] = React.useState({
     left: false,
@@ -34,15 +34,15 @@ export default function SideBarAdmin() {
     setState({ left: open });
   };
 
-  // React.useEffect(() => {
-  //   user;
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  React.useEffect(() => {
+    user;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // const permisosHabilitados = user.id_tusuario;
-  // // const permisosHabilitados = 1;
+  const permisosHabilitados = user.id_tusuario;
+  // const permisosHabilitados = 1;
 
-  // console.log(permisosHabilitados);
+  console.log(permisosHabilitados);
 
   const list = () => (
     <Box
@@ -50,7 +50,7 @@ export default function SideBarAdmin() {
       role="presentation"
       className="d-flex justify-content-between flex-column h-100"
     >
-      {/* {permisosHabilitados === 1 ? (  // PERMISOS DE USUARIO */}
+      {permisosHabilitados === 1 ? ( // PERMISOS DE USUARIO
         <>
           <div className="d-flex flex-column justify-content-center align-items-start mt-5">
             <ListItemButton
@@ -114,9 +114,9 @@ export default function SideBarAdmin() {
             </p>
           </div>
         </>
-      {/* ) : ( */}
-        {/* <div>{navigate("/")}</div> */}
-      {/* )} */}
+      ) : (
+        <div>{navigate("/")}</div>
+      )}
     </Box>
   );
 
