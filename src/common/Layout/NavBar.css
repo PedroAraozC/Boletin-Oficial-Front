@@ -47,7 +47,7 @@
     width: fit-content;
     text-align: center;
     color: #fff;
-
+    margin-bottom: 0 !important;
 }
 
 
@@ -72,8 +72,9 @@
         height: 80px;
 
     }
-    .logoNav{
-     margin-left: 0 !important;
+
+    .logoNav {
+        margin-left: 0 !important;
     }
 }
 

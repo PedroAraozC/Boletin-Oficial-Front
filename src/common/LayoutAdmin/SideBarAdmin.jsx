@@ -39,10 +39,10 @@ export default function SideBarAdmin() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const permisosHabilitados = user.id_tusuario;
+  const personaHabilitada = user?.id_persona;
   // const permisosHabilitados = 1;
 
-  console.log(permisosHabilitados);
+  console.log(personaHabilitada);
 
   const list = () => (
     <Box
@@ -50,7 +50,7 @@ export default function SideBarAdmin() {
       role="presentation"
       className="d-flex justify-content-between flex-column h-100"
     >
-      {permisosHabilitados === 1 ? ( // PERMISOS DE USUARIO
+      {personaHabilitada === 148 || user?.id_tusuario === 1 ? ( // PERMISOS DE USUARIO
         <>
           <div className="d-flex flex-column justify-content-center align-items-start mt-5">
             <ListItemButton
@@ -122,24 +122,30 @@ export default function SideBarAdmin() {
 
   return (
     <div>
-      <IconButton
-        size="large"
-        edge="start"
-        color="inherit"
-        aria-label="open drawer"
-        sx={{ mr: 2 }}
-        onClick={() => toggleDrawer(true)}
-      >
-        <MenuIcon />
-      </IconButton>
-      <SwipeableDrawer
-        anchor="left"
-        open={state.left}
-        onClose={() => toggleDrawer(false)}
-        onOpen={() => toggleDrawer(true)}
-      >
-        {list()}
-      </SwipeableDrawer>
+      {personaHabilitada === 148 ? (
+        <div>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ m: 1 }}
+            onClick={() => toggleDrawer(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <SwipeableDrawer
+            anchor="left"
+            open={state.left}
+            onClose={() => toggleDrawer(false)}
+            onOpen={() => toggleDrawer(true)}
+          >
+            {list()}
+          </SwipeableDrawer>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

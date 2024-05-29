@@ -28,13 +28,14 @@ const ProviderBol = ({ children }) => {
         setLoading(false);
         return setAuthenticated(false);
       }
-      axios.defaults.headers.common["Authorization"] = token;
+      axiosCiudadDigital.defaults.headers.common["Authorization"] = token;
       const { data } = await axiosCiudadDigital.get("/usuarios/authStatus");
       setUser(data.usuarioSinContraseña);
     //   console.log(data.usuarioSinContraseña);
       setAuthenticated(true);
     } catch (error) {
       setAuthenticated(false);
+      logout()
       console.error("Error de autenticación. Ingrese nuevamente");
     }
     setLoading(false);
@@ -48,7 +49,8 @@ const ProviderBol = ({ children }) => {
     setAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("tokenSet");
-    const url = new URL(`https://ciudaddigital.smt.gob.ar`); // IP DERIVADOR
+    // const url = new URL(`https://ciudaddigital.smt.gob.ar?destino=boletin`); // IP BACK-DERIVADOR
+    const url = new URL(`localhost:5173`);
     url.searchParams.append("logout", true);
     window.open(url.toString(), "_self");
   };

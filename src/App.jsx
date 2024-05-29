@@ -10,12 +10,15 @@ import AdministracionBoletin from "./components/AdministracionBoletin/Administra
 import LayoutAdmin from "./common/LayoutAdmin/LayoutAdmin";
 import ProviderBol from "./context/BolContext";
 import PrivateRoute from "./routes/PrivateRoute";
+import AdminBoletinRoute from "./routes/AdminBoletinRoute";
+import { NavBar } from "./common/Layout/NavBar";
+import Footer from "./common/Layout/Footer";
 
 const App = () => {
   const url = new URL(window.location.href);
-  const token = url.searchParams.get("boletin");
-  
-  url.searchParams.delete("boletin");
+  const token = url.searchParams.get("auth");
+
+  url.searchParams.delete("auth");
   history.replaceState(null, "", url.toString());
   // Verificar si el token está presente en la URL y si aún no se ha guardado en el localStorage
   if (token && !localStorage.getItem("tokenSet")) {
@@ -24,8 +27,8 @@ const App = () => {
   }
   if (localStorage.getItem("token") == null) {
     localStorage.removeItem("tokenSet");
-    console.log(token)
-    const url = new URL(`https://ciudaddigital.smt.gob.ar`);   // IP DERIVADOR
+    console.log(token);
+    const url = new URL(`https://ciudaddigital.smt.gob.ar?destino=boletin`); // IP BACK-DERIVADOR
     window.location.href = url.toString();
   }
 
@@ -34,62 +37,56 @@ const App = () => {
       <HashRouter>
         {/* <Router> */}
         <ProviderBol>
-          <Routes>
-            <Route
-              exact
-              path="/*"
-              element={
-                <Layout>
-                  <Buscador />
-                </Layout>
-              }
-            />
-            <Route
-              exact
-              path="/altaBoletines"
-              element={
-                <PrivateRoute>
-                  <LayoutAdmin>
+          <LayoutAdmin>
+            <Routes>
+              <Route
+                exact
+                path="/*"
+                element={
+                  <PrivateRoute>
+                      <Buscador />
+                      <Footer />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                exact
+                path="/altaBoletines"
+                element={
+                  <AdminBoletinRoute>
                     <AltaBoletines />
-                  </LayoutAdmin>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              exact
-              path="/tablaBoletines"
-              element={
-                <PrivateRoute>
-                  <LayoutAdmin>
+                  </AdminBoletinRoute>
+                }
+              />
+              <Route
+                exact
+                path="/tablaBoletines"
+                element={
+                  <AdminBoletinRoute>
                     <TablaBoletines />
-                  </LayoutAdmin>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              exact
-              path="/tablas"
-              element={
-                <PrivateRoute>
-                  <LayoutAdmin>
+                  </AdminBoletinRoute>
+                }
+              />
+              <Route
+                exact
+                path="/tablas"
+                element={
+                  <AdminBoletinRoute>
                     <TablasEdicion />
-                  </LayoutAdmin>
-                </PrivateRoute>
-              }
-            />
-            <Route
-              exact
-              path="/adminBoletin"
-              element={
-                <PrivateRoute>
-                  <LayoutAdmin>
-                    <AdministracionBoletin />
-                  </LayoutAdmin>
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-          {/* </Layout> */}
+                  </AdminBoletinRoute>
+                }
+              />
+              <Route
+                exact
+                path="/adminBoletin"
+                element={
+                  <AdminBoletinRoute>
+                  <AdministracionBoletin />
+                  </AdminBoletinRoute>
+                }
+              />
+            </Routes>
+          </LayoutAdmin>
         </ProviderBol>
 
         {/* </Router> */}

@@ -1,26 +1,134 @@
-.logoMuni2 {
+.navContAdmin {
+  /* background-color: red; */
+  /* background-color: #0066ff; */
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: left;
+  padding-bottom: 25px;
+  flex-direction: column;
+  border-bottom: solid 1px;
+  background-color: #1F89F6;
+  /* background-color: #0066ff; */
+  max-width: 100% !important;
+  border-color: transparent !important;
+  justify-content: center !important;
+}
+
+.logoNav2Admin {
   height: 80px !important;
   padding: 10px;
+  width: auto;
+  margin-left: 6px;
 }
-.linksSidebar {
+
+.linksSidebarAdmin {
   text-decoration: none;
   color: #000;
   margin-top: 10px;
 }
-.linksSidebar:hover {
+
+.linksSidebarAdmin:hover {
   color: #1f89f6;
   text-decoration: underline;
 }
+
 .css-ciy9n4-MuiPaper-root-MuiAppBar-root {
   background-color: #1f89f6 !important;
 }
+
 .css-hip9hq-MuiPaper-root-MuiAppBar-root {
   background-color: #1f89f6 !important;
 }
-.logOut {
+
+.logOutAdmin {
   margin-top: 35px;
   margin-left: -25px;
 }
-.footer{
+
+.footerAdmin {
   font-size: small;
+}
+
+.contLogoAdmin {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.boletinNavContAdmin {
+  width: 100%;
+  height: 70px;
+  font-size: 40px;
+  margin-bottom: 0;
+  padding-top: 10px;
+  padding-right: 156px;
+  align-items: center;
+  justify-content: center;
+  display: flex !important;
+  /* font-weight: 300 !important; */
+}
+
+
+.fondoAdmin {
+  background-color: #1F89F6;
+  /* background-color: #0066ff; */
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.boletinNavAdmin {
+  width: fit-content;
+  text-align: center;
+  color: #fff;
+
+}
+
+@media (max-width: 1230px) {
+  .boletinNavContAdmin {
+    padding-right: 0;
+  }
+
+  .boletinNavContAdmin h1 {
+    margin-bottom: 0;
+  }
+
+  .logoNav2Admin {
+    margin-left: 0 !important;
+  }
+
+  .navContAdmin {
+    height: 80px;
+
+  }
+}
+
+@media (max-width: 750px) {
+
+  .navContAdmin {
+    height: 150px !important;
+
+  }
+
+  .contLogoAdmin h4 {
+    margin-left: -10px;
+  }
+.contLogoAdmin{
+  flex-direction: column !important;
+
+}
+}
+
+@media (max-width: 500px) {
+
+  .boletinNavContAdmin {
+    padding-right: 0;
+
+  }
+
+  .contLogoAdmin h4 {
+    margin-left: -10px;
+  }
+
 }
