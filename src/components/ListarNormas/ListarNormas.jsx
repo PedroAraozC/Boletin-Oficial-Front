@@ -3,7 +3,7 @@ import "../ListarNormas/ListarNormas.css";
 import "../TablaBoletines/ListadoBoletines.css";
 import "../TablasEdicion/TablasEdicion.css";
 import useGet from "../../hook/useGet";
-import axios from "../../config/axios";
+import { axios } from "../../config/axios";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
@@ -31,6 +31,7 @@ const TablaNormas = () => {
   const [normaInput, setNormaInput] = useState("");
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [nombreCampoEditado, setNombreCampoEditado] = useState("");
+  const [botonState, setBotonState] = useState(false);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -42,6 +43,8 @@ const TablaNormas = () => {
 
   const handleAcceptModal = (norma, habilita) => {
     try {
+      setBotonState(true);
+
       axios.post(`/norma/alta`, { norma, habilita }).then((response) => {
         cargarNormas();
         setNormaInput("");
@@ -51,6 +54,8 @@ const TablaNormas = () => {
     } catch (error) {
       console.error("Error al guardar Norma:", error);
     }
+    setBotonState(false);
+
     handleCloseModal();
   };
 
@@ -71,17 +76,29 @@ const TablaNormas = () => {
     }
   }
   const handleEdit = (norma) => {
+    setBotonState(true);
     setEditingNorma({ ...norma });
     setOpenDialog(true);
     const nombreCampo = obtenerNombreCampoPorPosicion(norma, 1);
     setNombreCampoEditado(nombreCampo);
+    setBotonState(false);
   };
   const handleDelete = (normaId) => {
-    const updatedNormas = normas.map((item) =>
-      item.id_norma === normaId ? { ...item, habilita: 0 } : item
-    );
-    setNormas(updatedNormas);
-    handleSave(updatedNormas);
+    const habilita = 0;
+    try {
+      setBotonState(true);
+      const response = axios
+        .patch(`/norma/deshabilitar`, { normaId, habilita })
+        .then((response) => {
+          cargarNormas();
+        });
+    } catch (error) {
+      console.error("Error al guardar cambios:", error);
+    }
+    // const updatedNormas = normas.map((item) =>
+    //   item.id_norma === normaId ? { ...item, habilita: 0 } : item
+    // );
+    setBotonState(false);
   };
 
   const handleCancel = (event, reason) => {
@@ -108,22 +125,25 @@ const TablaNormas = () => {
     }));
   };
   const cargarNormas = () => {
+    setBotonState(true);
     axios
       .get("/norma/listado")
       .then((response) => {
         setNormas(response.data);
 
-        console.log(loading);
+        // console.log(loading);
       })
       .catch((error) => {
-        console.log(loading);
+        // console.log(loading);
         console.error("Error al obtener normas:", error);
       });
+    setBotonState(false);
   };
 
   const handleSave = (updatedNormas) => {
     if (editingNorma) {
       try {
+        setBotonState(true);
         const { id_norma, tipo_norma, habilita } = editingNorma;
         axios
           .put(`/norma/editar`, { id_norma, tipo_norma, habilita })
@@ -136,20 +156,8 @@ const TablaNormas = () => {
       } catch (error) {
         console.error("Error al guardar cambios:", error);
       }
-    } else {
-      try {
-        updatedNormas.forEach((norma) => {
-          const { id_norma, tipo_norma, habilita } = norma;
-          axios
-            .put(`/norma/editar`, { id_norma, tipo_norma, habilita })
-            .then((response) => {
-              cargarNormas();
-            });
-        });
-      } catch (error) {
-        console.error("Error al guardar cambios:", error);
-      }
     }
+    setBotonState(false);
   };
 
   const columns = [
@@ -246,11 +254,13 @@ const TablaNormas = () => {
                               onClick={() => handleEdit(norma)}
                               className="iconEdit"
                               color="primary"
+                              disabled={botonState}
                             />
                             {norma.habilita === 1 ? (
                               <DeleteIcon
                                 className="iconDelete"
                                 onClick={() => handleDelete(norma.id_norma)}
+                                disabled={botonState}
                               />
                             ) : (
                               <DeleteIcon className="iconDelete" />

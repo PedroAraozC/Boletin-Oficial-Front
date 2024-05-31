@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import axiosCiudadDigital from "../config/axios";
+import {axiosDigital} from "../config/axios";
 
 export const BolContext = createContext();
 
@@ -28,13 +28,21 @@ const ProviderBol = ({ children }) => {
         setLoading(false);
         return setAuthenticated(false);
       }
-      axiosCiudadDigital.defaults.headers.common["Authorization"] = token;
-      const { data } = await axiosCiudadDigital.get("/usuarios/authStatus");
+      // Verifica que axiosDigital.defaults.headers y axiosDigital.defaults.headers.common existen
+      // console.log(axiosDigital.defaults.headers);
+      // Establece el encabezado Authorization
+      axiosDigital.defaults.headers.common.Authorization = `${token}`;
+      const { data } = await axiosDigital.get(
+        "/usuarios/authStatus"
+      );
+      // console.log(data.usuarioSinContraseña.id_persona)
       setUser(data.usuarioSinContraseña);
-    //   console.log(data.usuarioSinContraseña);
       setAuthenticated(true);
+      // console.log(user);
+      // console.log(authenticated);
     } catch (error) {
       setAuthenticated(false);
+      console.log(error);
       logout()
       console.error("Error de autenticación. Ingrese nuevamente");
     }
@@ -42,15 +50,16 @@ const ProviderBol = ({ children }) => {
   };
 
   useEffect(() => {
-    setUser();
+    getAuth();
   }, []);
+  
 
   const logout = () => {
     setAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("tokenSet");
-    // const url = new URL(`https://ciudaddigital.smt.gob.ar?destino=boletin`); // IP BACK-DERIVADOR
-    const url = new URL(`localhost:5173`);
+    const url = new URL(`https://ciudaddigital.smt.gob.ar?destino=boletin`); // IP BACK-DERIVADOR
+    // const url = new URL(`http://localhost:5174`);
     url.searchParams.append("logout", true);
     window.open(url.toString(), "_self");
   };

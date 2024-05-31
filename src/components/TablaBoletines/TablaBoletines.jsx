@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./ListadoBoletines.css";
 import useGet from "../../hook/useGet";
-import axios from "../../config/axios";
+import { axios } from "../../config/axios";
 import File from "@mui/icons-material/UploadFileRounded";
 import FileUp from "@mui/icons-material/FileUpload";
 import {
@@ -74,6 +74,7 @@ const TablaBoletines = () => {
   );
   const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [formData, setFormData] = useState(new FormData());
+  const [botonState, setBotonState] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -107,6 +108,8 @@ const TablaBoletines = () => {
 
   const handleEdit = (boletin) => {
     const editedBoletin = { ...boletin };
+    setBotonState(true);
+
     if (editedBoletin.fecha_publicacion) {
       editedBoletin.fecha_publicacion = editedBoletin.fecha_publicacion.slice(
         0,
@@ -145,10 +148,10 @@ const TablaBoletines = () => {
     } else {
       console.error("No se encontró el contenido del boletin editado.");
     }
+    setBotonState(false);
     setContenidoEditado(contenidoEditado);
     setOpenDialog(true);
   };
-  useEffect(() => {}, [normasAgregadasEditar]);
 
   const validarNormasAgregadas = () => {
     const normasRepetidas = normasAgregadasEditar.filter((norma, index) => {
@@ -267,10 +270,12 @@ const TablaBoletines = () => {
 
   const handleGuardar = () => {
     handleSave();
-    cargarBoletines();
+    // cargarBoletines();
   };
 
   const cargarBoletines = () => {
+    setBotonState(true);
+
     axios
       .get("/boletin/listado")
       .then((response) => {
@@ -287,13 +292,15 @@ const TablaBoletines = () => {
       .catch((error) => {
         console.error("Error al obtener contenido de boletines:", error);
       });
+    setBotonState(false);
   };
 
-  const handleSave = async (updatedBoletin) => {
-    console.log(updatedBoletin)
+  const handleSave = async () => {
+    // console.log(updatedBoletin)
     if (editingBoletin) {
       try {
-        console.log(archivoSeleccionado, "archivo seleccionado");
+        setBotonState(true);
+        // console.log(archivoSeleccionado, "archivo seleccionado");
         const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
           editingBoletin;
         const requestData = {
@@ -313,8 +320,8 @@ const TablaBoletines = () => {
           },
         });
         // console.log(respuesta, "respuesta");
-        cargarBoletines();
-        setEditingBoletin(null);
+        // cargarBoletines();
+
         setOpenDialog(false);
         setValuesCabecera(ALTA_CABECERA_BOLETIN_VALUES);
         setSelectedFileName("Seleccione un Archivo");
@@ -330,50 +337,67 @@ const TablaBoletines = () => {
         setNormasAgregadasEditar([]);
         console.error("Error al guardar cambios:", error);
       }
-    } else {
-      try {
-        updatedBoletin.forEach((boletin) => {
-          const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
-            boletin;
-          axios
-            .put(`/boletin/editar`, {
-              id_boletin,
-              nro_boletin,
-              fecha_publicacion,
-              habilita,
-            })
-            .then((response) => {
-              cargarBoletines();
-            });
-        });
-      } catch (error) {
-        console.error("Error al guardar cambios:", error);
-      }
     }
+    setBotonState(false);
+    setEditingBoletin(null);
+    cargarBoletines();
   };
 
+  // const handleDesable = (updatedBoletin) => {
+  //   try {
+  //     updatedBoletin.forEach((boletin) => {
+  //       const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
+  //         boletin;
+  //       axios
+  //         .put(`/boletin/editar`, {
+  //           id_boletin,
+  //           nro_boletin,
+  //           fecha_publicacion,
+  //           habilita,
+  //         })
+  //         .then((response) => {
+  //           cargarBoletines();
+  //         });
+  //     });
+  //   } catch (error) {
+  //     console.error("Error al guardar cambios:", error);
+  //   }
+  // };
+
   const handleDelete = (boletin) => {
-    const updatedBoletin = boletines.map((item) =>
-      item.id_boletin === boletin.id_boletin ? { ...item, habilita: 0 } : item
-    );
-    setBoletines(updatedBoletin);
-    handleSave(updatedBoletin);
-    setOpen(true);
-    console.log(updatedBoletin);
-    setMensaje(`Boletin nº ${boletin.nro_boletin} deshabilitado`);
-    setError("error");
+    // console.log(boletin, "boletin delete");
+    setBotonState(true);
+    const { id_boletin } = boletin;
+    const habilita = 0;
+
+    const response = axios
+      .patch(`/boletin/deshabilitar`, {
+        id_boletin,
+        habilita,
+      })
+      .then((response) => {
+        // console.log(response.data);
+        cargarBoletines();
+        // setBoletines(updatedBoletin);
+        // handleSave(updatedBoletin);
+        setOpen(true);
+        // console.log(updatedBoletin);
+        setMensaje(`Boletin nº ${boletin.nro_boletin} deshabilitado`);
+        setError("error");
+      });
+    setBotonState(false);
   };
 
   useEffect(() => {
-    getTiposOrigen();
+    // getTiposOrigen();
     cargarBoletines();
   }, []);
 
-  useEffect(() => {
-    if (openDialog === false) {
-      cargarBoletines();
-    }
-  }, [openDialog]);
+  // useEffect(() => {
+  //   if (openDialog === true) {
+  //     cargarBoletines();
+  //   }
+  // }, [openDialog]);
 
   const columns = [
     {
@@ -396,7 +420,7 @@ const TablaBoletines = () => {
 
   return (
     <div className="pt-5">
-            <h3 className="text-center">LISTADO BOLETINES</h3>
+      <h3 className="text-center">LISTADO BOLETINES</h3>
 
       <Paper
         className="container mt-4 mb-4"
@@ -471,12 +495,14 @@ const TablaBoletines = () => {
                           <TableCell align="center" className="celdaAcciones">
                             <EditIcon
                               onClick={() => handleEdit(boletin)}
+                              disabled={botonState}
                               className="iconEdit"
                               color="primary"
                             />
                             {boletin.habilita === 1 ? (
                               <DeleteIcon
                                 className="iconDelete"
+                                disabled={botonState}
                                 onClick={() => handleDelete(boletin)}
                               />
                             ) : (
@@ -767,6 +793,7 @@ const TablaBoletines = () => {
                               onClick={handleGuardar}
                               color="primary"
                               className="btnBoletin"
+                              disabled={botonState}
                               variant="contained"
                             >
                               Guardar

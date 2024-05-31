@@ -13,7 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import useGet from "../../hook/useGet";
-import axios from "../../config/axios";
+import { axios } from "../../config/axios";
 import ModalGenerica from "../ModalGenerico/ModalGenerico";
 import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import "../ListarNormas/ListarNormas.css";
@@ -30,6 +30,8 @@ const TablaOrigen = () => {
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [nombreCampoEditado, setNombreCampoEditado] = useState("");
+  const [botonState, setBotonState] = useState(false);
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -75,6 +77,7 @@ const TablaOrigen = () => {
 
   const handleAcceptModal = (nombre_origen, habilita) => {
     try {
+      setBotonState(true);
       axios
         .post(`/origen/alta`, { nombre_origen, habilita })
         .then((response) => {
@@ -86,6 +89,7 @@ const TablaOrigen = () => {
       console.error("Error al guardar Origen:", error);
     }
     handleCloseModal();
+    setBotonState(false);
   };
 
   const handleInputChange = (e) => {
@@ -99,14 +103,28 @@ const TablaOrigen = () => {
   };
 
   const handleDelete = (origenId) => {
-    const updatedOrigen = origen.map((item) =>
-      item.id_origen === origenId ? { ...item, habilita: 0 } : item
-    );
-    setOrigen(updatedOrigen);
-    handleSave(updatedOrigen);
+    const habilita = 0;
+    try {
+      setBotonState(true);
+      const response = axios
+        .patch(`/origen/deshabilitar`, { origenId, habilita })
+        .then((response) => {
+          cargarOrigen();
+        });
+    } catch (error) {
+      console.error("Error al guardar cambios:", error);
+    }
+
+    // const updatedOrigen = origen.map((item) =>
+    //   item.id_origen === origenId ? { ...item, habilita: 0 } : item
+    // );
+    // setOrigen(updatedOrigen);
+    // handleSave(updatedOrigen);
+    setBotonState(false);
   };
 
   const cargarOrigen = () => {
+    setBotonState(true);
     axios
       .get("/origen/listado")
       .then((response) => {
@@ -115,11 +133,14 @@ const TablaOrigen = () => {
       .catch((error) => {
         console.error("Error al obtener Origenes:", error);
       });
+    setBotonState(false);
   };
 
   const handleSave = (updatedOrigen) => {
     if (editOrigen) {
       try {
+        setBotonState(true);
+
         const { id_origen, nombre_origen, habilita } = editOrigen;
         axios
           .put(`/origen/editar`, { id_origen, nombre_origen, habilita })
@@ -132,20 +153,8 @@ const TablaOrigen = () => {
       } catch (error) {
         console.error("Error al guardar cambios:", error);
       }
-    } else {
-      try {
-        updatedOrigen.forEach((origen) => {
-          const { id_origen, nombre_origen, habilita } = origen;
-          axios
-            .put(`/origen/editar`, { id_origen, nombre_origen, habilita })
-            .then((response) => {
-              cargarOrigen();
-            });
-        });
-      } catch (error) {
-        console.error("Error al guardar cambios:", error);
-      }
     }
+    setBotonState(false);
   };
 
   const columns = [
@@ -238,11 +247,13 @@ const TablaOrigen = () => {
                               <EditIcon
                                 onClick={() => handleEdit(origen)}
                                 className="iconEdit"
+                                disabled={botonState}
                                 color="primary"
                               />
                               {origen.habilita === 1 ? (
                                 <DeleteIcon
                                   className="iconDelete"
+                                  disabled={botonState}
                                   onClick={() => handleDelete(origen.id_origen)}
                                 />
                               ) : (
@@ -293,6 +304,8 @@ const TablaOrigen = () => {
                 handleSave={handleSave}
                 handleCancel={handleCancel}
                 nombreCampo={nombreCampoEditado}
+                estadoBoton={botonState}
+                setEstadoBoton={setBotonState}
               />
               <ModalGenerica
                 open={openModal}
@@ -305,6 +318,8 @@ const TablaOrigen = () => {
                 checkboxLabel="Habilitada"
                 checked={checkboxValue}
                 onCheckboxChange={(e) => setCheckboxValue(e.target.checked)}
+                estadoBoton={botonState}
+                setEstadoBoton={setBotonState}
               />
             </div>
           </>

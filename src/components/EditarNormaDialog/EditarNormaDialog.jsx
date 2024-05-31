@@ -21,6 +21,8 @@ const EditarNormaDialog = ({
   handleSave,
   handleCancel,
   nombreCampo,
+  estadoBoton,
+  setEstadoBoton,
 }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [error, setError] = useState("error");
@@ -90,7 +92,7 @@ const EditarNormaDialog = ({
                 Guardar
               </Button>
             ) : (
-              <Button onClick={handleSave} color="primary" variant="contained">
+              <Button onClick={handleSave} color="primary" variant="contained" disabled= {estadoBoton}>
                 Guardar
               </Button>
             )}

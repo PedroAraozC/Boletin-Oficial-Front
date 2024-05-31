@@ -18,10 +18,10 @@ import { ALTA_CABECERA_BOLETIN_VALUES } from "../../helpers/constantes.js";
 import { ALTA_CONTENIDO_BOLETIN_VALUES } from "../../helpers/constantes.js";
 import FileUp from "@mui/icons-material/FileUpload";
 import File from "@mui/icons-material/UploadFileRounded";
-import axios from "../../config/axios.js";
 import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
 import useGet from "../../hook/useGet.jsx";
 import CloseIcon from "@mui/icons-material/Close";
+import { axios } from "../../config/axios.js";
 
 const AltaBoletines = () => {
   const [open, setOpen] = useState(false);
@@ -54,9 +54,10 @@ const AltaBoletines = () => {
     "/norma/listar",
     axios
   );
-
+  
   const [normasAgregadas, setNormasAgregadas] = useState([]);
   const [nroNormaExistente, setNroNormaExistente] = useState(false);
+  const [botonState, setBotonState] = useState(false)
 
   const handleAgregarNorma = () => {
     const nuevaNorma = {
@@ -69,8 +70,7 @@ const AltaBoletines = () => {
     setValuesContenido(ALTA_CONTENIDO_BOLETIN_VALUES);
   };
 
-  useEffect(() => {
-  }, [normasAgregadas]);
+  useEffect(() => {}, [normasAgregadas]);
 
   const handleEliminarNorma = (index) => {
     const nuevasNormas = [...normasAgregadas];
@@ -219,7 +219,6 @@ const AltaBoletines = () => {
   const handleGuardarBoletin = async () => {
     setMostrarModal(true);
   };
-
   const handleConfirm = async (confirmado) => {
     setBandera(confirmado);
     setMostrarModal(false);
@@ -234,6 +233,7 @@ const AltaBoletines = () => {
 
   const enviarDatos = async () => {
     try {
+      setBotonState(true)
       const requestData = {
         nroBoletin: parseInt(valuesCabecera.nroBoletin, 10),
         fechaPublicacion: valuesCabecera.fechaPublicacion,
@@ -259,6 +259,8 @@ const AltaBoletines = () => {
     } catch (error) {
       console.error("Algo explotó! D:' ", error);
     }
+    setBotonState(false)
+
   };
   return (
     <Box
@@ -473,20 +475,31 @@ const AltaBoletines = () => {
               className="btn"
               variant="contained"
               onClick={handleGuardarBoletin}
+              disabled = {botonState}
             >
               Guardar Boletín
             </Button>
           </>
         ) : (
           <>
-            <Button type="button" variant="contained"className="btn" onClick={handleMensaje}>
+            <Button
+              type="button"
+              variant="contained"
+              className="btn"
+              onClick={handleMensaje}
+            >
               Guardar Boletín
             </Button>
           </>
         )
       ) : (
         <>
-          <Button type="button" variant="contained" className="btn" onClick={handleMensaje}>
+          <Button
+            type="button"
+            variant="contained"
+            className="btn"
+            onClick={handleMensaje}
+          >
             Guardar Boletín
           </Button>
         </>
@@ -506,7 +519,7 @@ const AltaBoletines = () => {
         </Alert>
       </Snackbar>
       {mostrarModal && (
-        <ModalAltaBoletin abrir={mostrarModal} onConfirm={handleConfirm} />
+        <ModalAltaBoletin abrir={mostrarModal} onConfirm={handleConfirm} estadoBoton={botonState} setEstadoBoton={setBotonState}/>
       )}
     </Box>
   );

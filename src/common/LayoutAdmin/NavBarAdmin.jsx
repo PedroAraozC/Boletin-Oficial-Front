@@ -2,7 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import SideBar from "./SideBarAdmin";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // import useStore from "../Zustand/Zustand";
 // import NavBarEsqueleto from "../components/Esqueletos/NavBarEsqueleto";
 import "./NavbarAdmin.css";
@@ -11,10 +11,13 @@ import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import logoMuni from "../../assets/Logo-completo-muni.png";
 import { Container } from "@mui/material";
+import { BolContext } from "../../context/BolContext";
 
 export default function NavBarAdmin() {
-  const { getAuth, authenticated, logout, user } = useStore();
+  const { getAuth, authenticated, logout, user } = useContext(BolContext);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // console.log(authenticated);
 
   const navigate = useNavigate();
 
@@ -41,16 +44,18 @@ export default function NavBarAdmin() {
       {authenticated ? (
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static" className="fondoAdmin d-flex flex-row">
-            {authenticated &&
-              (user?.id_persona === 148 || user?.id_tusuario === 1)(
-                <SideBar />
-              )}
+            {(authenticated && user?.id_persona == 736) ||
+            (authenticated && user?.id_tusuario == 1) ? (           //USUARIOS AUTORIZADOS BOLETIN
+              <SideBar />
+            ) : (
+              <></>
+            )}
             <Container div className="navContAdmin">
               <div className=" contLogoAdmin mb-3">
                 <img src={logoMuni} className="logoNav2Admin" />
                 <div className="boletinNavContAdmin">
                   <h1 className="boletinNavAdmin">
-                    Boletín Oficial Municipal{" "}
+                    Boletín Oficial Digital{" "}
                   </h1>
                 </div>
                 <div className="d-flex align-items-center">

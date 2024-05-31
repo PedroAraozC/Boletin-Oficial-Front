@@ -2,7 +2,7 @@ import { Alert, Box, Button, Snackbar, TextField, Grid } from "@mui/material";
 import React, { useState } from "react";
 import "./Buscador.css";
 import FormAvanzada from "../Form/FormAvanzada.jsx";
-import axios from "../../config/axios";
+import {axios} from "../../config/axios";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";

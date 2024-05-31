@@ -52,10 +52,10 @@ export const Footer = () => {
                 9 de Julio 598, Tucumán. República Argentina
               </p>
               <p className="text-center text-md-end my-2 me-0 me-md-5">
-                Tel: (0381)- 4516500
+                Desarrollado por DITEC© 2024
               </p>
               <p className="text-center text-md-end my-2 me-0 me-md-5">
-                Desarrollado por DITEC© 2024
+              SECRETARIA DE INNOVACION TECNOLOGICA
               </p>
             </div>
           </div>

@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import "./FormAvanzada.css";
-import axios from "../../config/axios";
 import { BUSCADOR_AVANZADA_VALUES } from "../../helpers/constantes";
 import useGet from "../../hook/useGet";
+import { axios } from "../../config/axios";
 
 export default function FormAvanzada({ busquedaAvanzada }) {
   const [values, setValues] = useState([BUSCADOR_AVANZADA_VALUES]);

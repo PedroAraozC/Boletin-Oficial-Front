@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import "../Form/FormAvanzada.css";
 
-export const ModalAltaBoletin = ({ abrir, onConfirm }) => {
+export const ModalAltaBoletin = ({ abrir, onConfirm, estadoBoton, setEstadoBoton }) => {
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
@@ -12,6 +12,7 @@ export const ModalAltaBoletin = ({ abrir, onConfirm }) => {
 
   const handleAcept = () => {
     onConfirm(true);
+    setEstadoBoton(true);
   };
 
   const handleCloseModal = () => {
@@ -24,7 +25,9 @@ export const ModalAltaBoletin = ({ abrir, onConfirm }) => {
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box className="modal-busqueda-avanzada">
           <h3 className="tituloBusquedaAvanzada">Confirmación de envío</h3>
-          <h4 className="tituloBusquedaAvanzada">Está seguro de que los datos ingresados son correctos?</h4>
+          <h4 className="tituloBusquedaAvanzada">
+            Está seguro de que los datos ingresados son correctos?
+          </h4>
           <Box
             className="modal-content d-flex flex-row"
             component="form"
@@ -35,6 +38,7 @@ export const ModalAltaBoletin = ({ abrir, onConfirm }) => {
             <Button
               variant="contained"
               className="btnAvanzada"
+              disabled = {estadoBoton}
               onClick={handleAcept}
             >
               Aceptar

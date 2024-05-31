@@ -24,11 +24,16 @@ const App = () => {
   if (token && !localStorage.getItem("tokenSet")) {
     localStorage.setItem("token", token);
     localStorage.setItem("tokenSet", "true"); // Establecer la bandera
+    // url.searchParams.delete("auth");
+    // window.history.replaceState(null, "", url.toString());
   }
   if (localStorage.getItem("token") == null) {
     localStorage.removeItem("tokenSet");
-    console.log(token);
-    const url = new URL(`https://ciudaddigital.smt.gob.ar?destino=boletin`); // IP BACK-DERIVADOR
+    // console.log(token);
+    // const url = new URL(`http://localhost:5174`); // IP BACK-DERIVADOR
+    const url = new URL(`https://ciudaddigital.smt.gob.ar?destino=boletin`);
+    url.searchParams.append("logout", true);
+    // window.open(url.toString(), "_self"); // IP BACK-DERIVADOR
     window.location.href = url.toString();
   }
 

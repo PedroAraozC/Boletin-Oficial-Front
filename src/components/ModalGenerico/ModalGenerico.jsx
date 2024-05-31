@@ -21,6 +21,8 @@ const ModalGenerica = ({
   inputValue,
   onInputChange,
   onCheckboxChange,
+  estadoBoton,
+  setEstadoBoton
 }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [error, setError] = useState("error");
@@ -85,7 +87,7 @@ const ModalGenerica = ({
                 Aceptar
               </Button>
             ) : (
-              <Button onClick={onAccept} color="primary" variant="contained">
+              <Button onClick={onAccept} color="primary" variant="contained" disabled={estadoBoton}>
                 Aceptar
               </Button>
             )}

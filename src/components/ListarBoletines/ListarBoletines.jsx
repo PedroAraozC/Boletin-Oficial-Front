@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ListarBoletines.css";
-import axios from "../../config/axios";
+import {axios} from "../../config/axios";
 import useGet from "../../hook/useGet";
 import { Alert, Button, Grid, Skeleton, Snackbar } from "@mui/material";
 import logoMuniColor from "../../assets/logo-SMT.png";

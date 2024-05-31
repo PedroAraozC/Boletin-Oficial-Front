@@ -42,7 +42,7 @@ export default function SideBarAdmin() {
   const personaHabilitada = user?.id_persona;
   // const permisosHabilitados = 1;
 
-  console.log(personaHabilitada);
+  // console.log(personaHabilitada);
 
   const list = () => (
     <Box
@@ -50,7 +50,7 @@ export default function SideBarAdmin() {
       role="presentation"
       className="d-flex justify-content-between flex-column h-100"
     >
-      {personaHabilitada === 148 || user?.id_tusuario === 1 ? ( // PERMISOS DE USUARIO
+      {personaHabilitada === 736 || user?.id_tusuario === 1 ? (                 //USUARIOS AUTORIZADOS BOLETIN
         <>
           <div className="d-flex flex-column justify-content-center align-items-start mt-5">
             <ListItemButton
@@ -106,7 +106,7 @@ export default function SideBarAdmin() {
           </div>
           <div className="d-flex flex-column justify-content-center align-items-center">
             <p className="footer text-center">
-              Desarrollado por Dirección de Innovación Tecnológica
+              Desarrollado por DITEC - SITEC
               <span style={{ fontSize: "1.4em", verticalAlign: "-0.1em" }}>
                 ©
               </span>{" "}
@@ -122,7 +122,7 @@ export default function SideBarAdmin() {
 
   return (
     <div>
-      {personaHabilitada === 148 ? (
+      {personaHabilitada === 736 ||user?.id_tusuario === 1  ? (
         <div>
           <IconButton
             size="large"

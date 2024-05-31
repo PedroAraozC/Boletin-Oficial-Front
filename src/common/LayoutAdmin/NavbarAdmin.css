@@ -15,6 +15,11 @@
   justify-content: center !important;
 }
 
+.css-1x7skt0 {
+
+  background-color: #1f89f6 !important
+}
+
 .logoNav2Admin {
   height: 80px !important;
   padding: 10px;
@@ -114,10 +119,11 @@
   .contLogoAdmin h4 {
     margin-left: -10px;
   }
-.contLogoAdmin{
-  flex-direction: column !important;
 
-}
+  .contLogoAdmin {
+    flex-direction: column !important;
+
+  }
 }
 
 @media (max-width: 500px) {
