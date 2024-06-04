@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -40,6 +40,9 @@ import {
   ALTA_CONTENIDO_BOLETIN_VALUES,
 } from "../../helpers/constantes";
 import CloseIcon from "@mui/icons-material/Close";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BolContext } from "../../context/BolContext";
 
 const TablaBoletines = () => {
   const [boletines, loading, setBoletines] = useGet("/boletin/listado", axios);
@@ -75,6 +78,9 @@ const TablaBoletines = () => {
   const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [formData, setFormData] = useState(new FormData());
   const [botonState, setBotonState] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const { user } = useContext(BolContext);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -90,6 +96,12 @@ const TablaBoletines = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const algoSalioMal = () => {
+    setOpen(true);
+    setMensaje("Algo salió mal. Recargue e intente nuevamente");
+    setError("error");
   };
 
   const handleChangeFile = (e) => {
@@ -147,6 +159,7 @@ const TablaBoletines = () => {
       });
     } else {
       console.error("No se encontró el contenido del boletin editado.");
+      algoSalioMal();
     }
     setBotonState(false);
     setContenidoEditado(contenidoEditado);
@@ -291,6 +304,7 @@ const TablaBoletines = () => {
       })
       .catch((error) => {
         console.error("Error al obtener contenido de boletines:", error);
+        algoSalioMal();
       });
     setBotonState(false);
   };
@@ -336,33 +350,13 @@ const TablaBoletines = () => {
         setValuesCabecera("");
         setNormasAgregadasEditar([]);
         console.error("Error al guardar cambios:", error);
+        algoSalioMal();
       }
     }
     setBotonState(false);
     setEditingBoletin(null);
     cargarBoletines();
   };
-
-  // const handleDesable = (updatedBoletin) => {
-  //   try {
-  //     updatedBoletin.forEach((boletin) => {
-  //       const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
-  //         boletin;
-  //       axios
-  //         .put(`/boletin/editar`, {
-  //           id_boletin,
-  //           nro_boletin,
-  //           fecha_publicacion,
-  //           habilita,
-  //         })
-  //         .then((response) => {
-  //           cargarBoletines();
-  //         });
-  //     });
-  //   } catch (error) {
-  //     console.error("Error al guardar cambios:", error);
-  //   }
-  // };
 
   const handleDelete = (boletin) => {
     // console.log(boletin, "boletin delete");
@@ -393,11 +387,51 @@ const TablaBoletines = () => {
     cargarBoletines();
   }, []);
 
-  // useEffect(() => {
-  //   if (openDialog === true) {
-  //     cargarBoletines();
-  //   }
-  // }, [openDialog]);
+  const funcionVerPDF = async (boletin) => {
+    try {
+      console.log(boletin);
+      const response = await axios.get(
+        // `https://boletinoficial.smt.gob.ar:3500/boletin/verPdf/${boletin.id_boletin}`,
+        `http://localhost:3500/boletin/verPdf/${boletin.id_boletin}`,
+        {
+          responseType: "blob",
+        }
+      );
+      console.log(response);
+      const blob = response.data;
+      const url = URL.createObjectURL(blob);
+
+      // Crear una nueva ventana
+      const printWindow = window.open("");
+      if (printWindow) {
+        // Escribir el contenido del PDF en la ventana
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Imprimir PDF</title>
+            </head>
+            <body style="margin:0;">
+              <iframe id="pdf-frame" src=${url} style="width:100%;height:100%;" frameborder="0"></iframe>
+            </body>
+          </html>
+        `);
+        // Esperar a que el iframe se cargue completamente y luego llamar a print
+        
+      } else {
+        console.error("No se pudo abrir la ventana de impresión.");
+      }
+      // handlePdfPreview(url);
+    } catch (error) {
+      setOpen(true);
+      setMensaje("Error en la conexión");
+      setError("warning");
+      console.log("algo explotó! :(", error);
+    }
+  };
+  const handlePdfPreview = (pdfUrl) => {
+    setPdfUrl(pdfUrl);
+    setPreviewOpen(true);
+  };
 
   const columns = [
     {
@@ -507,6 +541,13 @@ const TablaBoletines = () => {
                               />
                             ) : (
                               <DeleteIcon className="iconDelete" />
+                            )}
+                            {user.id_persona === 148 && (
+                              <FontAwesomeIcon
+                                icon={faEye}
+                                onClick={() => funcionVerPDF(boletin)}
+                                className="icono-ver-pdf"
+                              />
                             )}
                           </TableCell>
                         </TableRow>

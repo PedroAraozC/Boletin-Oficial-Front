@@ -30,7 +30,7 @@
 
 .inputsBuscadores {
     display: flex;
-    align-items: center;
+    align-items: start;
     flex-direction: row;
     width: 50% !important;
     justify-content: center;
@@ -109,17 +109,19 @@
     .inputsBuscadores,
     .botonesBuscadores {
         width: 100% !important;
-
     }
-
+    .botonesBuscadores {
+    padding-left: 20px;
+    }
+    .inputsBuscadores{
+        align-items: center;
+    }
     .btnBuscador,
     .btnBuscadorAvanzada {
         width: 50% !important;
 
     }
-
 }
-
 
 @media (min-width: 730px) and (max-width: 770px) {
     .btnBuscador {
@@ -175,8 +177,8 @@
 
 @media (max-width: 500px) {
     .tituloBuscador {
-
-        margin-left: 26px !important;
+        text-align: center;
+        margin-left: 0px !important;
 
     }
 }
@@ -184,9 +186,13 @@
 @media (max-width: 767px) {
 
     .inputBuscador {
-
+        width: 90% !important;
         margin-bottom: 10px !important;
 
+    }
+
+    .tituloBuscador {
+        text-align: center;
     }
 
 }

@@ -2,7 +2,8 @@
     align-items: center;
 }
 .contBoletines {
-    min-height: 40vh !important;
+    min-height: 45.2vh !important;
+    /* min-height: 433px !important; */
     width: 100vw !important;
     display: flex;
     flex-direction: column !important;

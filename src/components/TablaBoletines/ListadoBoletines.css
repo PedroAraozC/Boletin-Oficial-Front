@@ -12,11 +12,13 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.celdaAcciones{
+
+.celdaAcciones {
   overflow: visible !important;
   margin: 0 !important;
   padding: 0 !important
 }
+
 .blur {
   pointer-events: none;
 }
@@ -24,9 +26,11 @@
 .modalEditar {
   z-index: 9999;
 }
-.btnBoletin{
+
+.btnBoletin {
   background-color: #2eb1ff !important;
 }
+
 .MuiDialog-paper {
   align-items: center;
   justify-content: center;
@@ -87,6 +91,17 @@
 .iconEdit {
   cursor: pointer;
 }
+
+.icono-ver-pdf {
+  cursor: pointer;
+  color: gray;
+  margin-left: 15px;
+}
+
+.icono-ver-pdf:hover {
+  color: rgb(82, 72, 72);
+}
+
 
 @media (max-width: 500px) {
   .MuiDialog-paper {

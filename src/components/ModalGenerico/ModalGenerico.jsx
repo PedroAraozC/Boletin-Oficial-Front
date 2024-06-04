@@ -45,6 +45,11 @@ const ModalGenerica = ({
     setMensaje(mensaje);
   };
 
+  const aceptModal =()=>{
+    onAccept()
+    setEstadoBoton(true)
+  }
+
   return (
     <>
       <Dialog open={open} disableBackdropClick={true}>
@@ -87,7 +92,7 @@ const ModalGenerica = ({
                 Aceptar
               </Button>
             ) : (
-              <Button onClick={onAccept} color="primary" variant="contained" disabled={estadoBoton}>
+              <Button onClick={aceptModal} color="primary" variant="contained" disabled={estadoBoton}>
                 Aceptar
               </Button>
             )}

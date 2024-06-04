@@ -79,6 +79,12 @@ const AltaBoletines = () => {
     setNroNormaExistente(false);
   };
 
+  const algoSalioMal = () => {
+    setOpen(true);
+    setMensaje("Algo salió mal. Recargue e intente nuevamente");
+    setError("error");
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValuesCabecera({
@@ -258,6 +264,7 @@ const AltaBoletines = () => {
       setFormData(new FormData());
     } catch (error) {
       console.error("Algo explotó! D:' ", error);
+      algoSalioMal()
     }
     setBotonState(false)
 

@@ -15,6 +15,8 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -32,6 +34,10 @@ const TablaNormas = () => {
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [nombreCampoEditado, setNombreCampoEditado] = useState("");
   const [botonState, setBotonState] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [error, setError] = useState("error");
+  const [editButtonDisabled, setEditButtonDisabled] = useState(false);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -39,6 +45,18 @@ const TablaNormas = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const algoSalioMal = () => {
+    setOpen(true);
+    setMensaje("Algo salió mal. Recargue e intente nuevamente");
+    setError("error");
   };
 
   const handleAcceptModal = (norma, habilita) => {
@@ -51,11 +69,15 @@ const TablaNormas = () => {
         setOpenModal(false);
         setCheckboxValue(true);
       });
+      setOpen(true);
+      setMensaje("Norma guardada con éxito!");
+      setError("success");
     } catch (error) {
       console.error("Error al guardar Norma:", error);
+      algoSalioMal();
     }
-    setBotonState(false);
 
+    setBotonState(false);
     handleCloseModal();
   };
 
@@ -76,13 +98,19 @@ const TablaNormas = () => {
     }
   }
   const handleEdit = (norma) => {
-    setBotonState(true);
-    setEditingNorma({ ...norma });
-    setOpenDialog(true);
-    const nombreCampo = obtenerNombreCampoPorPosicion(norma, 1);
-    setNombreCampoEditado(nombreCampo);
+    try {
+      setBotonState(true);
+      setEditingNorma({ ...norma });
+      setOpenDialog(true);
+      const nombreCampo = obtenerNombreCampoPorPosicion(norma, 1);
+      setNombreCampoEditado(nombreCampo);
+    } catch (error) {
+      console.error("Error al editar Norma:", error);
+      algoSalioMal();
+    }
     setBotonState(false);
   };
+
   const handleDelete = (normaId) => {
     const habilita = 0;
     try {
@@ -91,9 +119,13 @@ const TablaNormas = () => {
         .patch(`/norma/deshabilitar`, { normaId, habilita })
         .then((response) => {
           cargarNormas();
+          setOpenAlert(true);
+          setMensaje("Norma deshabilitada");
+          setError("error");
         });
     } catch (error) {
       console.error("Error al guardar cambios:", error);
+      algoSalioMal();
     }
     // const updatedNormas = normas.map((item) =>
     //   item.id_norma === normaId ? { ...item, habilita: 0 } : item
@@ -125,19 +157,16 @@ const TablaNormas = () => {
     }));
   };
   const cargarNormas = () => {
-    setBotonState(true);
-    axios
-      .get("/norma/listado")
-      .then((response) => {
+    try {
+      setBotonState(true);
+      axios.get("/norma/listado").then((response) => {
         setNormas(response.data);
-
-        // console.log(loading);
-      })
-      .catch((error) => {
-        // console.log(loading);
-        console.error("Error al obtener normas:", error);
+        setBotonState(false);
       });
-    setBotonState(false);
+    } catch (error) {
+      console.error("Error al obtener normas:", error);
+      algoSalioMal();
+    }
   };
 
   const handleSave = (updatedNormas) => {
@@ -152,13 +181,20 @@ const TablaNormas = () => {
             setEditingNorma(null);
             setOpenDialog(false);
             setNombreCampoEditado("");
+            setOpenAlert(true);
+            setMensaje("Norma guardada con éxito!");
+            setError("success");
           });
       } catch (error) {
         console.error("Error al guardar cambios:", error);
+        algoSalioMal();
       }
     }
-    setBotonState(false);
   };
+
+  useEffect(() => {
+    setBotonState();
+  }, [botonState, editButtonDisabled]);
 
   const columns = [
     {
@@ -250,17 +286,19 @@ const TablaNormas = () => {
                           ))}
 
                           <TableCell className="d-flex justify-content-center">
-                            <EditIcon
-                              onClick={() => handleEdit(norma)}
-                              className="iconEdit"
-                              color="primary"
-                              disabled={botonState}
-                            />
-                            {norma.habilita === 1 ? (
+                            {!botonState ? (
+                              <EditIcon
+                                onClick={() => handleEdit(norma)}
+                                className="iconEdit"
+                                color="primary"
+                              />
+                            ) : (
+                              <EditIcon className="iconEdit" color="primary" />
+                            )}
+                            {norma.habilita === 1 && !botonState ? (
                               <DeleteIcon
                                 className="iconDelete"
                                 onClick={() => handleDelete(norma.id_norma)}
-                                disabled={botonState}
                               />
                             ) : (
                               <DeleteIcon className="iconDelete" />
@@ -313,6 +351,8 @@ const TablaNormas = () => {
                 handleSave={handleSave}
                 handleCancel={handleCancel}
                 nombreCampo={nombreCampoEditado}
+                estadoBoton={botonState}
+                setEstadoBoton={setBotonState}
               />
               <ModalGenerica
                 open={openModal}
@@ -325,12 +365,28 @@ const TablaNormas = () => {
                 checkboxLabel="Habilitada"
                 checked={checkboxValue}
                 onCheckboxChange={(e) => setCheckboxValue(e.target.checked)}
+                estadoBoton={botonState}
+                setEstadoBoton={setBotonState}
               />
             </div>
           </>
         ) : (
           <TableLoader filas={4} />
         )}
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={() => setOpenAlert(false)}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={error}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {mensaje}
+          </Alert>
+        </Snackbar>
       </Paper>
       {!loading ? (
         <>

@@ -12,12 +12,11 @@ export const NavBar = () => {
             {" "}
             <img src={logoMuni} alt="logo Muni" className="logoNav" />
           </a>
-        <div className="boletinNavCont">
-          <h1 className="boletinNav">Boletín Oficial Municipal </h1>
-        </div>
+          <div className="boletinNavCont">
+            <h1 className="boletinNav">Boletín Oficial Municipal </h1>
+          </div>
         </div>
       </Container>
     </div>
   );
 };
-

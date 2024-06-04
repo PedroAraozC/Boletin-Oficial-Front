@@ -8,6 +8,8 @@ import {
   TableHead,
   TableRow,
   TablePagination,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -31,6 +33,9 @@ const TablaOrigen = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [nombreCampoEditado, setNombreCampoEditado] = useState("");
   const [botonState, setBotonState] = useState(false);
+  const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [error, setError] = useState("error");
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -39,7 +44,12 @@ const TablaOrigen = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -75,6 +85,12 @@ const TablaOrigen = () => {
     setOpenDialog(false);
   };
 
+  const algoSalioMal = () => {
+    setOpen(true);
+    setMensaje("Algo salió mal. Recargue e intente nuevamente");
+    setError("error");
+  };
+
   const handleAcceptModal = (nombre_origen, habilita) => {
     try {
       setBotonState(true);
@@ -87,7 +103,11 @@ const TablaOrigen = () => {
         });
     } catch (error) {
       console.error("Error al guardar Origen:", error);
+      algoSalioMal();
     }
+    setOpen(true);
+    setMensaje("Origen guardado con éxito!");
+    setError("success");
     handleCloseModal();
     setBotonState(false);
   };
@@ -110,9 +130,13 @@ const TablaOrigen = () => {
         .patch(`/origen/deshabilitar`, { origenId, habilita })
         .then((response) => {
           cargarOrigen();
+          setOpenAlert(true);
+          setMensaje("origen deshabilitado");
+          setError("error");
         });
     } catch (error) {
       console.error("Error al guardar cambios:", error);
+      algoSalioMal();
     }
 
     // const updatedOrigen = origen.map((item) =>
@@ -132,6 +156,7 @@ const TablaOrigen = () => {
       })
       .catch((error) => {
         console.error("Error al obtener Origenes:", error);
+        algoSalioMal();
       });
     setBotonState(false);
   };
@@ -149,9 +174,13 @@ const TablaOrigen = () => {
             setEditOrigen(null);
             setOpenDialog(false);
             setNombreCampoEditado("");
+            setOpenAlert(true);
+            setMensaje("Origen guardado con éxito!");
+            setError("success");
           });
       } catch (error) {
         console.error("Error al guardar cambios:", error);
+        algoSalioMal();
       }
     }
     setBotonState(false);
@@ -326,6 +355,20 @@ const TablaOrigen = () => {
         ) : (
           <TableLoader filas={4} />
         )}
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={() => setOpenAlert(false)}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={error}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {mensaje}
+          </Alert>
+        </Snackbar>
       </Paper>
       {!loading ? (
         <div className="btnTablas">

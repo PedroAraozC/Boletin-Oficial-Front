@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./ListarBoletines.css";
 import {axios} from "../../config/axios";
 import useGet from "../../hook/useGet";
 import { Alert, Button, Grid, Skeleton, Snackbar } from "@mui/material";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
+import { BolContext } from "../../context/BolContext";
 
 const ListarBoletines = () => {
   // eslint-disable-next-line
@@ -13,7 +14,7 @@ const ListarBoletines = () => {
   const [open, setOpen] = useState(false);
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [error, setError] = useState("error");
-
+  const { user } = useContext(BolContext);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -26,8 +27,8 @@ const ListarBoletines = () => {
     try {
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
-        `https://boletinoficial.smt.gob.ar:3500/boletin/listarDescarga/${boletin.id_boletin}`,
-        // `http://localhost:3001/boletin/listarDescarga/${boletin.id_boletin}`,
+        // `https://boletinoficial.smt.gob.ar:3500/boletin/listarDescarga/${boletin.id_boletin}/${user.id_persona}`,
+        `http://localhost:3500/boletin/listarDescarga/${boletin.id_boletin}/${user.id_persona}`,
         {
           responseType: "blob",
         }
@@ -89,7 +90,7 @@ const ListarBoletines = () => {
                           ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nro_boletin}`
                           : `BOLETÍN Nº ${boletin.nro_boletin}`}
                       </h2>
-                      <div className="contBtn">
+                      <div className="d-none d-lg-block contBtn">
                         <Button
                           variant="contained"
                           className="btnPdf"

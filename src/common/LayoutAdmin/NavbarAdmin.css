@@ -138,3 +138,10 @@
   }
 
 }
+@media (max-width: 380px) {
+
+    .navContAdmin {
+        height: 160px !important;
+
+    }
+}

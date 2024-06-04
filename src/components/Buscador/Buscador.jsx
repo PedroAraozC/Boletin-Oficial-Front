@@ -240,9 +240,9 @@ const Buscador = () => {
                   Buscar
                 </Button>
               )}
-              <Button variant="contained" className="btnBuscadorAvanzada">
+              {/* <Button variant="contained" className="btnBuscadorAvanzada">
                 <FormAvanzada busquedaAvanzada={handleModalResults} />
-              </Button>
+              </Button> */}
             </div>
           </Box>
         </Box>

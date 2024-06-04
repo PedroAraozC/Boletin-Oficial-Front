@@ -45,6 +45,11 @@ const EditarNormaDialog = ({
     setMensaje(mensaje);
   };
 
+  const aceptModal =()=>{
+    handleSave()
+    setEstadoBoton(true)
+  }
+
   return nombreCampo !== "" ? (
     <>
       <Dialog open={open} disableBackdropClick={true}>
@@ -52,6 +57,7 @@ const EditarNormaDialog = ({
           <DialogTitle className="titulo">Editar Norma</DialogTitle>
           {editingNorma && (
             <>
+            {console.log(estadoBoton)}
               <div className="contModal">
                 <FormControlLabel
                   control={
@@ -92,7 +98,7 @@ const EditarNormaDialog = ({
                 Guardar
               </Button>
             ) : (
-              <Button onClick={handleSave} color="primary" variant="contained" disabled= {estadoBoton}>
+              <Button onClick={aceptModal} color="primary" variant="contained" disabled= {estadoBoton}>
                 Guardar
               </Button>
             )}

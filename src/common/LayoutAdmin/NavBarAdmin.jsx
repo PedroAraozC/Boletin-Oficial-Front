@@ -58,8 +58,8 @@ export default function NavBarAdmin() {
                     Boletín Oficial Digital{" "}
                   </h1>
                 </div>
-                <div className="d-flex align-items-center">
-                  <p className="m-0">{user.nombre_persona}</p>
+                <div className="d-md-flex align-items-center m-0 d-none" >
+                  <p className= "m-0 d-none d-xl-flex" >{user.nombre_persona}</p>
                   <IconButton
                     size="large"
                     aria-label="account of current user"
