@@ -27,8 +27,8 @@ const ListarBoletines = () => {
     try {
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
-        // `https://boletinoficial.smt.gob.ar:3500/boletin/listarDescarga/${boletin.id_boletin}/${user.id_persona}`,
-        `http://localhost:3500/boletin/listarDescarga/${boletin.id_boletin}/${user.id_persona}`,
+        `https://boletinoficial.smt.gob.ar:3500/boletin/listarDescarga/${boletin.id_boletin}/${user.id_persona}`,
+        // `http://localhost:3500/boletin/listarDescarga/${boletin.id_boletin}/${user.id_persona}`,
         {
           responseType: "blob",
         }

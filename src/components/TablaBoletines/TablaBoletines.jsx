@@ -168,10 +168,13 @@ const TablaBoletines = () => {
 
   const validarNormasAgregadas = () => {
     const normasRepetidas = normasAgregadasEditar.filter((norma, index) => {
+      // console.log(otraNorma,"otranorma")
+     console.log(norma,"norma")
       return normasAgregadasEditar.some(
         (otraNorma, otroIndex) =>
           otraNorma.norma.id_norma === norma.norma.id_norma &&
           otraNorma.numero === norma.numero &&
+          otraNorma.origen === norma.origen &&
           otraNorma.habilita === norma.habilita &&
           index !== otroIndex
       );
@@ -204,8 +207,15 @@ const TablaBoletines = () => {
 
   const handleMensajeEditar = () => {
     let mensaje = "";
-    if (editingBoletin.nro_boletin === "") {
+    if (validarNormasAgregadas().length > 0) {
+      mensaje =
+        "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
+      setError("warning");
+    } else if (editingBoletin.nro_boletin === "") {
       mensaje = "Debe ingresar el Nº de Boletín";
+      setError("error");
+    } else if (editingBoletin.nro_boletin.length > 10) {
+      mensaje = "El Nº de Boletín no puede contener mas de 10 digitos.";
       setError("error");
     } else if (numeroBoletinDisponible(editingBoletin.nro_boletin)) {
       mensaje = `El Nº de Boletín ${editingBoletin.nro_boletin} ya existe!`;
@@ -391,8 +401,8 @@ const TablaBoletines = () => {
     try {
       console.log(boletin);
       const response = await axios.get(
-        // `https://boletinoficial.smt.gob.ar:3500/boletin/verPdf/${boletin.id_boletin}`,
-        `http://localhost:3500/boletin/verPdf/${boletin.id_boletin}`,
+        `https://boletinoficial.smt.gob.ar:3500/boletin/verPdf/${boletin.id_boletin}`,
+        // `http://localhost:3500/boletin/verPdf/${boletin.id_boletin}`,
         {
           responseType: "blob",
         }
@@ -416,7 +426,6 @@ const TablaBoletines = () => {
           </html>
         `);
         // Esperar a que el iframe se cargue completamente y luego llamar a print
-        
       } else {
         console.error("No se pudo abrir la ventana de impresión.");
       }
@@ -634,7 +643,10 @@ const TablaBoletines = () => {
                                       type="number"
                                       value={editingBoletin.nro_boletin}
                                       onChange={handleInputChange}
-                                      inputProps={{ min: "0" }}
+                                      inputProps={{
+                                        min: "0",
+                                        max: "9999999999",
+                                      }}
                                     />
 
                                     <TextField
@@ -729,6 +741,10 @@ const TablaBoletines = () => {
                                         className="inputAltaBoletin mb-3"
                                         type="number"
                                         value={valuesContenido.nroNorma}
+                                        inputProps={{
+                                          min: "0",
+                                          max: "9999999999",
+                                        }}
                                         onChange={handleInputChange}
                                         name="nroNorma"
                                       />
@@ -822,9 +838,11 @@ const TablaBoletines = () => {
                       </div>
                       <DialogActions>
                         {editingBoletin.nro_boletin !== "" &&
+                        editingBoletin.nro_boletin.length <= 10 &&
                         editingBoletin.fecha_publicacion !== "" &&
                         editingBoletin.nro_boletin !== "undefined" &&
                         editingBoletin.fecha_publicacion !== "undefined" &&
+                        validarNormasAgregadas().length <= 0 &&
                         numeroBoletinDisponible(
                           editingBoletin.nro_boletin,
                           editingBoletin.id_boletin

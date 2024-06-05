@@ -54,10 +54,10 @@ const AltaBoletines = () => {
     "/norma/listar",
     axios
   );
-  
+
   const [normasAgregadas, setNormasAgregadas] = useState([]);
   const [nroNormaExistente, setNroNormaExistente] = useState(false);
-  const [botonState, setBotonState] = useState(false)
+  const [botonState, setBotonState] = useState(false);
 
   const handleAgregarNorma = () => {
     const nuevaNorma = {
@@ -138,6 +138,7 @@ const AltaBoletines = () => {
       return normasAgregadas.some(
         (otraNorma, otroIndex) =>
           otraNorma.norma.id_norma === norma.norma.id_norma &&
+          otraNorma.origen === norma.origen &&
           otraNorma.numero === norma.numero &&
           index !== otroIndex
       );
@@ -158,6 +159,9 @@ const AltaBoletines = () => {
       mensaje =
         "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
       setError("warning");
+    } else if (valuesCabecera.nroBoletin > 10) {
+      mensaje = "El Nº de Boletín no puede contener mas de 10 digitos.";
+      setError("error");
     } else if (valuesCabecera.nroBoletin === "") {
       mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
@@ -239,7 +243,7 @@ const AltaBoletines = () => {
 
   const enviarDatos = async () => {
     try {
-      setBotonState(true)
+      setBotonState(true);
       const requestData = {
         nroBoletin: parseInt(valuesCabecera.nroBoletin, 10),
         fechaPublicacion: valuesCabecera.fechaPublicacion,
@@ -264,10 +268,9 @@ const AltaBoletines = () => {
       setFormData(new FormData());
     } catch (error) {
       console.error("Algo explotó! D:' ", error);
-      algoSalioMal()
+      algoSalioMal();
     }
-    setBotonState(false)
-
+    setBotonState(false);
   };
   return (
     <Box
@@ -312,7 +315,7 @@ const AltaBoletines = () => {
                       type="number"
                       value={valuesCabecera.nroBoletin}
                       onChange={handleChange}
-                      inputProps={{ min: "0" }}
+                      inputProps={{ min: "0", max: "99999999999999" }}
                       name="nroBoletin"
                     />
                     <TextField
@@ -395,6 +398,7 @@ const AltaBoletines = () => {
                         className="inputAltaBoletin mb-3"
                         type="number"
                         value={valuesContenido.nroNorma}
+                        inputProps={{ min: "0", max: "9999999999" }}
                         onChange={handleChange}
                         name="nroNorma"
                       />
@@ -482,7 +486,7 @@ const AltaBoletines = () => {
               className="btn"
               variant="contained"
               onClick={handleGuardarBoletin}
-              disabled = {botonState}
+              disabled={botonState}
             >
               Guardar Boletín
             </Button>
@@ -526,7 +530,12 @@ const AltaBoletines = () => {
         </Alert>
       </Snackbar>
       {mostrarModal && (
-        <ModalAltaBoletin abrir={mostrarModal} onConfirm={handleConfirm} estadoBoton={botonState} setEstadoBoton={setBotonState}/>
+        <ModalAltaBoletin
+          abrir={mostrarModal}
+          onConfirm={handleConfirm}
+          estadoBoton={botonState}
+          setEstadoBoton={setBotonState}
+        />
       )}
     </Box>
   );
