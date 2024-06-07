@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +27,7 @@ const EditarNormaDialog = ({
   const [openAlert, setOpenAlert] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [desableBoton, setDesableBoton] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -45,10 +46,15 @@ const EditarNormaDialog = ({
     setMensaje(mensaje);
   };
 
-  const aceptModal =()=>{
-    handleSave()
-    setEstadoBoton(true)
-  }
+  const aceptModal = async () => {
+    setDesableBoton(true);
+    await handleSave();
+    setDesableBoton(false);
+  };
+  // useEffect(() => {
+  //   setDesableBoton(!desableBoton)
+
+  // }, [desableBoton])
 
   return nombreCampo !== "" ? (
     <>
@@ -57,7 +63,7 @@ const EditarNormaDialog = ({
           <DialogTitle className="titulo">Editar Norma</DialogTitle>
           {editingNorma && (
             <>
-            {console.log(estadoBoton)}
+              {/* {console.log(estadoBoton)} */}
               <div className="contModal">
                 <FormControlLabel
                   control={
@@ -98,11 +104,21 @@ const EditarNormaDialog = ({
                 Guardar
               </Button>
             ) : (
-              <Button onClick={aceptModal} color="primary" variant="contained" disabled= {estadoBoton}>
+              <Button
+                onClick={aceptModal}
+                color="primary"
+                variant="contained"
+                disabled={desableBoton}
+              >
                 Guardar
               </Button>
             )}
-            <Button onClick={handleCancel} color="primary" variant="contained">
+            <Button
+              onClick={handleCancel}
+              color="primary"
+              variant="contained"
+              disabled={desableBoton}
+            >
               Cancelar
             </Button>
           </DialogActions>

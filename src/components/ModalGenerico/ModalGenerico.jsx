@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ModalGenerico.css";
 import {
   Alert,
@@ -22,11 +22,12 @@ const ModalGenerica = ({
   onInputChange,
   onCheckboxChange,
   estadoBoton,
-  setEstadoBoton
+  setEstadoBoton,
 }) => {
   const [openAlert, setOpenAlert] = useState(false);
   const [error, setError] = useState("error");
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
+  const [desableBoton, setDesableBoton] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -45,16 +46,21 @@ const ModalGenerica = ({
     setMensaje(mensaje);
   };
 
-  const aceptModal =()=>{
-    onAccept()
-    setEstadoBoton(true)
-  }
+  const aceptModal = async () => {
+    setDesableBoton(true);
+    await onAccept();
+    setDesableBoton(false);
+    setOpenAlert(true);
+    // let mensaje =""
+    // mensaje = Se agreg title;
+    setMensaje(mensaje);
+  };
 
   return (
     <>
       <Dialog open={open} disableBackdropClick={true}>
         <DialogContent className="modal_content">
-          <DialogTitle className="titulo">{title}</DialogTitle>
+          <DialogTitle className="titulo">AGREGAR {title}</DialogTitle>
           <div className="contModal">
             <FormControlLabel
               control={
@@ -92,12 +98,22 @@ const ModalGenerica = ({
                 Aceptar
               </Button>
             ) : (
-              <Button onClick={aceptModal} color="primary" variant="contained" disabled={estadoBoton}>
+              <Button
+                onClick={aceptModal}
+                color="primary"
+                variant="contained"
+                disabled={desableBoton}
+              >
                 Aceptar
               </Button>
             )}
 
-            <Button onClick={onClose} color="primary" variant="contained">
+            <Button
+              onClick={onClose}
+              color="primary"
+              variant="contained"
+              disabled={desableBoton}
+            >
               Cancelar
             </Button>
           </DialogActions>

@@ -55,9 +55,21 @@
   margin-left: 15px;
 }
 
+.iconDelete-desabled {
+  color: gray !important;
+  margin-left: 15px;
+}
+
 .iconDelete :hover {
   color: rgb(163, 15, 15);
 }
+
+.iconEdit{
+  cursor: pointer;
+}
+.iconEdit-desabled{
+  color: gray !important;
+} 
 
 .iconEdit :hover {
   color: #0066ff;

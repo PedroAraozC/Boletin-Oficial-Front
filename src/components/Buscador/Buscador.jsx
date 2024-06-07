@@ -1,13 +1,16 @@
 import { Alert, Box, Button, Snackbar, TextField, Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Buscador.css";
 import FormAvanzada from "../Form/FormAvanzada.jsx";
-import {axios} from "../../config/axios";
+import { axios } from "../../config/axios";
 import logoMuniColor from "../../assets/logo-SMT.png";
 import { BUSCADOR_VALUES } from "../../helpers/constantes.js";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import ListarBoletines from "../ListarBoletines/ListarBoletines.jsx";
 import "../ListarBoletines/ListarBoletines.css";
+import loader from "../../assets/logo-SMT-Blanco.png";
+import { BolContext } from "../../context/BolContext.jsx";
+import LoaderMuni  from "../../components/LoaderMuni/LoaderMuni.jsx";
 
 const Buscador = () => {
   const [values, setValues] = useState([]);
@@ -20,6 +23,9 @@ const Buscador = () => {
   const [boletinEncontrado, setBoletinEncontrado] = useState(true);
   // eslint-disable-next-line
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
+  const [bandera, setBandera] = useState(false);
+  const { user } = useContext(BolContext);
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
     setBusquedaRealizada(false);
@@ -159,6 +165,7 @@ const Buscador = () => {
 
   const funcionDescarga = async (boletin) => {
     try {
+      setBandera(true);
       const response = await axios.get(
         // `IP SERVIDOR DESARROLLO:PUERTO DEL BACK-END/boletin/listarDescarga/${boletin.id_boletin}`,
         // `http://181.105.6.205:89/boletin/listarDescarga/${boletin.id_boletin}`,
@@ -183,12 +190,12 @@ const Buscador = () => {
       setMensaje("Error en la conexión");
       setError("warning");
     }
+    setBandera(false);
   };
 
   return (
     <>
       <div className="d-flex flex-column align-items-center">
-
         <Box className="buscador ">
           <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
           <Box
@@ -263,7 +270,7 @@ const Buscador = () => {
       </div>
       <div className="d-flex flex-row mt-4">
         <Grid container spacing={2} className="d-flex contGrid">
-          <Grid className="contBoletines ps-5  pe-4 " item >
+          <Grid className="contBoletines ps-5  pe-4 " item>
             {resultados.length > 0 ? (
               <>
                 {Array.isArray(values) && resultados.length > 0 ? (
@@ -365,6 +372,7 @@ const Buscador = () => {
           </Alert>
         </Snackbar>
       </div>
+      <LoaderMuni img={loader}/>
     </>
   );
 };

@@ -30,7 +30,6 @@ import {
   MenuItem,
   Select,
   TextField,
-  Skeleton,
 } from "@mui/material";
 import "../AltaBoletines/AltaBoletinesNuevo.css";
 import "../ListarNormas/ListarNormas.css";
@@ -40,9 +39,11 @@ import {
   ALTA_CONTENIDO_BOLETIN_VALUES,
 } from "../../helpers/constantes";
 import CloseIcon from "@mui/icons-material/Close";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BolContext } from "../../context/BolContext";
+import loader from "../../assets/logo-SMT-Blanco.png";
+import LoaderMuni  from "../../components/LoaderMuni/LoaderMuni.jsx";
 
 const TablaBoletines = () => {
   const [boletines, loading, setBoletines] = useGet("/boletin/listado", axios);
@@ -78,9 +79,8 @@ const TablaBoletines = () => {
   const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
   const [formData, setFormData] = useState(new FormData());
   const [botonState, setBotonState] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState("");
-  const [previewOpen, setPreviewOpen] = useState(false);
   const { user } = useContext(BolContext);
+  const [bandera, setBandera] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -169,7 +169,7 @@ const TablaBoletines = () => {
   const validarNormasAgregadas = () => {
     const normasRepetidas = normasAgregadasEditar.filter((norma, index) => {
       // console.log(otraNorma,"otranorma")
-     console.log(norma,"norma")
+      // console.log(norma, "norma");
       return normasAgregadasEditar.some(
         (otraNorma, otroIndex) =>
           otraNorma.norma.id_norma === norma.norma.id_norma &&
@@ -296,10 +296,10 @@ const TablaBoletines = () => {
     // cargarBoletines();
   };
 
-  const cargarBoletines = () => {
+  const cargarBoletines = async () => {
     setBotonState(true);
-
-    axios
+    setBandera(true);
+    await axios
       .get("/boletin/listado")
       .then((response) => {
         setBoletines(response.data);
@@ -307,7 +307,7 @@ const TablaBoletines = () => {
       .catch((error) => {
         console.error("Error al obtener boletines:", error);
       });
-    axios
+    await axios
       .get("/boletin/listadoContenido")
       .then((response) => {
         setContenidoBoletines(response.data);
@@ -317,13 +317,13 @@ const TablaBoletines = () => {
         algoSalioMal();
       });
     setBotonState(false);
+    setBandera(false);
   };
 
   const handleSave = async () => {
-    // console.log(updatedBoletin)
+    setBotonState(true);
     if (editingBoletin) {
       try {
-        setBotonState(true);
         // console.log(archivoSeleccionado, "archivo seleccionado");
         const { id_boletin, nro_boletin, fecha_publicacion, habilita } =
           editingBoletin;
@@ -363,33 +363,40 @@ const TablaBoletines = () => {
         algoSalioMal();
       }
     }
-    setBotonState(false);
-    setEditingBoletin(null);
     cargarBoletines();
   };
 
-  const handleDelete = (boletin) => {
+  const handleDelete = async (boletin) => {
     // console.log(boletin, "boletin delete");
-    setBotonState(true);
-    const { id_boletin } = boletin;
-    const habilita = 0;
+    try {
+      setBotonState(true);
+      setBandera(true);
 
-    const response = axios
-      .patch(`/boletin/deshabilitar`, {
-        id_boletin,
-        habilita,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        cargarBoletines();
-        // setBoletines(updatedBoletin);
-        // handleSave(updatedBoletin);
-        setOpen(true);
-        // console.log(updatedBoletin);
-        setMensaje(`Boletin nº ${boletin.nro_boletin} deshabilitado`);
-        setError("error");
-      });
-    setBotonState(false);
+      const { id_boletin } = boletin;
+      const habilita = 0;
+
+      const response = await axios
+        .patch(`/boletin/deshabilitar`, {
+          id_boletin,
+          habilita,
+        })
+        .then((response) => {
+          // console.log(response.data);
+          // setBoletines(updatedBoletin);
+          // handleSave(updatedBoletin);
+          // console.log(updatedBoletin);
+          cargarBoletines();
+          setOpen(true);
+          setMensaje(`Boletin nº ${boletin.nro_boletin} deshabilitado`);
+          setError("error");
+        });
+    } catch (error) {
+      setValuesCabecera("");
+      setNormasAgregadasEditar([]);
+      console.error("Error al guardar cambios:", error);
+      algoSalioMal();
+    }
+    // setBotonState(false);
   };
 
   useEffect(() => {
@@ -399,7 +406,8 @@ const TablaBoletines = () => {
 
   const funcionVerPDF = async (boletin) => {
     try {
-      console.log(boletin);
+      setBotonState(true);
+      // console.log(boletin);
       const response = await axios.get(
         `https://boletinoficial.smt.gob.ar:3500/boletin/verPdf/${boletin.id_boletin}`,
         // `http://localhost:3500/boletin/verPdf/${boletin.id_boletin}`,
@@ -407,7 +415,7 @@ const TablaBoletines = () => {
           responseType: "blob",
         }
       );
-      console.log(response);
+      // console.log(response);
       const blob = response.data;
       const url = URL.createObjectURL(blob);
 
@@ -431,15 +439,20 @@ const TablaBoletines = () => {
       }
       // handlePdfPreview(url);
     } catch (error) {
-      setOpen(true);
-      setMensaje("Error en la conexión");
-      setError("warning");
-      console.log("algo explotó! :(", error);
+      if (error.response.status === 404) {
+        setOpen(true);
+        setMensaje("No se encontró archivo del boletin solicitado");
+        setError("warning");
+        console.log("algo explotó! :(", error);
+      } else {
+        setOpen(true);
+        setMensaje("Error en la conexión");
+        setError("warning");
+        console.log("algo explotó! :(", error);
+      }
     }
-  };
-  const handlePdfPreview = (pdfUrl) => {
-    setPdfUrl(pdfUrl);
-    setPreviewOpen(true);
+
+    setBotonState(false);
   };
 
   const columns = [
@@ -536,28 +549,42 @@ const TablaBoletines = () => {
                             </TableCell>
                           ))}
                           <TableCell align="center" className="celdaAcciones">
-                            <EditIcon
-                              onClick={() => handleEdit(boletin)}
-                              disabled={botonState}
-                              className="iconEdit"
-                              color="primary"
-                            />
-                            {boletin.habilita === 1 ? (
+                            {botonState ? (
+                              <EditIcon
+                                className="iconEdit-desabled"
+                                color="primary"
+                              />
+                            ) : (
+                              // <></>
+                              <EditIcon
+                                onClick={() => handleEdit(boletin)}
+                                className="iconEdit"
+                                color="primary"
+                              />
+                            )}
+                            {!botonState && boletin.habilita === 1 ? (
                               <DeleteIcon
                                 className="iconDelete"
-                                disabled={botonState}
                                 onClick={() => handleDelete(boletin)}
                               />
                             ) : (
-                              <DeleteIcon className="iconDelete" />
+                              <DeleteIcon className="iconDelete-desabled" />
+                              // <></>
                             )}
-                            {user.id_persona === 148 && (
-                              <FontAwesomeIcon
-                                icon={faEye}
-                                onClick={() => funcionVerPDF(boletin)}
-                                className="icono-ver-pdf"
-                              />
-                            )}
+                            {user.id_tusuario === 1 &&
+                              (botonState ? (
+                                <FontAwesomeIcon
+                                  icon={faEye}
+                                  className="icono-ver-pdf-desabled"
+                                />
+                              ) : (
+                                // <></>
+                                <FontAwesomeIcon
+                                  icon={faEye}
+                                  onClick={() => funcionVerPDF(boletin)}
+                                  className="icono-ver-pdf"
+                                />
+                              ))}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -891,7 +918,6 @@ const TablaBoletines = () => {
         ) : (
           <TableLoader filas={8} />
         )}
-
         <Snackbar
           open={open}
           autoHideDuration={6000}
@@ -901,12 +927,13 @@ const TablaBoletines = () => {
             onClose={handleClose}
             severity={error}
             variant="filled"
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", zIndex: 9999999 }}
           >
             {mensaje}
           </Alert>
         </Snackbar>
       </Paper>
+     <LoaderMuni img={loader}/>
     </div>
   );
 };

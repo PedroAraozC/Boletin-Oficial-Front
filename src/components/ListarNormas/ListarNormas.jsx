@@ -33,11 +33,10 @@ const TablaNormas = () => {
   const [normaInput, setNormaInput] = useState("");
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [nombreCampoEditado, setNombreCampoEditado] = useState("");
-  const [botonState, setBotonState] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [error, setError] = useState("error");
-  const [editButtonDisabled, setEditButtonDisabled] = useState(false);
+  const [botonState, setBotonState] = useState(false);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -54,30 +53,27 @@ const TablaNormas = () => {
   };
 
   const algoSalioMal = () => {
-    setOpen(true);
+    setOpenAlert(true);
     setMensaje("Algo salió mal. Recargue e intente nuevamente");
     setError("error");
   };
 
-  const handleAcceptModal = (norma, habilita) => {
+  const handleAcceptModal = async (norma, habilita) => {
+    setBotonState(true);
     try {
-      setBotonState(true);
-
-      axios.post(`/norma/alta`, { norma, habilita }).then((response) => {
+      await axios.post(`/norma/alta`, { norma, habilita }).then((response) => {
         cargarNormas();
         setNormaInput("");
         setOpenModal(false);
         setCheckboxValue(true);
       });
-      setOpen(true);
+      setOpenAlert(true);
       setMensaje("Norma guardada con éxito!");
       setError("success");
     } catch (error) {
       console.error("Error al guardar Norma:", error);
       algoSalioMal();
     }
-
-    setBotonState(false);
     handleCloseModal();
   };
 
@@ -97,9 +93,10 @@ const TablaNormas = () => {
       return null;
     }
   }
+
   const handleEdit = (norma) => {
+    setBotonState(true);
     try {
-      setBotonState(true);
       setEditingNorma({ ...norma });
       setOpenDialog(true);
       const nombreCampo = obtenerNombreCampoPorPosicion(norma, 1);
@@ -111,32 +108,31 @@ const TablaNormas = () => {
     setBotonState(false);
   };
 
-  const handleDelete = (normaId) => {
+  const handleDelete = async (normaId) => {
     const habilita = 0;
+    setBotonState(true);
     try {
-      setBotonState(true);
-      const response = axios
-        .patch(`/norma/deshabilitar`, { normaId, habilita })
-        .then((response) => {
-          cargarNormas();
-          setOpenAlert(true);
-          setMensaje("Norma deshabilitada");
-          setError("error");
-        });
+      const response = await axios.patch(`/norma/deshabilitar`, {
+        normaId,
+        habilita,
+      });
+
+      // console.log(botonState, "delete");
+      setOpenAlert(true);
+      setMensaje("Norma deshabilitada");
+      setError("error");
     } catch (error) {
       console.error("Error al guardar cambios:", error);
       algoSalioMal();
     }
-    // const updatedNormas = normas.map((item) =>
-    //   item.id_norma === normaId ? { ...item, habilita: 0 } : item
-    // );
-    setBotonState(false);
+    cargarNormas();
   };
 
   const handleCancel = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
+    setBotonState(false);
     setOpenDialog(false);
   };
 
@@ -156,45 +152,52 @@ const TablaNormas = () => {
       habilita: isChecked,
     }));
   };
-  const cargarNormas = () => {
-    try {
-      setBotonState(true);
-      axios.get("/norma/listado").then((response) => {
+  const cargarNormas = async () => {
+    setBotonState(true);
+    await axios
+      .get("/norma/listado")
+      .then((response) => {
         setNormas(response.data);
-        setBotonState(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener normas:", error);
+        algoSalioMal();
       });
-    } catch (error) {
-      console.error("Error al obtener normas:", error);
-      algoSalioMal();
-    }
+    setBotonState(false);
+    // console.log(botonState, "cargar");
   };
 
-  const handleSave = (updatedNormas) => {
+  const handleSave = async (updatedNormas) => {
+    setBotonState(true);
     if (editingNorma) {
       try {
-        setBotonState(true);
         const { id_norma, tipo_norma, habilita } = editingNorma;
-        axios
-          .put(`/norma/editar`, { id_norma, tipo_norma, habilita })
-          .then((response) => {
-            cargarNormas();
-            setEditingNorma(null);
-            setOpenDialog(false);
-            setNombreCampoEditado("");
-            setOpenAlert(true);
-            setMensaje("Norma guardada con éxito!");
-            setError("success");
-          });
+        const respuesta = await axios.put(`/norma/editar`, {
+          id_norma,
+          tipo_norma,
+          habilita,
+        });
+        setEditingNorma(null);
+        setOpenDialog(false);
+        setNombreCampoEditado("");
+        setOpenAlert(true);
+        setMensaje("Norma guardada con éxito!");
+        setError("success");
       } catch (error) {
         console.error("Error al guardar cambios:", error);
         algoSalioMal();
       }
     }
+    cargarNormas();
   };
 
   useEffect(() => {
-    setBotonState();
-  }, [botonState, editButtonDisabled]);
+    cargarNormas();
+    // console.log(botonState, "estado botonete");
+  }, []);
+  // useEffect(() => {
+  //   console.log(botonState, "estado botonete");
+  // }, [botonState]);
 
   const columns = [
     {
@@ -210,7 +213,7 @@ const TablaNormas = () => {
     { id: "habilita", label: "Habilita", align: "center" },
   ];
 
-  useEffect(() => {}, [editingNorma]);
+  useEffect(() => {}, [editingNorma?.habilita]);
 
   return (
     <div className="tablaNormas">
@@ -286,14 +289,15 @@ const TablaNormas = () => {
                           ))}
 
                           <TableCell className="d-flex justify-content-center">
-                            {!botonState ? (
+                            {botonState ? (
+                              <EditIcon className="iconEdit-desabled" color="primary" />
+                            ) : (
+                              // <></>
                               <EditIcon
                                 onClick={() => handleEdit(norma)}
                                 className="iconEdit"
                                 color="primary"
                               />
-                            ) : (
-                              <EditIcon className="iconEdit" color="primary" />
                             )}
                             {norma.habilita === 1 && !botonState ? (
                               <DeleteIcon
@@ -301,7 +305,7 @@ const TablaNormas = () => {
                                 onClick={() => handleDelete(norma.id_norma)}
                               />
                             ) : (
-                              <DeleteIcon className="iconDelete" />
+                              <DeleteIcon className="iconDelete-desabled" />
                             )}
                           </TableCell>
                         </TableRow>
@@ -358,7 +362,7 @@ const TablaNormas = () => {
                 open={openModal}
                 onClose={handleCloseModal}
                 onAccept={() => handleAcceptModal(normaInput, checkboxValue)}
-                title="AGREGAR NORMA"
+                title="NORMA"
                 inputLabel="Nombre de la Norma"
                 inputValue={normaInput}
                 onInputChange={(e) => setNormaInput(e.target.value)}

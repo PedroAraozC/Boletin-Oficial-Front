@@ -159,7 +159,7 @@ const AltaBoletines = () => {
       mensaje =
         "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
       setError("warning");
-    } else if (valuesCabecera.nroBoletin > 10) {
+    } else if (valuesCabecera.nroBoletin.length > 10) {
       mensaje = "El Nº de Boletín no puede contener mas de 10 digitos.";
       setError("error");
     } else if (valuesCabecera.nroBoletin === "") {

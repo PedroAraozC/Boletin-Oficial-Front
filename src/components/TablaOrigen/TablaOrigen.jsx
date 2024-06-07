@@ -48,7 +48,7 @@ const TablaOrigen = () => {
     if (reason === "clickaway") {
       return;
     }
-    setOpen(false);
+    setOpenAlert(false);
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -86,30 +86,29 @@ const TablaOrigen = () => {
   };
 
   const algoSalioMal = () => {
-    setOpen(true);
+    setOpenAlert(true);
     setMensaje("Algo salió mal. Recargue e intente nuevamente");
     setError("error");
   };
 
-  const handleAcceptModal = (nombre_origen, habilita) => {
+  const handleAcceptModal = async (nombre_origen, habilita) => {
+    setBotonState(true);
     try {
-      setBotonState(true);
-      axios
+      await axios
         .post(`/origen/alta`, { nombre_origen, habilita })
         .then((response) => {
           cargarOrigen();
           setEditOrigen(null);
           setOpenDialog(false);
         });
+      setOpenAlert(true);
+      setMensaje("Origen guardado con éxito!");
+      setError("success");
     } catch (error) {
       console.error("Error al guardar Origen:", error);
       algoSalioMal();
     }
-    setOpen(true);
-    setMensaje("Origen guardado con éxito!");
-    setError("success");
     handleCloseModal();
-    setBotonState(false);
   };
 
   const handleInputChange = (e) => {
@@ -122,14 +121,13 @@ const TablaOrigen = () => {
     }
   };
 
-  const handleDelete = (origenId) => {
+  const handleDelete = async (origenId) => {
     const habilita = 0;
+    setBotonState(true);
     try {
-      setBotonState(true);
-      const response = axios
+      const response = await axios
         .patch(`/origen/deshabilitar`, { origenId, habilita })
         .then((response) => {
-          cargarOrigen();
           setOpenAlert(true);
           setMensaje("origen deshabilitado");
           setError("error");
@@ -138,18 +136,12 @@ const TablaOrigen = () => {
       console.error("Error al guardar cambios:", error);
       algoSalioMal();
     }
-
-    // const updatedOrigen = origen.map((item) =>
-    //   item.id_origen === origenId ? { ...item, habilita: 0 } : item
-    // );
-    // setOrigen(updatedOrigen);
-    // handleSave(updatedOrigen);
-    setBotonState(false);
+    cargarOrigen();
   };
 
-  const cargarOrigen = () => {
+  const cargarOrigen = async () => {
     setBotonState(true);
-    axios
+    const respuesta = await axios
       .get("/origen/listado")
       .then((response) => {
         setOrigen(response.data);
@@ -161,16 +153,14 @@ const TablaOrigen = () => {
     setBotonState(false);
   };
 
-  const handleSave = (updatedOrigen) => {
+  const handleSave = async (updatedOrigen) => {
+    setBotonState(true);
     if (editOrigen) {
       try {
-        setBotonState(true);
-
         const { id_origen, nombre_origen, habilita } = editOrigen;
-        axios
+        const respuesta = await axios
           .put(`/origen/editar`, { id_origen, nombre_origen, habilita })
           .then((response) => {
-            cargarOrigen();
             setEditOrigen(null);
             setOpenDialog(false);
             setNombreCampoEditado("");
@@ -183,7 +173,7 @@ const TablaOrigen = () => {
         algoSalioMal();
       }
     }
-    setBotonState(false);
+    cargarOrigen();
   };
 
   const columns = [
@@ -273,20 +263,27 @@ const TablaOrigen = () => {
                               </TableCell>
                             ))}
                             <TableCell className="d-flex justify-content-center">
-                              <EditIcon
-                                onClick={() => handleEdit(origen)}
-                                className="iconEdit"
-                                disabled={botonState}
-                                color="primary"
-                              />
-                              {origen.habilita === 1 ? (
+                              {botonState ? (
+                                <EditIcon
+                                  className="iconEdit-desabled"
+                                  color="primary"
+                                />
+                              ) : (
+                                <EditIcon
+                                  onClick={() => handleEdit(origen)}
+                                  className="iconEdit"
+                                  color="primary"
+                                />
+                              )}
+
+                              {!botonState && origen.habilita === 1 ? (
                                 <DeleteIcon
                                   className="iconDelete"
                                   disabled={botonState}
                                   onClick={() => handleDelete(origen.id_origen)}
                                 />
                               ) : (
-                                <DeleteIcon className="iconDelete" />
+                                <DeleteIcon className="iconDelete-desabled" />
                               )}
                             </TableCell>
                           </TableRow>
@@ -340,7 +337,7 @@ const TablaOrigen = () => {
                 open={openModal}
                 onClose={handleCloseModal}
                 onAccept={() => handleAcceptModal(origenInput, checkboxValue)}
-                title="AGREGAR ORIGEN"
+                title="ORIGEN"
                 inputLabel="Nombre del Origen"
                 inputValue={origenInput}
                 onInputChange={(e) => setOrigenInput(e.target.value)}
