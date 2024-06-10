@@ -21,6 +21,8 @@ import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import "../ListarNormas/ListarNormas.css";
 import "../TablasEdicion/TablasEdicion.css";
 import TableLoader from "../TableLoader/TableLoader";
+import loader from "../../assets/logo-SMT-Blanco.png";
+import LoaderMuni from "../LoaderMuni/LoaderMuni";
 const TablaOrigen = () => {
   const [origen, loading, setOrigen] = useGet("/origen/listado", axios);
   const [editOrigen, setEditOrigen] = useState("");
@@ -36,6 +38,7 @@ const TablaOrigen = () => {
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [openAlert, setOpenAlert] = useState(false);
   const [error, setError] = useState("error");
+  const [bandera, setBandera] = useState(false);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -124,6 +127,8 @@ const TablaOrigen = () => {
   const handleDelete = async (origenId) => {
     const habilita = 0;
     setBotonState(true);
+    setBandera(true);
+
     try {
       const response = await axios
         .patch(`/origen/deshabilitar`, { origenId, habilita })
@@ -141,6 +146,7 @@ const TablaOrigen = () => {
 
   const cargarOrigen = async () => {
     setBotonState(true);
+    setBandera(true);
     const respuesta = await axios
       .get("/origen/listado")
       .then((response) => {
@@ -151,10 +157,13 @@ const TablaOrigen = () => {
         algoSalioMal();
       });
     setBotonState(false);
+    setBandera(false);
   };
 
   const handleSave = async (updatedOrigen) => {
     setBotonState(true);
+    setBandera(true);
+
     if (editOrigen) {
       try {
         const { id_origen, nombre_origen, habilita } = editOrigen;
@@ -379,6 +388,7 @@ const TablaOrigen = () => {
       ) : (
         <></>
       )}
+      {(bandera || botonState) && <LoaderMuni img={loader} />}
     </div>
   );
 };

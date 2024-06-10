@@ -22,6 +22,8 @@ import EditarNormaDialog from "../EditarNormaDialog/EditarNormaDialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ModalGenerica from "../ModalGenerico/ModalGenerico";
 import TableLoader from "../TableLoader/TableLoader";
+import LoaderMuni from "../LoaderMuni/LoaderMuni";
+import loader from "../../assets/logo-SMT-Blanco.png";
 
 const TablaNormas = () => {
   const [normas, loading, setNormas] = useGet("/norma/listado", axios);
@@ -37,6 +39,7 @@ const TablaNormas = () => {
   const [mensaje, setMensaje] = useState("Algo Explotó :/");
   const [error, setError] = useState("error");
   const [botonState, setBotonState] = useState(false);
+  const [bandera, setBandera] = useState(false);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -111,6 +114,7 @@ const TablaNormas = () => {
   const handleDelete = async (normaId) => {
     const habilita = 0;
     setBotonState(true);
+    setBandera(true);
     try {
       const response = await axios.patch(`/norma/deshabilitar`, {
         normaId,
@@ -154,6 +158,8 @@ const TablaNormas = () => {
   };
   const cargarNormas = async () => {
     setBotonState(true);
+    setBandera(true);
+
     await axios
       .get("/norma/listado")
       .then((response) => {
@@ -164,11 +170,15 @@ const TablaNormas = () => {
         algoSalioMal();
       });
     setBotonState(false);
+    setBandera(false);
+
     // console.log(botonState, "cargar");
   };
 
   const handleSave = async (updatedNormas) => {
     setBotonState(true);
+    setBandera(true);
+
     if (editingNorma) {
       try {
         const { id_norma, tipo_norma, habilita } = editingNorma;
@@ -290,7 +300,10 @@ const TablaNormas = () => {
 
                           <TableCell className="d-flex justify-content-center">
                             {botonState ? (
-                              <EditIcon className="iconEdit-desabled" color="primary" />
+                              <EditIcon
+                                className="iconEdit-desabled"
+                                color="primary"
+                              />
                             ) : (
                               // <></>
                               <EditIcon
@@ -406,6 +419,7 @@ const TablaNormas = () => {
       ) : (
         <></>
       )}
+      {(bandera || botonState) && <LoaderMuni img={loader} />}
     </div>
   );
 };

@@ -43,7 +43,7 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BolContext } from "../../context/BolContext";
 import loader from "../../assets/logo-SMT-Blanco.png";
-import LoaderMuni  from "../../components/LoaderMuni/LoaderMuni.jsx";
+import LoaderMuni from "../../components/LoaderMuni/LoaderMuni.jsx";
 
 const TablaBoletines = () => {
   const [boletines, loading, setBoletines] = useGet("/boletin/listado", axios);
@@ -322,6 +322,8 @@ const TablaBoletines = () => {
 
   const handleSave = async () => {
     setBotonState(true);
+    setBandera(true);
+
     if (editingBoletin) {
       try {
         // console.log(archivoSeleccionado, "archivo seleccionado");
@@ -933,7 +935,7 @@ const TablaBoletines = () => {
           </Alert>
         </Snackbar>
       </Paper>
-     <LoaderMuni img={loader}/>
+      {(bandera || botonState) && <LoaderMuni img={loader} />}
     </div>
   );
 };

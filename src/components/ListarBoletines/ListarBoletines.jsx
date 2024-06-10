@@ -137,8 +137,8 @@ const ListarBoletines = () => {
             {mensaje}
           </Alert>
         </Snackbar>
+        {bandera && <LoaderMuni img={loader} />}
       </div>
-      <LoaderMuni img={loader} />
     </>
   );
 };

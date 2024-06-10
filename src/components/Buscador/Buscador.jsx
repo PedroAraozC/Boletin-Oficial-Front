@@ -10,7 +10,7 @@ import ListarBoletines from "../ListarBoletines/ListarBoletines.jsx";
 import "../ListarBoletines/ListarBoletines.css";
 import loader from "../../assets/logo-SMT-Blanco.png";
 import { BolContext } from "../../context/BolContext.jsx";
-import LoaderMuni  from "../../components/LoaderMuni/LoaderMuni.jsx";
+import LoaderMuni from "../../components/LoaderMuni/LoaderMuni.jsx";
 
 const Buscador = () => {
   const [values, setValues] = useState([]);
@@ -195,13 +195,12 @@ const Buscador = () => {
 
   return (
     <>
-      <div className="d-flex flex-column align-items-center">
+      <div className={`d-flex flex-column align-items-center`}>
         <Box className="buscador ">
           <h3 className="tituloBuscador">BUSCAR BOLETINES ANTERIORES</h3>
           <Box
-            component="form"
+            // component="form"
             sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
-            noValidate
             autoComplete="off"
             className="inputCont container"
           >
@@ -270,7 +269,7 @@ const Buscador = () => {
       </div>
       <div className="d-flex flex-row mt-4">
         <Grid container spacing={2} className="d-flex contGrid">
-          <Grid className="contBoletines ps-5  pe-4 " item>
+          <Grid className="contBoletines ps-4  pe-4 " item>
             {resultados.length > 0 ? (
               <>
                 {Array.isArray(values) && resultados.length > 0 ? (
@@ -372,7 +371,7 @@ const Buscador = () => {
           </Alert>
         </Snackbar>
       </div>
-      <LoaderMuni img={loader}/>
+      {bandera && <LoaderMuni img={loader} />}
     </>
   );
 };

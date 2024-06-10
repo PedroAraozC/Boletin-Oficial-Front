@@ -3,8 +3,13 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    }
-.tablaNormas th, td, tbody, thead,tr{
+}
+
+.tablaNormas th,
+td,
+tbody,
+thead,
+tr {
     table-layout: fixed;
     /* background-color: red !important; */
     overflow: hidden !important;
