@@ -11,13 +11,12 @@ const AdministracionBoletin = () => {
   const navigate = useNavigate();
   const redirigir = (ruta) => {
     navigate(ruta);
-    setState(false);
   };
   return (
     <div className="contPadre  ">
       <div className="cardsCont row ">
         <div
-          className="col-12 col-md-6 col-lg-3 mb-4 card container"
+          className="col-12 col-md-6 col-lg-3 col-xs-6 col-sm-6 mb-4 card container"
           onClick={() => redirigir("/altaboletines")}
         >
           <div className="card-body ">
@@ -28,11 +27,10 @@ const AdministracionBoletin = () => {
           </div>
         </div>
         <div
-          className=" col-12 col-md-6 col-lg-3 mb-4 card container"
+          className=" col-12 col-md-6 col-lg-3 col-xs-6 col-sm-6 mb-4 card container"
           onClick={() => redirigir("/tablaBoletines")}
         >
           <div className="card-body">
-         
             <div className="card-icon-cont">
               <EditNoteIcon className="card-icon" />
             </div>
@@ -40,7 +38,7 @@ const AdministracionBoletin = () => {
           </div>
         </div>
         <div
-          className="col-12 col-md-6 col-lg-3 mb-4 card container"
+          className="col-12 col-md-6 col-lg-3 col-xs-6 col-sm-6 mb-4 card container"
           onClick={() => redirigir("/tablas")}
         >
           <div className="card-body">
@@ -52,7 +50,7 @@ const AdministracionBoletin = () => {
           </div>
         </div>
         <div
-          className="col-12 col-md-6 col-lg-3 mb-4 card container"
+          className="col-12 col-md-6 col-lg-3 col-xs-6 col-sm-6 mb-4 card container"
           onClick={() => redirigir("/")}
         >
           <div className="card-body">

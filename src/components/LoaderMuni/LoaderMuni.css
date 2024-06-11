@@ -31,9 +31,16 @@
 }
 
 .loader img {
-    width: 333px;
-    height: 333px;
+    max-width: 333px;
+    max-height: 333px;
     object-fit: contain;
     filter: brightness(0);
     animation: skeleton-loading 1.5s infinite;
+}
+
+@media (max-width: 775px) {
+    .loader img {
+        width: 20% !important;
+    }
+
 }

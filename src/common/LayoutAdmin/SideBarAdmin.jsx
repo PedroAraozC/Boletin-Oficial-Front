@@ -50,7 +50,7 @@ export default function SideBarAdmin() {
       role="presentation"
       className="d-flex justify-content-between flex-column h-100"
     >
-      {personaHabilitada === 736 || user?.id_tusuario === 1 ? (                 //USUARIOS AUTORIZADOS BOLETIN
+      {personaHabilitada === 736 || user?.id_tusuario === 1 ? ( //USUARIOS AUTORIZADOS BOLETIN
         <>
           <div className="d-flex flex-column justify-content-center align-items-start mt-5">
             <ListItemButton
@@ -122,7 +122,7 @@ export default function SideBarAdmin() {
 
   return (
     <div>
-      {personaHabilitada === 736 ||user?.id_tusuario === 1  ? (
+      {personaHabilitada === 736 || user?.id_tusuario === 1 ? (
         <div>
           <IconButton
             size="large"
