@@ -22,6 +22,9 @@ import { ModalAltaBoletin } from "../ModalAltaBoletines/ModalAltaBoletin.jsx";
 import useGet from "../../hook/useGet.jsx";
 import CloseIcon from "@mui/icons-material/Close";
 import { axios } from "../../config/axios.js";
+import loader from "../../assets/logo-SMT-Blanco.png";
+import LoaderMuni from "../../components/LoaderMuni/LoaderMuni.jsx";
+import { faHeartPulse } from "@fortawesome/free-solid-svg-icons";
 
 const AltaBoletines = () => {
   const [open, setOpen] = useState(false);
@@ -58,6 +61,7 @@ const AltaBoletines = () => {
   const [normasAgregadas, setNormasAgregadas] = useState([]);
   const [nroNormaExistente, setNroNormaExistente] = useState(false);
   const [botonState, setBotonState] = useState(false);
+  const [banderaLoader, setBanderaLoader] = useState(false);
 
   const handleAgregarNorma = () => {
     const nuevaNorma = {
@@ -244,6 +248,7 @@ const AltaBoletines = () => {
   const enviarDatos = async () => {
     try {
       setBotonState(true);
+      setBanderaLoader(true)
       const requestData = {
         nroBoletin: parseInt(valuesCabecera.nroBoletin, 10),
         fechaPublicacion: valuesCabecera.fechaPublicacion,
@@ -271,6 +276,7 @@ const AltaBoletines = () => {
       algoSalioMal();
     }
     setBotonState(false);
+    setBanderaLoader(false)
   };
   return (
     <Box
@@ -537,6 +543,7 @@ const AltaBoletines = () => {
           setEstadoBoton={setBotonState}
         />
       )}
+      {banderaLoader && <LoaderMuni img={loader} />}
     </Box>
   );
 };

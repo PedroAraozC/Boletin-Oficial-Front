@@ -1,11 +1,14 @@
 .contGrid {
     align-items: center;
+    flex-direction: column !important;
+
 }
 
 .contBoletines {
     min-height: 45.2vh !important;
     /* min-height: 433px !important; */
     width: 100vw !important;
+    min-width: 310px;
     display: flex;
     flex-direction: column !important;
     justify-items: center !important;
@@ -69,6 +72,25 @@
     background-color: rgb(43, 169, 241) !important;
 }
 
+@media (min-width: 1500px) {
+
+    .contGrid {
+        display: flex !important;
+        justify-self: center !important;
+
+    }
+
+    .boletin {
+        width: 1000px;
+    }
+
+    .boletinText {
+        max-width: 100% !important;
+        margin-left: 0;
+        margin-right: 0;
+
+    }
+}
 
 @media (max-width: 546px) {
     .boletin {
@@ -88,6 +110,7 @@
         width: fit-content;
         height: 30px;
         margin-bottom: 15px !important;
+        margin-right: 0px !important;
     }
 
     .logoMuniColor {
@@ -119,27 +142,6 @@
     .boletinText h6 {
 
         font-size: 12px;
-
-    }
-}
-
-@media (min-width: 1500px) {
-
-    .contGrid {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-self: center !important;
-
-    }
-
-    .boletin {
-        width: 1000px;
-    }
-
-    .boletinText {
-        max-width: 100% !important;
-        margin-left: 0;
-        margin-right: 0;
 
     }
 }

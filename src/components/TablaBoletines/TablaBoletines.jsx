@@ -211,7 +211,11 @@ const TablaBoletines = () => {
       mensaje =
         "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
       setError("warning");
-    } else if (editingBoletin.nro_boletin === "") {
+    }  else if (archivoSeleccionado == null ) {
+      console.log(archivoSeleccionado)
+      mensaje = "Debe ingresar un archivo PDF para guardar los cambios";
+      setError("warning");
+    }else if (editingBoletin.nro_boletin === "") {
       mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
     } else if (editingBoletin.nro_boletin.length > 10) {
@@ -293,6 +297,7 @@ const TablaBoletines = () => {
 
   const handleGuardar = () => {
     handleSave();
+    console.log(archivoSeleccionado);
     // cargarBoletines();
   };
 
@@ -365,6 +370,7 @@ const TablaBoletines = () => {
         algoSalioMal();
       }
     }
+    setArchivoSeleccionado(null)
     cargarBoletines();
   };
 
@@ -403,8 +409,12 @@ const TablaBoletines = () => {
 
   useEffect(() => {
     // getTiposOrigen();
+   
     cargarBoletines();
   }, []);
+useEffect(() => {
+  archivoSeleccionado
+}, [ archivoSeleccionado])
 
   const funcionVerPDF = async (boletin) => {
     try {
@@ -573,7 +583,7 @@ const TablaBoletines = () => {
                               <DeleteIcon className="iconDelete-desabled" />
                               // <></>
                             )}
-                            {user.id_tusuario === 1 &&
+                            {user?.id_tusuario === 1 || user?.id_persona === 736 ?
                               (botonState ? (
                                 <FontAwesomeIcon
                                   icon={faEye}
@@ -586,7 +596,7 @@ const TablaBoletines = () => {
                                   onClick={() => funcionVerPDF(boletin)}
                                   className="icono-ver-pdf"
                                 />
-                              ))}
+                              )):(<></>)}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -875,7 +885,8 @@ const TablaBoletines = () => {
                         numeroBoletinDisponible(
                           editingBoletin.nro_boletin,
                           editingBoletin.id_boletin
-                        ) === false ? (
+                        ) === false &&
+                        archivoSeleccionado !== null ? (
                           <>
                             <Button
                               onClick={handleGuardar}

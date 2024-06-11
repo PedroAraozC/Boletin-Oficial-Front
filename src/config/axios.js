@@ -3,8 +3,8 @@ import axiosOriginal from "axios";
 export const axios = axiosOriginal.create({
   // baseURL: "IP SERVIDOR PRODUCCION:PUERTO DEL BACK-END"
   // baseURL: "http://181.105.6.205:89" //SERVIDOR DE PRODUCCION
-  // baseURL: "https://boletinoficial.smt.gob.ar:3500" //SERVIDOR DE PRODUCCION
-  baseURL: "http://localhost:3500",
+  baseURL: "https://boletinoficial.smt.gob.ar:3500" //SERVIDOR DE PRODUCCION
+  // baseURL: "http://localhost:3500",
 });
 
 export const axiosDigital = axiosOriginal.create({

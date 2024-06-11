@@ -59,7 +59,7 @@ export default function SideBarAdmin() {
               className="w-100"
             >
               <ListItemIcon>
-                <SupervisorAccountIcon />
+                <SupervisorAccountIcon className="icono" />
               </ListItemIcon>
               <ListItemText primary="ADMIN BOLETIN" />
             </ListItemButton>
@@ -69,7 +69,7 @@ export default function SideBarAdmin() {
               className="w-100"
             >
               <ListItemIcon>
-                <NoteAddIcon />
+                <NoteAddIcon className="icono" />
               </ListItemIcon>
               <ListItemText primary="ALTA BOLETINES" />
             </ListItemButton>
@@ -79,7 +79,7 @@ export default function SideBarAdmin() {
               className="w-100"
             >
               <ListItemIcon>
-                <ArticleIcon />
+                <ArticleIcon className="icono" />
               </ListItemIcon>
               <ListItemText primary="BOLETINES" />
             </ListItemButton>
@@ -89,7 +89,7 @@ export default function SideBarAdmin() {
               className="w-100"
             >
               <ListItemIcon>
-                <EditNoteIcon />
+                <EditNoteIcon className="icono" />
               </ListItemIcon>
               <ListItemText primary="EDICION BOLETIN" />
             </ListItemButton>
@@ -99,7 +99,7 @@ export default function SideBarAdmin() {
               className="w-100"
             >
               <ListItemIcon>
-                <TableViewIcon />
+                <TableViewIcon className="icono" />
               </ListItemIcon>
               <ListItemText primary="NORMA/SECRETARIA" />
             </ListItemButton>

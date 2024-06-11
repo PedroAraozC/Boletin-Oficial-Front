@@ -42,7 +42,7 @@ export default function NavBarAdmin() {
   return (
     <>
       {authenticated ? (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, minWidth:300}}>
           <AppBar position="static" className="fondoAdmin d-flex flex-row">
             {(authenticated && user?.id_persona == 736) ||
             (authenticated && user?.id_tusuario == 1) ? (           //USUARIOS AUTORIZADOS BOLETIN

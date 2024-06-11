@@ -1,0 +1,110 @@
+.contPadre {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding-left: 0;
+    width: 100%;
+}
+
+.cardsCont {
+    align-items: center;
+    height: 80vh;
+    justify-content: space-around !important;
+    width: 80% !important;
+    flex-direction: row !important;
+    display: flex !important;
+
+}
+
+.card {
+    height: 250px;
+    width: 20%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 0px 13px 26px #EEF0F8;
+    /* transition: transform 0.3s ease-in-out; */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-color: transparent;
+    font-weight: 500;
+    font-style: bold;
+}
+
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon-cont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px !important;
+    height: 120px !important;
+    background-color: rgba(128, 128, 128, 0.099);
+    border-radius: 100%;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.card-icon {
+    width: 80% !important;
+    height: 80% !important;
+    color: #1F89F6;
+    transition: color 0.3s
+
+}
+
+.card-text {
+    height: 20%;
+    text-align: center;
+    text-justify: center;
+    margin-top: 16px;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.139);
+
+    .card-icon {
+        color: #ffff;
+    }
+
+    .card-icon-cont {
+        background-color: #f4dc00
+    }
+}
+
+@media (max-width: 1150px) {
+    .cardsCont {
+        column-gap: 0;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 90% !important;
+
+        /* justify-content: space-between !important; */
+    }
+
+    .card {
+        /* margin-left: 0 !important; */
+        width: 20%;
+        height: 210px;
+    }
+
+}
+
+@media (max-width: 930px) {
+    .cardsCont {
+        flex-direction: column !important;
+        columns: 2 !important;
+        margin-left: -30px;
+        column-gap: 20px;
+        justify-items: center !important;
+    }
+
+    .card {
+        width: 50%;
+    }
+}

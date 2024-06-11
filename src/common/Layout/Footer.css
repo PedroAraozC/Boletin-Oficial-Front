@@ -11,7 +11,10 @@
   margin-top: 20px !important;
   font-family: 13px;
   color: #fff;
+
   align-self: flex-end !important;
+  min-width: 310px;
+
 }
 
 .iconosRedes {

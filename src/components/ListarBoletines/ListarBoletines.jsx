@@ -54,7 +54,7 @@ const ListarBoletines = () => {
         setOpen(true);
         setMensaje("No se encontró archivo del boletin solicitado");
         setError("warning");
-        console.log("algo explotó! :(", error);
+        console.log("No se encontro boletin", error);
       } else {
         setOpen(true);
         setMensaje("Error en la conexión");

@@ -179,6 +179,7 @@ const Buscador = () => {
       const blob = response.data;
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
+      
       link.href = url;
       link.setAttribute(
         "download",
@@ -186,9 +187,17 @@ const Buscador = () => {
       );
       link.click();
     } catch (error) {
-      setOpen(true);
-      setMensaje("Error en la conexión");
-      setError("warning");
+      if (error.response.status === 404) {
+        setOpen(true);
+        setMensaje("No se encontró archivo del boletin solicitado");
+        setError("warning");
+        console.log("No se encontro boletin", error);
+      } else {
+        setOpen(true);
+        setMensaje("Error en la conexión");
+        setError("warning");
+        console.log("algo explotó! :(", error);
+      }
     }
     setBandera(false);
   };
@@ -267,9 +276,9 @@ const Buscador = () => {
           </Alert>
         </Snackbar>
       </div>
-      <div className="d-flex flex-row mt-4">
+      <div className="d-flex flex-row jsutify-center mt-4">
         <Grid container spacing={2} className="d-flex contGrid">
-          <Grid className="contBoletines ps-4  pe-4 " item>
+          <Grid className="contBoletines " item>
             {resultados.length > 0 ? (
               <>
                 {Array.isArray(values) && resultados.length > 0 ? (
@@ -283,7 +292,7 @@ const Buscador = () => {
                       <div className="boletinText container mt-3">
                         <div className="d-flex flex-row justify-content-between">
                           <h2>Boletin Nº {boletin.nro_boletin}</h2>
-                          <div className="contBtn">
+                          <div className="d-none d-lg-block contBtn">
                             <Button
                               variant="contained"
                               className="btnPdf"
@@ -325,7 +334,7 @@ const Buscador = () => {
                           <div className="boletinText container mt-3">
                             <div className="d-flex flex-row justify-content-between">
                               <h2>Boletin Nº {boletin.nro_boletin}</h2>
-                              <div className="contBtn">
+                              <div className="d-none d-lg-block contBtn">
                                 <Button
                                   variant="contained"
                                   className="btnPdf"
