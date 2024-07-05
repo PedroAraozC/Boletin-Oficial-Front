@@ -18,8 +18,8 @@ const PrivateRoute = ({ children }) => {
     children
   ) : (
     // <Navigate to="/" />
-    // logout()
-    <></>
+     logout()
+    // <></>
   );
 };
 

@@ -20,8 +20,8 @@ const AdminBoletinRoute = ({ children }) => {
     children
   ) : (
     // <Navigate to="/" />
-    // logout()
-    <></>
+   logout()
+    // <></>
   );
 };
 

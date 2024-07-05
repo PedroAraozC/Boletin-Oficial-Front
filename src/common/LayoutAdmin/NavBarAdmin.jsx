@@ -42,10 +42,10 @@ export default function NavBarAdmin() {
   return (
     <>
       {authenticated ? (
-        <Box sx={{ flexGrow: 1, minWidth:300}}>
+        <Box sx={{ flexGrow: 1, minWidth: 300 }}>
           <AppBar position="static" className="fondoAdmin d-flex flex-row">
             {(authenticated && user?.id_persona == 736) ||
-            (authenticated && user?.id_tusuario == 1) ? (           //USUARIOS AUTORIZADOS BOLETIN
+            (authenticated && user?.id_tusuario == 1) ? ( //USUARIOS AUTORIZADOS BOLETIN
               <SideBar />
             ) : (
               <></>
@@ -54,12 +54,10 @@ export default function NavBarAdmin() {
               <div className=" contLogoAdmin mb-3">
                 <img src={logoMuni} className="logoNav2Admin" />
                 <div className="boletinNavContAdmin">
-                  <h1 className="boletinNavAdmin">
-                    Boletín Oficial Digital{" "}
-                  </h1>
+                  <h1 className="boletinNavAdmin">Boletín Oficial Digital </h1>
                 </div>
-                <div className="d-md-flex align-items-center m-0 d-none" >
-                  <p className= "m-0 d-none d-xl-flex" >{user.nombre_persona}</p>
+                <div className="d-md-flex align-items-center m-0 d-none">
+                  <p className="m-0 d-none d-xl-flex">{user.nombre_persona}</p>
                   <IconButton
                     size="large"
                     aria-label="account of current user"
@@ -89,6 +87,36 @@ export default function NavBarAdmin() {
                     <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
                   </Menu>
                 </div>
+                  <div className="d-block d-md-none logoXs">
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                    <Menu
+                      className="logOut"
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                    </Menu>
+                  </div>
               </div>
             </Container>
           </AppBar>

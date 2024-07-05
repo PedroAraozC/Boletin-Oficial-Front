@@ -118,18 +118,33 @@
 
   }
 
+  .logoXs {
+    position: absolute;
+    right: 35px;
+    top: 50px;
+  }
+
+  .tituloBuscador {
+    margin-left: 0 !important;
+  }
+
   .contLogoAdmin h4 {
     margin-left: -10px;
   }
 
   .contLogoAdmin {
     flex-direction: column !important;
+    margin-right: 30px;
 
   }
 }
 
 @media (max-width: 500px) {
 
+  .navContAdmin {
+    height: 160px !important;
+
+  }
   .boletinNavContAdmin {
     padding-right: 0;
 
@@ -139,11 +154,21 @@
     margin-left: -10px;
   }
 
+  .contLogoAdmin {
+    margin-right: 50px;
+  }
+
+  .logoXs {
+    position: absolute;
+    right: 10px;
+    top: 50px;
+  }
 }
+
 @media (max-width: 380px) {
 
-    .navContAdmin {
-        height: 160px !important;
+  .navContAdmin {
+    height: 160px !important;
 
-    }
+  }
 }

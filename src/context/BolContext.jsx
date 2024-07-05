@@ -23,10 +23,17 @@ const ProviderBol = ({ children }) => {
 
   const getAuth = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const url = new URL(window.location.href);
+      const tokenURL = url.searchParams.get("auth");
+
+      url.searchParams.delete("auth");
+      history.replaceState(null, "", url.toString());
+
+      const token = tokenURL? tokenURL : localStorage.getItem("token");
       if (!token) {
         setLoading(false);
-        return setAuthenticated(false);
+        // return setAuthenticated(false);
+        return logout();
       }
       // Verifica que axiosDigital.defaults.headers y axiosDigital.defaults.headers.common existen
       // console.log(axiosDigital.defaults.headers);
@@ -58,7 +65,7 @@ const ProviderBol = ({ children }) => {
     setAuthenticated(false);
     localStorage.removeItem("token");
     localStorage.removeItem("tokenSet");
-    const url = new URL(`https://ciudaddigital.smt.gob.ar?destino=boletin`); // IP BACK-DERIVADOR
+    const url = new URL(`https://ciudaddigital.smt.gob.ar/#/login`); // IP BACK-DERIVADOR
     // const url = new URL(`http://localhost:5174`);
     url.searchParams.append("logout", true);
     window.open(url.toString(), "_self");
