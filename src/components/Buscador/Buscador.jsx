@@ -55,6 +55,7 @@ const Buscador = () => {
 
   const handleBuscarBoletin = async () => {
     try {
+      setBandera(true);
       setLoading(true);
       const boletin = {
         nroBoletinBusqueda: values.nroBoletinBusqueda,
@@ -64,6 +65,8 @@ const Buscador = () => {
         setOpen(true);
         setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
         setError("error");
+        setBandera(false);
+        console.log(bandera);
         return;
       } else if (boletin.nroBoletinBusqueda || boletin.fechaBusqueda) {
         handleSearchBoletin(boletin.nroBoletinBusqueda, boletin.fechaBusqueda);
@@ -77,16 +80,22 @@ const Buscador = () => {
       setError("warning");
       console.error("Error al buscar boletín:", error);
     }
+    setBandera(false);
   };
 
   const handleSearchBoletin = async (nro_boletin, fecha_publicacion) => {
     try {
       if (!nro_boletin && !fecha_publicacion) {
+        setBandera(true);
+
         setOpen(true);
         setMensaje("Debe ingresar el Nº de Boletín o Fecha de Publicación");
         setError("error");
+        setBandera(false);
         <ListarBoletines />;
       } else if (nro_boletin && fecha_publicacion) {
+        setBandera(true);
+
         const respuesta = await axios.get(
           `/boletin/buscarNroYFecha/${nro_boletin}/${fecha_publicacion}`
         );
@@ -101,7 +110,10 @@ const Buscador = () => {
           );
           setError("success");
           setBoletinEncontrado(true);
+          setBandera(false);
         } else {
+          setBandera(true);
+
           setValues(BUSCADOR_VALUES);
           setLoading(false);
           setOpen(true);
@@ -109,8 +121,10 @@ const Buscador = () => {
           setError("error");
           console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
+          setBandera(false);
         }
       } else if (nro_boletin && !fecha_publicacion) {
+        setBandera(true);
         const respuesta = await axios.get(`/boletin/buscar/${nro_boletin}`);
         if (respuesta.data.length > 0) {
           setValues(
@@ -121,6 +135,7 @@ const Buscador = () => {
           setMensaje(`Boletín encontrado Nº ${nro_boletin}`);
           setError("success");
           setBoletinEncontrado(true);
+          setBandera(false);
         } else {
           setValues(BUSCADOR_VALUES);
           setLoading(false);
@@ -129,8 +144,11 @@ const Buscador = () => {
           setError("error");
           console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
+          setBandera(false);
         }
       } else if (!nro_boletin && fecha_publicacion) {
+        setBandera(true);
+
         const respuesta = await axios.get(
           `/boletin/buscarFecha/${fecha_publicacion}`
         );
@@ -143,6 +161,7 @@ const Buscador = () => {
           setMensaje(`Boletín encontrado fecha: ${fecha_publicacion}`);
           setError("success");
           setBoletinEncontrado(true);
+          setBandera(false);
         } else {
           setValues(BUSCADOR_VALUES);
           setLoading(false);
@@ -151,15 +170,18 @@ const Buscador = () => {
           setError("error");
           console.log("Boletín no encontrado:", error);
           setBoletinEncontrado(false);
+          setBandera(false);
         }
       }
     } catch (error) {
+      setBandera(false);
       setLoading(false);
       setOpen(true);
       setMensaje("Error de conexión");
       setError("warning");
       console.error("Error al buscar boletín:", error);
     }
+
     return;
   };
 
@@ -179,7 +201,7 @@ const Buscador = () => {
       const blob = response.data;
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      
+
       link.href = url;
       link.setAttribute(
         "download",
@@ -292,7 +314,7 @@ const Buscador = () => {
                       <div className="boletinText container mt-3">
                         <div className="d-flex flex-row justify-content-between">
                           <h2>Boletin Nº {boletin.nro_boletin}</h2>
-                          <div className="d-none d-lg-block contBtn">
+                          <div className=" contBtn">
                             <Button
                               variant="contained"
                               className="btnPdf"
@@ -334,7 +356,7 @@ const Buscador = () => {
                           <div className="boletinText container mt-3">
                             <div className="d-flex flex-row justify-content-between">
                               <h2>Boletin Nº {boletin.nro_boletin}</h2>
-                              <div className="d-none d-lg-block contBtn">
+                              <div className=" contBtn">
                                 <Button
                                   variant="contained"
                                   className="btnPdf"

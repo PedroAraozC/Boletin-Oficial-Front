@@ -103,7 +103,7 @@ const ListarBoletines = () => {
                           ? `ÚLTIMA EDICIÓN | BOLETÍN Nº ${boletin.nro_boletin}`
                           : `BOLETÍN Nº ${boletin.nro_boletin}`}
                       </h2>
-                      <div className="d-none d-lg-block contBtn">
+                      <div className=" contBtn">
                         <Button
                           variant="contained"
                           className="btnPdf"
