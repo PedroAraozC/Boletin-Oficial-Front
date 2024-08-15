@@ -272,28 +272,35 @@ const TablaOrigen = () => {
                               </TableCell>
                             ))}
                             <TableCell className="d-flex justify-content-center">
-                              {botonState ? (
+                              {/* {botonState ? (
                                 <EditIcon
                                   className="iconEdit-desabled"
                                   color="primary"
                                 />
-                              ) : (
+                              ) : ( */}
+                              <button
+                                onClick={() => handleEdit(origen)}
+                                className="buttonDelete"
+                              >
                                 <EditIcon
-                                  onClick={() => handleEdit(origen)}
                                   className="iconEdit"
                                   color="primary"
                                 />
-                              )}
+                              </button>
+                              {/* )} */}
 
-                              {!botonState && origen.habilita === 1 ? (
-                                <DeleteIcon
-                                  className="iconDelete"
-                                  disabled={botonState}
-                                  onClick={() => handleDelete(origen.id_origen)}
-                                />
-                              ) : (
-                                <DeleteIcon className="iconDelete-desabled" />
-                              )}
+                              {/* {!botonState && origen.habilita === 1 ? ( */}
+
+                              <button
+                                disabled={!botonState && origen.habilita !== 1}
+                                onClick={() => handleDelete(origen.id_origen)}
+                                className="buttonDelete"
+                              >
+                                <DeleteIcon className="iconDelete" />
+                              </button>
+                              {/* ) : ( */}
+                              {/* <DeleteIcon className="iconDelete-desabled" />
+                              )} */}
                             </TableCell>
                           </TableRow>
                         ))

@@ -10,7 +10,7 @@
   border-top: solid 1px !important;
   /* border-color: #0066ff !important; */
   /* background-color: #0066ff; */
-  
+
 
 }
 
@@ -49,27 +49,38 @@
   margin-top: 10px;
 }
 
+.buttonDelete {
+  border: 0px;
+  background-color: transparent;
+}
+
 .iconDelete {
   cursor: pointer;
   color: red;
   margin-left: 15px;
+  margin-right: 15px;
+}
+
+.buttonDelete:disabled{
+  filter: sepia();
 }
 
 .iconDelete-desabled {
   color: gray !important;
   margin-left: 15px;
 }
-
+/* 
 .iconDelete :hover {
   color: rgb(163, 15, 15);
-}
+} */
 
-.iconEdit{
+.iconEdit {
   cursor: pointer;
 }
-.iconEdit-desabled{
+
+.iconEdit-desabled {
   color: gray !important;
-} 
+}
 
 .iconEdit :hover {
   color: #0066ff;
@@ -87,18 +98,23 @@
   text-overflow: ellipsis !important;
   overflow: hidden !important;
 }
-.css-16c50h-MuiInputBase-root-MuiTablePagination-select{
+
+.css-16c50h-MuiInputBase-root-MuiTablePagination-select {
   margin-right: 5px !important;
 }
+
 .MuiTablePagination-actions {
   margin-left: 0px !important;
 }
+
 .tabla {
   background-color: red;
 }
-.css-1chpzqh{
+
+.css-1chpzqh {
   margin-bottom: 0;
 }
+
 .checkBoxNorma {
   /* color: #fff; */
   align-items: center !important;

@@ -299,27 +299,32 @@ const TablaNormas = () => {
                           ))}
 
                           <TableCell className="d-flex justify-content-center">
-                            {botonState ? (
-                              <EditIcon
-                                className="iconEdit-desabled"
-                                color="primary"
-                              />
-                            ) : (
-                              // <></>
-                              <EditIcon
-                                onClick={() => handleEdit(norma)}
-                                className="iconEdit"
-                                color="primary"
-                              />
-                            )}
-                            {norma.habilita === 1 && !botonState ? (
-                              <DeleteIcon
-                                className="iconDelete"
-                                onClick={() => handleDelete(norma.id_norma)}
-                              />
-                            ) : (
-                              <DeleteIcon className="iconDelete-desabled" />
-                            )}
+                            {/* {botonState ? ( 
+                            //   <EditIcon
+                            //     className="iconEdit-desabled"
+                            //     color="primary"
+                            //   />
+                            // ) : (
+                            // <></>*/}
+                            <button
+                              className="buttonDelete"
+                              onClick={() => handleEdit(norma)}
+                              disabled={botonState}
+                            >
+                              <EditIcon className="iconEdit" color="primary" />
+                            </button>
+                            {/* )}*/}
+                            {/* {norma.habilita === 1 && !botonState ? ( */}
+                            <button
+                              disabled={norma.habilita !== 1 && !botonState}
+                              onClick={() => handleDelete(norma.id_norma)}
+                              className="buttonDelete"
+                            >
+                              <DeleteIcon className="iconDelete" />
+                            </button>
+                            {/* ) : ( */}
+                            {/* <DeleteIcon className="iconDelete-desabled" /> */}
+                            {/* )} */}
                           </TableCell>
                         </TableRow>
                       ))}

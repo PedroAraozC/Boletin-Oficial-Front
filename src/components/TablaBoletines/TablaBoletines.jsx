@@ -211,11 +211,11 @@ const TablaBoletines = () => {
       mensaje =
         "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
       setError("warning");
-    }  else if (archivoSeleccionado == null ) {
-      console.log(archivoSeleccionado)
+    } else if (archivoSeleccionado == null) {
+      console.log(archivoSeleccionado);
       mensaje = "Debe ingresar un archivo PDF para guardar los cambios";
       setError("warning");
-    }else if (editingBoletin.nro_boletin === "") {
+    } else if (editingBoletin.nro_boletin === "") {
       mensaje = "Debe ingresar el Nº de Boletín";
       setError("error");
     } else if (editingBoletin.nro_boletin.length > 10) {
@@ -370,7 +370,7 @@ const TablaBoletines = () => {
         algoSalioMal();
       }
     }
-    setArchivoSeleccionado(null)
+    setArchivoSeleccionado(null);
     cargarBoletines();
   };
 
@@ -409,12 +409,12 @@ const TablaBoletines = () => {
 
   useEffect(() => {
     // getTiposOrigen();
-   
+
     cargarBoletines();
   }, []);
-useEffect(() => {
-  archivoSeleccionado
-}, [ archivoSeleccionado])
+  useEffect(() => {
+    archivoSeleccionado;
+  }, [archivoSeleccionado]);
 
   const funcionVerPDF = async (boletin) => {
     try {
@@ -561,42 +561,57 @@ useEffect(() => {
                             </TableCell>
                           ))}
                           <TableCell align="center" className="celdaAcciones">
-                            {botonState ? (
+                            {/* {botonState ? (
                               <EditIcon
                                 className="iconEdit-desabled"
                                 color="primary"
                               />
-                            ) : (
-                              // <></>
-                              <EditIcon
-                                onClick={() => handleEdit(boletin)}
-                                className="iconEdit"
-                                color="primary"
-                              />
-                            )}
-                            {!botonState && boletin.habilita === 1 ? (
-                              <DeleteIcon
-                                className="iconDelete"
-                                onClick={() => handleDelete(boletin)}
-                              />
-                            ) : (
+                            ) : ( 
+                              <></>
+                             */}
+                            <button
+                              onClick={() => handleEdit(boletin)}
+                              disabled={botonState}
+                              className="buttonDelete"
+                            >
+                              <EditIcon className="iconEdit" color="primary" />
+                            </button>
+                            {/* )} */}
+                            {/* {!botonState && boletin.habilita === 1 ? ( */}
+                            <button
+                              onClick={() => handleDelete(boletin)}
+                              className="buttonDelete"
+                              disabled={!botonState && boletin.habilita !== 1}
+                            >
+                              <DeleteIcon className="iconDelete" />
+                            </button>
+                            {/* ) : (
                               <DeleteIcon className="iconDelete-desabled" />
                               // <></>
-                            )}
-                            {user?.id_tusuario === 1 || user?.id_persona === 736 ?
-                              (botonState ? (
+                            )} */}
+                            {(user?.id_tusuario === 1 ||
+                              user?.id_persona === 736) && (
+                              <button
+                                onClick={() => funcionVerPDF(boletin)}
+                                disabled={botonState}
+                                className="buttonDelete"
+                              >
                                 <FontAwesomeIcon
                                   icon={faEye}
-                                  className="icono-ver-pdf-desabled"
-                                />
-                              ) : (
-                                // <></>
-                                <FontAwesomeIcon
-                                  icon={faEye}
-                                  onClick={() => funcionVerPDF(boletin)}
                                   className="icono-ver-pdf"
                                 />
-                              )):(<></>)}
+                              </button>
+                              // ) : (
+                              // botonState ? (
+                              //   <FontAwesomeIcon
+                              //     icon={faEye}
+                              //     className="icono-ver-pdf-desabled"
+                              //   />
+                              // ) : (
+                              //   // <></>
+                              // )
+                              // <></>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
