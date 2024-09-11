@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import {axiosDigital} from "../config/axios";
+import {axios, axiosDigital} from "../config/axios";
 
 export const BolContext = createContext();
 
@@ -39,7 +39,8 @@ const ProviderBol = ({ children }) => {
       // console.log(axiosDigital.defaults.headers);
       // Establece el encabezado Authorization
       axiosDigital.defaults.headers.common.Authorization = `${token}`;
-      const { data } = await axiosDigital.get(
+      axios.defaults.headers.common.Authorization = `${token}`;
+      const { data } = await axios.get(
         "/usuarios/authStatus"
       );
       // console.log(data.usuarioSinContraseña.id_persona)
