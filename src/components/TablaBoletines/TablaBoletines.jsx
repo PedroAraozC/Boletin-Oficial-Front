@@ -421,7 +421,7 @@ const TablaBoletines = () => {
       setBotonState(true);
       // console.log(boletin);
       const response = await axios.get(
-        `https://boletinoficial.smt.gob.ar:3500/boletin/verPdf/${boletin.id_boletin}`,
+        `/boletin/verPdf/${boletin.id_boletin}`,
         // `http://localhost:3500/boletin/verPdf/${boletin.id_boletin}`,
         {
           responseType: "blob",
