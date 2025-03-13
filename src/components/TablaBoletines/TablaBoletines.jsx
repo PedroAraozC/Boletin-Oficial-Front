@@ -212,7 +212,7 @@ const TablaBoletines = () => {
         "No puede estar la misma Norma con el mismo Nº de Norma repetido ";
       setError("warning");
     } else if (archivoSeleccionado == null) {
-      console.log(archivoSeleccionado);
+      // console.log(archivoSeleccionado);
       mensaje = "Debe ingresar un archivo PDF para guardar los cambios";
       setError("warning");
     } else if (editingBoletin.nro_boletin === "") {
@@ -297,32 +297,47 @@ const TablaBoletines = () => {
 
   const handleGuardar = () => {
     handleSave();
-    console.log(archivoSeleccionado);
+    // console.log(archivoSeleccionado);
     // cargarBoletines();
   };
 
   const cargarBoletines = async () => {
-    setBotonState(true);
-    setBandera(true);
-    await axios
-      .get("/boletin/listado")
-      .then((response) => {
+    try {
+      setBotonState(true);
+      setBandera(true);
+
+      // Obtener boletines
+      try {
+        // console.log("entrando a boletin/listado");
+        const response = await axios.get("/boletin/listado");
         setBoletines(response.data);
-      })
-      .catch((error) => {
+        // console.log(response.data);
+      } catch (error) {
         console.error("Error al obtener boletines:", error);
-      });
-    await axios
-      .get("/boletin/listadoContenido")
-      .then((response) => {
+        algoSalioMal();
+      }
+      // console.log("salí de boletin/listado");
+      // Obtener contenido de boletines
+      try {
+        // console.log("entrando a boletin/listadoContenido");
+
+        const response = await axios.get("/boletin/listadoContenido");
         setContenidoBoletines(response.data);
-      })
-      .catch((error) => {
+        // console.log(response.data);
+      } catch (error) {
         console.error("Error al obtener contenido de boletines:", error);
         algoSalioMal();
-      });
-    setBotonState(false);
-    setBandera(false);
+      }
+      // console.log("salí de boletin/listadoContenido");
+    } catch (error) {
+      console.error("Error general en cargarBoletines:", error);
+      algoSalioMal();
+    } finally {
+      // console.log("entré al finally");
+
+      setBotonState(false);
+      setBandera(false);
+    }
   };
 
   const handleSave = async () => {
@@ -344,13 +359,13 @@ const TablaBoletines = () => {
         formData.append("requestData", JSON.stringify(requestData));
         formData.append("archivoBoletin", archivoSeleccionado);
         setFormData(formData);
-        // console.log([formData], "fomrData");
+        // console.log([formData], "fomrData handleSave");
         const respuesta = await axios.put(`/boletin/editar`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        // console.log(respuesta, "respuesta");
+        // console.log(respuesta, "respuesta handleSave");
         // cargarBoletines();
 
         setOpenDialog(false);
