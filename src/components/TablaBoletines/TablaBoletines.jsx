@@ -81,6 +81,7 @@ const TablaBoletines = () => {
   const [botonState, setBotonState] = useState(false);
   const { user } = useContext(BolContext);
   const [bandera, setBandera] = useState(false);
+  const [nroBoletin, setNroBoletin] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -119,6 +120,7 @@ const TablaBoletines = () => {
   };
 
   const handleEdit = (boletin) => {
+    setNroBoletin(boletin.nro_boletin);
     const editedBoletin = { ...boletin };
     setBotonState(true);
 
@@ -200,7 +202,7 @@ const TablaBoletines = () => {
     const numero = numeroBoletin.toString();
     const id = idBoletin;
     const existe = boletines.some(
-      (boletin) => boletin.nro_boletin === numero && boletin.id_boletin !== id
+      (boletin) => boletin.nro_boletin === numero && boletin.id_boletin !== id && numero !== nroBoletin
     );
     return existe;
   };
@@ -221,7 +223,10 @@ const TablaBoletines = () => {
     } else if (editingBoletin.nro_boletin.length > 10) {
       mensaje = "El Nº de Boletín no puede contener mas de 10 digitos.";
       setError("error");
-    } else if (numeroBoletinDisponible(editingBoletin.nro_boletin)) {
+    } else if (
+      numeroBoletinDisponible(editingBoletin.nro_boletin) &&
+      editingBoletin.nro_boletin !== nroBoletin
+    ) {
       mensaje = `El Nº de Boletín ${editingBoletin.nro_boletin} ya existe!`;
       setError("error");
     } else if (editingBoletin.fecha_publicacion === "") {
